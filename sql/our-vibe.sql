@@ -1,18 +1,18 @@
 DROP TABLE IF EXISTS eventImage;
 DROP TABLE IF EXISTS eventTag;
-DROP TABLE IF EXISTS 'event';
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS tag;
+DROP TABLE IF EXISTS 'event';
 DROP TABLE IF EXISTS venue;
 
 CREATE TABLE venue (
 
   venueId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-  venueImageId INT UNSIGNED UNIQUE ,
-  venueAddress1 VARCHAR(128) UNIQUE NOT NULL,
-  venueAddress2 VARCHAR(128) UNIQUE NOT NULL,
+  venueImageId INT UNSIGNED,
+  venueAddress1 VARCHAR(128) NOT NULL,
+  venueAddress2 VARCHAR(128),
   venueCity CHAR (32) NOT NULL,
-  venueContact VARCHAR(128) UNIQUE NOT NULL,
+  venueContact VARCHAR(128) NOT NULL,
   venueContent VARCHAR (768) NOT NULL,
   venueName CHAR (32) NOT NULL,
   venueState CHAR (32) NOT NULL,
@@ -29,6 +29,18 @@ CREATE TABLE venue (
 
 );
 
+CREATE TABLE 'event' (
+
+  eventId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+  eventContact VARCHAR(128) NOT NULL,
+  eventContent VARCHAR (768) NOT NULL,
+  eventDateTime DATETIME(6) NOT NULL,
+  eventName CHAR (128) NOT NULL,
+
+  PRIMARY KEY (eventId)
+
+);
+
 CREATE TABLE tag (
 
   tagId   INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -42,7 +54,6 @@ CREATE TABLE image (
 
   imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
   imageCloudinaryId VARCHAR(32),
-  imageType VARCHAR(32) NOT NULL,
 
   INDEX (imageCloudinaryId),
 
@@ -53,17 +64,6 @@ CREATE TABLE image (
 
 );
 
-CREATE TABLE 'event' (
-
-  eventId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-  eventContact VARCHAR(128) UNIQUE NOT NULL,
-  eventContent VARCHAR (768) NOT NULL,
-  eventDateTime DATETIME NOT NULL,
-  eventName CHAR (128) NOT NULL,
-
-  PRIMARY KEY (eventId)
-
-);
 
 CREATE TABLE eventTag (
 
