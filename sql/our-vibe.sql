@@ -11,6 +11,7 @@ CREATE TABLE venue (
   venueImageId INT UNSIGNED,
   venueAddress1 VARCHAR(128) NOT NULL,
   venueAddress2 VARCHAR(128),
+  venueActivationToken CHAR (32),
   venueCity CHAR (32) NOT NULL,
   venueContact VARCHAR(128) NOT NULL,
   venueContent VARCHAR (768) NOT NULL,
