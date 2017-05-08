@@ -157,7 +157,7 @@ class Venue {
      * @throws \InvalidArgumentException if activation token is either empty or insecure
      * @throws \RangeException if activation token does not have 32 characters
      */
-    public function setNewVenueActivationToken(string $newVenueActivationToken) : void {
+    public function setVenueActivationToken(string $newVenueActivationToken) : void {
         //enforce formatting on activation token
         $newVenueActivationToken = trim($newVenueActivationToken);
         $newVenueActivationToken = strtolower($newVenueActivationToken);
@@ -526,69 +526,6 @@ class Venue {
         //take new venue zip and store it in venue zip
         $this->venueZip = $newVenueZip;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
