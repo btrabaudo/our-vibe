@@ -4,6 +4,22 @@ DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS tag;
 DROP TABLE IF EXISTS 'event';
 DROP TABLE IF EXISTS venue;
+DROP TABLE IF EXISTS image;
+
+
+CREATE TABLE image (
+
+  imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+  imageCloudinaryId VARCHAR(32),
+
+  INDEX (imageCloudinaryId),
+
+  PRIMARY KEY (imageId),
+
+  FOREIGN KEY (imageCloudinaryId) REFERENCES cloudnaryId(cloudnaryId)
+
+
+);
 
 CREATE TABLE venue (
 
@@ -48,20 +64,6 @@ CREATE TABLE tag (
   tagName CHAR(32) NOT NULL,
 
   PRIMARY KEY (tagId)
-
-);
-
-CREATE TABLE image (
-
-  imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-  imageCloudinaryId VARCHAR(32),
-
-  INDEX (imageCloudinaryId),
-
-  PRIMARY KEY (imageId),
-
-  FOREIGN KEY (imageCloudinaryId) REFERENCES cloudnaryId(cloudnaryId)
-
 
 );
 

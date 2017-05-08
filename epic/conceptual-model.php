@@ -12,6 +12,7 @@
 		 <p>venueImageId</p>
 		 <p>venueAddress1</p>
 		 <p>venueAddress2</p>
+         <p>venueActivationToken</p>
 		 <p>venueCity</p>
 		 <p>venueContact</p>
 		 <p>venueContent</p>
