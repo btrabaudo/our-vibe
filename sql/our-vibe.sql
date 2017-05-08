@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS eventImage;
 DROP TABLE IF EXISTS eventTag;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS tag;
-DROP TABLE IF EXISTS 'event';
+DROP TABLE IF EXISTS event;
 DROP TABLE IF EXISTS venue;
 DROP TABLE IF EXISTS image;
 
@@ -12,12 +12,7 @@ CREATE TABLE image (
   imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
   imageCloudinaryId VARCHAR(32),
 
-  INDEX (imageCloudinaryId),
-
-  PRIMARY KEY (imageId),
-
-  FOREIGN KEY (imageCloudinaryId) REFERENCES cloudnaryId(cloudnaryId)
-
+  PRIMARY KEY (imageId)
 
 );
 
@@ -28,11 +23,11 @@ CREATE TABLE venue (
   venueActivationToken CHAR (32),
   venueAddress1 VARCHAR(128) NOT NULL,
   venueAddress2 VARCHAR(128),
-  venueCity CHAR (32) NOT NULL,
+  venueCity VARCHAR (32) NOT NULL,
   venueContact VARCHAR(128) NOT NULL,
   venueContent VARCHAR (768) NOT NULL,
-  venueName CHAR (32) NOT NULL,
-  venueState CHAR (32) NOT NULL,
+  venueName VARCHAR (32) NOT NULL,
+  venueState VARCHAR (32) NOT NULL,
   venueZip VARCHAR (10) NOT NULL,
   venuePassHash CHAR(128) NOT NULL,
   venuePassSalt CHAR(64) NOT NULL,
@@ -46,22 +41,28 @@ CREATE TABLE venue (
 
 );
 
-CREATE TABLE 'event' (
+CREATE TABLE event (
 
   eventId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+  eventVenueId INT UNSIGNED NOT NULL,
   eventContact VARCHAR(128) NOT NULL,
   eventContent VARCHAR (768) NOT NULL,
   eventDateTime DATETIME(6) NOT NULL,
-  eventName CHAR (128) NOT NULL,
+  eventName VARCHAR (128) NOT NULL,
 
-  PRIMARY KEY (eventId)
+  INDEX (eventVenueId),
+
+  PRIMARY KEY (eventId),
+
+  FOREIGN KEY (eventVenueId) REFERENCES venue(venueId)
+
 
 );
 
 CREATE TABLE tag (
 
   tagId   INT UNSIGNED AUTO_INCREMENT NOT NULL,
-  tagName CHAR(32) NOT NULL,
+  tagName VARCHAR(32) NOT NULL,
 
   PRIMARY KEY (tagId)
 
