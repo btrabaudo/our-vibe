@@ -527,12 +527,7 @@ class Venue {
         $this->venueZip = $newVenueZip;
     }
 
-    public function insert(\PDO $pdo) :void {
-        if($this->venueId === null) {
-            throw(new \PDOException("unable to insert into a profile that does not exist"));
-        }
-            $query = "INSERT INTO venue(venueId, venueImageId, venueActivationToken, )"
-    }
+
 
 
 
