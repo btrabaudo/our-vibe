@@ -9,9 +9,9 @@ CREATE TABLE venue (
 
   venueId INT UNSIGNED AUTO_INCREMENT NOT NULL,
   venueImageId INT UNSIGNED,
+  venueActivationToken CHAR (32),
   venueAddress1 VARCHAR(128) NOT NULL,
   venueAddress2 VARCHAR(128),
-  venueActivationToken CHAR (32),
   venueCity CHAR (32) NOT NULL,
   venueContact VARCHAR(128) NOT NULL,
   venueContent VARCHAR (768) NOT NULL,
