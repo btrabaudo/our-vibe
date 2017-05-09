@@ -527,6 +527,104 @@ class Venue {
         $this->venueZip = $newVenueZip;
     }
 
+    /**
+     *
+     * @param \PDO $pdo connection object
+     * @throws \PDOException when mySQL related errors occur
+     * @throws \TypeError if $pdo is not a PDO connection object
+     */
+
+    public function insert(\PDO $pdo) : void {
+        //enforce that venue id is not null
+        if($this->venueId === null) {
+            throw(new \PDOException("unable to insert into a profile that does not exist"));
+        }
+        //create query
+         $query = "INSERT INTO venue(venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venuePassHash, venuePassSalt, venueState, venueZip) VALUES (:venueId, :venueImageId, :venueActivationToken, :venueAddress1, :venueAddress2, :venueCity, :venueContact, :venueContent, :venueName, :venuePassHash, :venuePassSalt, :venueState, :venueZip)";
+        $statement = $pdo-prepare($query);
+        $parameters = ["venueId" => $this->venueId];
+        $statement->execute($parameters);
+
+    }
+
+    /**
+     * deletes this profile from mySQL
+     * @param \PDO $pdo connection object
+     * @throws \PDOException when mySQL related errors occur
+     * @throws \TypeError if $pdo is not a PDO connection object
+     *
+     */
+
+    public function delete(\PDO $pdo) : void {
+        //enforce that venue id is not null
+
+        if($this->venueId === null) {
+            throw(new \PDOException("unable to delete a venue that does not exist"));
+        }
+        //create query
+        $query = "DELETE FROM venue WHERE venueId = :venueId";
+        $statement = $pdo->prepare($query);
+        $parameters = ["venueId" => $this->venueId];
+        $statement->execute($parameters);
+    }
+
+    /**
+     * Updates this venue in mySQL
+     * @param \PDO $pdo PDO connection style
+     * @throws \PDOException when mySQL errors occur
+     * @throws \TypeError if $pdo is not a pdo connection object
+     */
+
+    public function update(\PDO $pdo) : void {
+        // enforce that venue id is not null
+        if($this->venueId === null) {
+            throw(new \PDOException("unable to update a profile that does not exist"));
+        }
+
+        $query = "UPDATE venue SET venueAddress1 = :venueAddress1, venueAddress2 = :venueAddress2, venueCity = :venueCity, venueContact = :venueContact, venueContent = :venueContent, venueName = :venueName, venueState = :venueState, venueZip = :venueZip";
+        $statement = $pdo->prepare($query);
+        $parameters = ["venueAddress1" => $this->venueAddress1, "venueAddress2" => $this->venueAddress2, "venueCity" => $this->venueCity, "venueContact" => $this->venueContact, "venueContent" => $this->venueContent, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+        $statement->execute($parameters);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
