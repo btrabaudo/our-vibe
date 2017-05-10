@@ -49,7 +49,7 @@
 
 		 <h2>EventImage</h2>
 
-		 <p>eventImageEventId</p>
 		 <p>eventImageImageId</p>
-    </body>
+		 <p>eventImageEventId</p>
+	 </body>
 </html>
