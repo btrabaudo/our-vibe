@@ -8,7 +8,7 @@ namespace Edu\Cnm\OurVibe;
  * @package Edu\Cnm\OurVibe
  * @author QED
  **/
-class Venue implements \JsonSerializable{
+class Venue implements \JsonSerializable {
     /**
      * @var int $venueId
      **/
@@ -482,12 +482,6 @@ class Venue implements \JsonSerializable{
      */
     public function setVenueZip(string $newVenueZip) {
         $newVenueZip= filter_var($newVenueZip, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-
-        //if venue zip is null return it posthaste
-        if($newVenueZip === null) {
-            $newVenueZip = null;
-            return;
-        }
 
         //enforce max length of 10 characters on venue zip
         if (strlen($newVenueZip) > 10) {
