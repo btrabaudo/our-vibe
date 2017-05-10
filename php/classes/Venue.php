@@ -626,6 +626,39 @@ class Venue implements \JsonSerializable {
         return ($venues);
     }
 
+    public static function getVenueByVenueName(\PDO $pdo, string $venueName) : \SPLFixedArray {
+        //Sanitize city
+        $venueName = trim($venueName);
+        $venueName = filter_var($venueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+        if (empty ($venueName) === true) {
+            throw(new \PDOException("not a valid city"));
+        }
+        //query for venue using venueCity
+        $query = "SELECT venueImageId, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip FROM venue WHERE venueName = :venueName";
+        $statement = $pdo->prepare($query);
+
+        // bind the venue city to the placeholder
+        $venueName = "%venueName%";
+        $parameters = ["venueName" => $venueName];
+        $statement->execute($parameters);
+
+        //build array
+        $venues = new \SplFixedArray($statement->rowCount());
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        while ($row = $statement->fetch() !== false) ;
+
+        try {
+            $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"]);
+            $venues[$venues->key()] = $venue;
+            $venues->next();
+        } catch (\Exception $exception) {
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+
+        return ($venues);
+    }
+
 
 
 
