@@ -31,7 +31,7 @@ require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
  *
  * *NOTE*: Tables must be added in the order they were created in step (2).
  *
- * @author Dylan McDonald and QED
+ * @author  QED special thanks to @DeepDiveDylan
  **/
 abstract class OurVibeTest extends TestCase {
 
