@@ -3,12 +3,12 @@ namespace Edu\Cnm\OurVibe;
 
 
 /**
- *TODO: ADD JSON, AUTO-LOADER, ADD REST, UNIT TEST
+ *TODO: ADD JSON, AUTO-LOADER, UNIT TEST
  * Class Venue
  * @package Edu\Cnm\OurVibe
  * @author QED
  */
-class Venue {
+class Venue implements \jsonSerialize{
     /**
      * @var int $venueId
      **/
@@ -586,6 +586,33 @@ class Venue {
         $parameters = ["venueAddress1" => $this->venueAddress1, "venueAddress2" => $this->venueAddress2, "venueCity" => $this->venueCity, "venueContact" => $this->venueContact, "venueContent" => $this->venueContent, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
         $statement->execute($parameters);
     }
+
+    public static function getVenueByVenueId(\PDO $pdo, int $venueId) : ?Venue {
+        //make sure venue id is positive
+        if($venueId <= 0) {
+            throw(new \PDOException("venue id is not positive"));
+        }
+        //query for venue
+        $query = "SELECT venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip FROM venue WHERE venueId = :venueId";
+        $statement = $pdo->prepare($query);
+        $parameters = ["venueId => $venueId"];
+        $statement->execute($parameters);
+
+        //fetch venue from mySQL
+        try {
+            $venue = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if(row !== false) {
+
+            }
+        }
+    }
+
+
+
+
+
 
 
 
