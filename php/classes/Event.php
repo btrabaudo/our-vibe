@@ -1,5 +1,6 @@
 <?php
 namespace Edu\Cnm\OurVibe;
+require_once ("autoload.php");
 /**
  * Event for OurVibe
  * @author kkristl <kkristl@cnm.edu>
