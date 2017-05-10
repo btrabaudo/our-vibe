@@ -32,7 +32,6 @@
 
 		 <p>imageId</p>
 		 <p>imageCloudinaryId</p>
-		 <p>imageType</p>
 
 		 <h2>Event</h2>
 
