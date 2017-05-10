@@ -141,3 +141,23 @@ class Event implements \jsonSerialize{
 		}
 		$this->eventDateTime = $newEventDateTime;
 	}
+	/**
+	 * Inserts event into mySQL
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL errors occur
+	 * @throws  \TypeError if $pdo is not PDO connection object
+	 */
+	public function insert(\PDO $pdo) : void {
+		// enforce the eventId is null
+		if($this->eventId !== null) {
+			throw(new \PDOException("not a new event"));
+		}
+		//create query
+		$query = "INSERT INTO event(eventId, eventContact, eventContent, eventDateTime, eventName) VALUES (:eventId, :eventContact, :eventContent, :eventDateTime, :eventName)";
+		$statement = $pdo->prepare($query);
+		// bind members to their place holders
+		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s:u");
+		$parameters = ["eventId" => $this->eventId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
+		$statement->execute($parameters);
+		$this->eventId = intval($pdo->lastInsertId());
+	}
