@@ -159,7 +159,7 @@ class Tag implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occcur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getTagByTagId(\PDO $pdo, int $tagId):?\tag {
+	public static function getTagByTagId(\PDO $pdo, int $tagId):?tag {
 		if($tagId <= 0) {
 			throw(new \PDOException("tag id is not positive"));
 		}
@@ -212,7 +212,9 @@ class Tag implements \JsonSerializable {
 			} catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
+		return ($tags);
 		}
+
 	}
 
 	/**
