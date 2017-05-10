@@ -3,7 +3,7 @@ namespace Edu\Cnm\OurVibe;
 
 
 /**
- *TODO: ADD JSON, AUTO-LOADER, UNIT TEST
+ *TODO: ADD JSON, AUTO-LOADER, UNIT TEST, CHECK WHAT YOU HAVE NULLED
  * Class Venue
  * @package Edu\Cnm\OurVibe
  * @author QED
@@ -275,19 +275,22 @@ class Venue implements \JsonSerializable {
     /**
      * accessor method for venue contact
      * @return string venue contact
-     */
+     **/
     public function getVenueContact(): string{
         return($this->venueContact);
     }
 
     /**
-     * ALERT STRANGE BUG IN THE FINAL LINE OF THIS FUNCTION
      * mutator method for venue contact
      * @param string $newVenueContact
      * @throws |\RangeException if venue contact is greater than 128 characters
-     */
+     **/
     public function setVenueContact(string $newVenueContact) : void {
         $newVenueContact = filter_var($newVenueContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+        if(empty($newVenueContact) === true) {
+            throw(new \InvalidArgumentException("venue contact is either empty or insecure"));
+        }
 
         //enforce that venue contact is less than 128 characters
         if(strlen($newVenueContact) < 128) {
@@ -302,7 +305,7 @@ class Venue implements \JsonSerializable {
     /**
      * accessor method for venue content
      * @return string venue content
-     */
+     **/
     public function getVenueContent(): string {
         return($this->venueContent);
     }
@@ -313,14 +316,15 @@ class Venue implements \JsonSerializable {
      * @param string $newVenueContent
      * @throws \InvalidArgumentException if venue content is not alphanumeric
      * @throws \RangeException if venue content is greater than 768
-     */
+     **/
     public function setVenueContent(string $newVenueContent) : void {
         $newVenueContent = filter_var($newVenueContent, FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //enforce that venue content is alphanumeric
-        if(!ctype_alnum($newVenueContent)) {
-            throw(new \InvalidArgumentException("venue content must be alphanumeric"));
+        //enforce that venue content is not empty
+        if(empty($newVenueContent) === true){
+            throw(new \InvalidArgumentException("venue content is either empty or insecure"));
         }
+
          //enforce max string length of 768 on venue content
         if (strlen($newVenueContent) > 768) {
             throw(new \RangeException("venue content must be less than 768 characters"));
@@ -333,7 +337,7 @@ class Venue implements \JsonSerializable {
     /**
      * accessor method for venue name
      * @return string for venue name
-     */
+     **/
     public function getVenueName(): string {
         return($this->venueName);
     }
@@ -343,14 +347,16 @@ class Venue implements \JsonSerializable {
      * @param string $newVenueName
      * @throws \InvalidArgumentException if the venue name is not alphanumeric
      * @throws \RangeException if the venue name is greater than 32 characters
-     */
+     **/
     public function setVenueName(string $newVenueName) : void {
         $newVenueName = filter_var($newVenueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //enforce that venue name is alphanumeric
-        if(!ctype_alnum($newVenueName)) {
-            throw(new \InvalidArgumentException("venue name must be alphanumeric"));
+        //enforce that venue name is not empty
+        if(empty($newVenueName) === true) {
+            throw(new \InvalidArgumentException("venue name is either empty or insecure"));
         }
+
+
         //enforce max string length of venue name
         if(strlen($newVenueName) > 32) {
             throw(new \RangeException("venue name must be less than 32 characters"));
@@ -362,7 +368,7 @@ class Venue implements \JsonSerializable {
     /**
      * accessor method for venue pass hash
      * @return string for venue pass hash
-     */
+     **/
     public function getVenuePassHash(): string {
         return($this->venuePassHash);
     }
@@ -374,7 +380,7 @@ class Venue implements \JsonSerializable {
      * @throws \InvalidArgumentException if the hash is empty
      * @throws \InvalidArgumentException if the hash is not in hex
      * @throws \RangeException if the hash is not exactly 128 characters
-     */
+     **/
     public function setVenuePassHash(string $newVenuePassHash) : void {
         //enforce that the hash is formatted properly
         $newVenuePassHash = trim($newVenuePassHash);
@@ -400,7 +406,7 @@ class Venue implements \JsonSerializable {
     /**
      * accessor method for venue pass salt
      * @return string for venue pass salt
-     */
+     **/
     public function getVenuePassSalt(): string {
         return($this->venuePassSalt);
     }
@@ -412,7 +418,7 @@ class Venue implements \JsonSerializable {
      * @throws \InvalidArgumentException when venue pass salt is not in hex
      * @throws \InvalidArgumentException when venue pass salt is empty
      * @throws \RangeException when venue pass salt is not exactly 64 characters
-     */
+     **/
     public function setVenuePassSalt(string $newVenuePassSalt) : void {
         //enforce that the salt is formatted properly
         $newVenuePassSalt = trim($newVenuePassSalt);
@@ -439,7 +445,7 @@ class Venue implements \JsonSerializable {
     /**
      * accessor method for venue state
      * @return string for venue state
-     */
+     **/
     public function getVenueState(): string {
         return($this->venueState);
     }
@@ -449,13 +455,14 @@ class Venue implements \JsonSerializable {
      * @param string $newVenueState
      * @throws \InvalidArgumentException when venue state is not composed with letters
      * @throws \RangeException if venue state is greater than 32 characters
-     */
+     **/
     public function setVenueState(string $newVenueState){
+        $newVenueState = trim($newVenueState);
         $newVenueState = filter_var($newVenueState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //enforce only letters in venue state
-        if(!ctype_alpha($newVenueState)) {
-            throw(new \InvalidArgumentException("venue state must only contain letters"));
+        //enforce that venue state is not empty
+        if(empty($newVenueState) === true) {
+            throw(new \InvalidArgumentException("venue state is either empty or insecure"));
         }
 
         //enforce that venue state is less than 32 characters
@@ -470,7 +477,7 @@ class Venue implements \JsonSerializable {
     /**
      * accessor method for venue zip
      * @return string for venue zip
-     */
+     **/
     public function getVenueZip(): string {
         return($this->venueZip);
     }
@@ -479,10 +486,15 @@ class Venue implements \JsonSerializable {
      * mutator method for venue zip
      * @param string $newVenueZip
      * @throws \RangeException if venue zip is longer than 10 characters
-     */
+     **/
     public function setVenueZip(string $newVenueZip) {
+        $newVenueZip = trim($newVenueZip);
         $newVenueZip= filter_var($newVenueZip, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
+        //enforce that venue zip is not empty
+        if(empty($newVenueZip) === true) {
+            throw(new \InvalidArgumentException("venue zip is either empty or insecure"))
+        }
         //enforce max length of 10 characters on venue zip
         if (strlen($newVenueZip) > 10) {
             throw(new \RangeException("venue zip can not be greater than 10 characters"));
@@ -497,7 +509,7 @@ class Venue implements \JsonSerializable {
      * @param \PDO $pdo connection object
      * @throws \PDOException when mySQL related errors occur
      * @throws \TypeError if $pdo is not a PDO connection object
-     */
+     **/
 
     public function insert(\PDO $pdo) : void {
         //enforce that venue id is not null
