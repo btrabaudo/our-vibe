@@ -83,7 +83,13 @@ class Event implements \jsonSerialize{
 	 **/
 	public function setEventContact(string $newEventContact): void {
 		$newEventContact = filter_var($newEventContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		//enforce alphanumeric in event contact
+		//enforce can not be blank in event contact
 		if (!ctype_alnum($newEventContact)) {
-			throw(new \InvalidArgumentException("event contact must be alphanumeric"));
+			throw(new \InvalidArgumentException("event contact can not be blank"));
 		}
+		//enforce less than 128 characters in event contact
+		if (strlen($newEventContact) !== 128) {
+			throw(new \RangeException("event contact must be less than 128 characters"));
+		}
+		$this->eventContact = $newEventContact;
+	}
