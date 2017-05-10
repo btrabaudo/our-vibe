@@ -226,6 +226,7 @@ class Venue implements \JsonSerializable{
      **/
     public function setVenueAddress2(?string $newVenueAddress2): void {
         $newVenueAddress2 = filter_var($newVenueAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
         if($newVenueAddress2 === null) {
             $this->venueAddress2 = null;
             return;
@@ -288,12 +289,6 @@ class Venue implements \JsonSerializable{
     public function setVenueContact(string $newVenueContact) : void {
         $newVenueContact = filter_var($newVenueContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //if venue contact is null return it posthaste
-        if($newVenueContact === null) {
-            $this->venueContact = null;
-            return;
-        }
-
         //enforce that venue contact is less than 128 characters
         if(strlen($newVenueContact) < 128) {
             throw(new \RangeException("venue contact must be less than 128 characters"));
@@ -322,11 +317,6 @@ class Venue implements \JsonSerializable{
     public function setVenueContent(string $newVenueContent) : void {
         $newVenueContent = filter_var($newVenueContent, FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //if venue content is null return it posthaste
-        if($newVenueContent === null) {
-            $this->venueContent = null;
-            return;
-        }
         //enforce that venue content is alphanumeric
         if(!ctype_alnum($newVenueContent)) {
             throw(new \InvalidArgumentException("venue content must be alphanumeric"));
@@ -357,11 +347,6 @@ class Venue implements \JsonSerializable{
     public function setVenueName(string $newVenueName) : void {
         $newVenueName = filter_var($newVenueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //if venue name is null return it posthaste
-        if($newVenueName === null) {
-            $this->venueName = null;
-            return;
-        }
         //enforce that venue name is alphanumeric
         if(!ctype_alnum($newVenueName)) {
             throw(new \InvalidArgumentException("venue name must be alphanumeric"));
@@ -467,12 +452,6 @@ class Venue implements \JsonSerializable{
      */
     public function setVenueState(string $newVenueState){
         $newVenueState = filter_var($newVenueState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-
-        //if venue state is null return it posthaste
-        if($newVenueState === null) {
-            $newVenueState = null;
-            return;
-        }
 
         //enforce only letters in venue state
         if(!ctype_alpha($newVenueState)) {
