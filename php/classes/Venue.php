@@ -603,7 +603,7 @@ class Venue implements \jsonSerialize{
             $venue = null;
             $statement->setFetchMode(\PDO::FETCH_ASSOC);
             $row = $statement->fetch();
-            if(row !== false) {
+            if($row !== false) {
 
             }
         }
