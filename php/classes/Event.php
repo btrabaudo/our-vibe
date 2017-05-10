@@ -222,3 +222,15 @@ class Event implements \jsonSerialize{
 		$parameters = ["eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
 		$statement->execute($parameters);
 	}
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function JsonSerialize() {
+		$fields = get_object_vars($this);
+		//format the sate so that the front end can consume it
+		$fields["eventDateTime"] = round(floatval($this->eventDateTime->format("U.u")) * 1000);
+		return($fields);
+	}
+}
