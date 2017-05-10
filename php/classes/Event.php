@@ -186,3 +186,39 @@ class Event implements \jsonSerialize{
 		$statement->execute($parameters);
 		$this->eventId = intval($pdo->lastInsertId());
 	}
+	/**
+	 * Deletes event from mySQL
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL errors occur
+	 * @throws  \TypeError if $pdo is not PDO connection object
+	 */
+	public function delete(\PDO $pdo) : void {
+		//enforce that the event is not null i.e. that it exists
+		if($this->eventId === null) {
+			throw(new \PDOException("unable to delete an event that does not exist"));
+		}
+		//create a query
+		$query = "DELETE FROM event WHERE eventId = :eventId";
+		$statement = $pdo->prepare($query);
+		// bind members to their place
+		$parameters = ["eventId" => $this->eventId];
+		$statement->execute($parameters);
+	}
+	/**
+	 * Updates an event in mySQL
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL errors occur
+	 * @throws  \TypeError if $pdo is not PDO connection object
+	 */
+	public function updated(\PDO $pdo) : void {
+		// enforce the eventId is null
+		if($this->eventId !== null) {
+			throw(new \PDOException("not a new event"));
+		}
+		$query = "UPDATE event SET eventContact = :eventContact, eventContent = :eventContent, eventDateTime = :eventDateTime, eventName = :eventName, WHERE eventId = :eventId";
+		$statement = $pdo->prepare($query);
+		//binds members to their place holder
+		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s:u");
+		$parameters = ["eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
+		$statement->execute($parameters);
+	}
