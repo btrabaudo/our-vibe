@@ -118,3 +118,26 @@ class Event implements \jsonSerialize{
 		}
 		$this->eventContent = $newEventContent;
 	}
+	/**
+	 * accessor method for event date
+	 * @return \DateTime value of event date
+	 **/
+	public function getEventDateTime(): \DateTime {
+		return $this->eventDateTime;
+	}
+	/**
+	 * @param \DateTime $eventDateTime
+	 **/
+	public function setEventDateTime($newEventDateTime = null): void {
+		if($newEventDateTime === null) {
+			$this->eventDateTime = new \DateTime();
+			return;
+		}
+		try {
+			$newEventDateTime = self::validateDateTime($newEventDateTime);
+		} catch (\InvalidArgumentException | \RangeException  $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->eventDateTime = $newEventDateTime;
+	}
