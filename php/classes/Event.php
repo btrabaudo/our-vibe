@@ -142,6 +142,31 @@ class Event implements \jsonSerialize{
 		$this->eventDateTime = $newEventDateTime;
 	}
 	/**
+	 * accessor for event name
+	 * @return string for event name
+	 **/
+	public function getEventName(): string {
+		return $this->eventName;
+	}
+	/**
+	 * mutator for event name
+	 * @param string $newEventName
+	 * @throws \InvalidArgumentException if event name is blank
+	 * @throws \RangeException if event content is more than 128 characters
+	 **/
+	public function setEventName(string $newEventName): void {
+		$newEventName = filter_var($newEventName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		//enforce event name can not be blank
+		if (!ctype_alnum($newEventName)) {
+			throw(new \InvalidArgumentException("event name can not be blank"));
+		}
+		//enforce less than 128 characters in event name
+		if (strlen($newEventName) !== 128) {
+			throw(new \RangeException("event name must be less than 128 characters"));
+		}
+		$this->eventName = $newEventName;
+	}
+	/**
 	 * Inserts event into mySQL
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL errors occur
