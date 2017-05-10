@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\OurVibe;
 
-class profile implements \JsonSerializable {
+class tag implements \JsonSerializable {
 
 	/**
 	 * id for this tag; this is the primary key
