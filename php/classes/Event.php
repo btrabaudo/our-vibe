@@ -1,11 +1,11 @@
 <?php
 namespace Edu\Cnm\OurVibe;
 require_once ("autoload.php");
-/**
- * Event for OurVibe
- * @author kkristl <kkristl@cnm.edu>
- **/
-class Event implements \jsonSerialize{
+	/**
+ 	* Event for OurVibe
+ 	* @author kkristl <kkristl@cnm.edu>
+ 	**/
+	class Event implements \jsonSerialize{
 	/**
 	 * Id for this Event; this is the primary key
 	 **/
@@ -172,7 +172,7 @@ class Event implements \jsonSerialize{
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL errors occur
 	 * @throws  \TypeError if $pdo is not PDO connection object
-	 */
+	 **/
 	public function insert(\PDO $pdo) : void {
 		// enforce the eventId is null
 		if($this->eventId !== null) {
@@ -192,7 +192,7 @@ class Event implements \jsonSerialize{
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL errors occur
 	 * @throws  \TypeError if $pdo is not PDO connection object
-	 */
+	 **/
 	public function delete(\PDO $pdo) : void {
 		//enforce that the event is not null i.e. that it exists
 		if($this->eventId === null) {
@@ -210,7 +210,7 @@ class Event implements \jsonSerialize{
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL errors occur
 	 * @throws  \TypeError if $pdo is not PDO connection object
-	 */
+	 **/
 	public function updated(\PDO $pdo) : void {
 		// enforce the eventId is null
 		if($this->eventId !== null) {
