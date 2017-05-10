@@ -105,37 +105,117 @@ public function insert(\PDO $pdo): void{
 	if($this->tagName !==null){
 		throw(new \PDOException("not a new tag name"));
 	}
-$query
+$query = "INSERT INTO tag(tagId,tagName) VALUES (:tagId,tagName)";
+	$statement = $pdo->prepare($query);
+
+	$parameters =["tagId"=>$this->tagId,"tagName"=> $this->tagName];
+	$statement->execute($parameters);
+
+	$this->tagId= intval($pdo->lastInsertId());
 }
 
+/**
+ * deletes this profile from mySQL
+ * @param \PDO $pdo PDO connection object
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError if $pdo is not a PDO connection object
+ **/
+public function delete(\PDO $pdo): void {
+	if($this->tagId===null){
+		throw(new \PDOException("unable to delete a tag that does not exist"));
+	}
+$query = "DELETE FROM tag WHERE tagId=:tagId";
+	$statement = $pdo->prepare($query);
+	$parameters = ["tagId"=> $this->tagId];
+	$statement->execute($parameters);
+}
+/**
+ * updates this profile from mySQL
+ * @param \PDO $pdo PDO connection object
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError if $pdo is not a PDO connection object
+ **/
+public function update(\PDO $pdo, $statement): void {
+	if($this->tagId ===null){
+		throw(new \PDOException("unable to delete a tag that does not exist"));
+	}
+	$query = "UPDATE tag SET tagId = :tagId,tagName = :tagId,tagName =tagName WHERE tagId=:tagId";
+
+	$parameters = ["tagId"=> $this->tagId,"tagName"=> $this->tagName];
+
+	$statement->execute($parameters);
+
+}
+/**
+ * gets the tag by the tag id
+ * @param \PDO $pdo PDO connection object
+ * @param int $tagId tag id to search for
+ * @return tag|null tag or null if not found
+ * @throws \PDOException when mySQL related errors occcur
+ * @throws \TypeError when variables are not the correct data type
+ **/
+public static function getTagByTagId(\PDO $pdo,int $tagId):?\tag {
+	if($tagId <=0) {
+		throw(new \PDOException("tag id is not positive"));
+	}
+$query = "SELECT tagId, tagName";
+$statement = $pdo->prepare($query);
+$parameters = ["tagId => $tagId"];
+$statement->execute($parameters);
+try {
+	$tag = null;
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	$row = $statement->fetch();
+	if($row !==false){
+		$tag = new tag($row["tagId"],$row["tagName"]);
+
+	}
+}
+catch(\Exception $exception){throw(new \PDOException($exception->getMessage(),0, $exception));
+}
+return($tag);
+}
+
+/**
+ * get the tag by the tag name
+ * @param \PDO $pdo connection object
+ * @string $tagName to search for
+ * @return \SplFixedArray of all tags found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not the correct data type
+ **/
+	public static function getTagByTagName(\PDO $pdo, string $tagName) : \SplFixedArray {
+		$tagName = trim($tagName);
+		$tagName = filter_var($tagName,FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($tagName)===true){
+			throw(new \PDOException("not a valid tag"));
+		}
+	$query = "SELECT tagId, tagName FROM tag WHERE tagName = :tagName";
+		$statement = $pdo->prepare($query);
+		$parameters = ["tagName"=> $tagName];
+		$statement->execute($parameters);
 
 
+		$tags = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		while(($row = $statement->fetch())!==false){
+			try{
+				$tag = new tag($row["tagId"], $row["tagName"]);
+				$tags[$tags->key()]=$tag;
+				$tags->next();
+			} catch(\Exception $exception){
+				throw(new \PDOException($exception->getMessage(),0,$exception));
+			}
+		}
+	}
+	/**
+	 * formats state variables for json serialization
+	 * @return array resulting
+	 **/
+	public function jsonSerialize() {
+		// TODO: Implement jsonSerialize() method.
+	}
 
 
 }
