@@ -7,8 +7,8 @@ namespace Edu\Cnm\OurVibe;
  * Class Venue
  * @package Edu\Cnm\OurVibe
  * @author QED
- */
-class Venue implements \jsonSerialize{
+ **/
+class Venue implements \JsonSerializable{
     /**
      * @var int $venueId
      **/
@@ -21,7 +21,7 @@ class Venue implements \jsonSerialize{
 
     /**
      * @var string $venueActivationToken
-     */
+     **/
     private $venueActivationToken;
     /**
      * @var string $venueAddress1
@@ -31,7 +31,6 @@ class Venue implements \jsonSerialize{
      * @var string $venueAddress2
      **/
     private $venueAddress2;
-
     /**
      * @var string $venueCity
      **/
@@ -86,10 +85,10 @@ class Venue implements \jsonSerialize{
             throw(new $exceptionType($exception->getMessage(), 0, $exception));
         }
 	}
- /**
-  * accessor method for venue id
-  * @return int|null value of venue id
-  **/
+    /**
+     * accessor method for venue id
+     * @return int|null value of venue id
+     **/
 
     public function getVenueId() : ?int {
         return($this->venueId);
@@ -151,12 +150,13 @@ class Venue implements \jsonSerialize{
     }
 
     /**
+     * ALERT MAKE ACTIVATION TOKEN NULLABLE
      * mutator method for Venue Activation Token
      * @param string $newVenueActivationToken
      * enforced formatting on activation token
      * @throws \InvalidArgumentException if activation token is either empty or insecure
      * @throws \RangeException if activation token does not have 32 characters
-     */
+     **/
     public function setVenueActivationToken(string $newVenueActivationToken) : void {
         //enforce formatting on activation token
         $newVenueActivationToken = trim($newVenueActivationToken);
@@ -182,7 +182,7 @@ class Venue implements \jsonSerialize{
     /**
      * accessor method for venue address 1
      * @return string $newVenueAddress1
-     */
+     **/
     public function getVenueAddress1(): string {
         return($this->venueAddress1);
     }
@@ -192,19 +192,15 @@ class Venue implements \jsonSerialize{
      * @param string $newVenueAddress1
      * @throws \InvalidArgumentException if venue address is not alphanumeric
      * @throws \RangeException if venue address 1 is more than 128 characters
-     */
+     **/
     public function setVenueAddress1(string $newVenueAddress1): void {
+        $newVenueAddress1 = trim($newVenueAddress1);
         $newVenueAddress1 = filter_var($newVenueAddress1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //if new venue address is null return it posthaste
-        if($newVenueAddress1 === null) {
-            $this->venueId = null;
-            return;
+        if(empty ($newVenueAddress1) === true) {
+            throw(new \InvalidArgumentException('venue address is empty or insecure'));
         }
-        //enforce alphanumeric content in venue address 1
-        if(!ctype_alnum($newVenueAddress1)) {
-            throw(new \InvalidArgumentException("product content must be alphanumeric"));
-        }
+
         //enforce 128 characters in venue address 1
         if(strlen($newVenueAddress1) > 128) {
             throw(new \RangeException("venue address must be 128 characters"));
@@ -217,8 +213,8 @@ class Venue implements \jsonSerialize{
     /**
      * accessor method for venue address 2
      * @return string for venue address 2
-     */
-    public function getVenueAddress2(): string {
+     **/
+    public function getVenueAddress2(): ?string {
         return($this->venueAddress2);
     }
 
@@ -227,14 +223,14 @@ class Venue implements \jsonSerialize{
      * @param string $newVenueAddress2
      * @throws \InvalidArgumentException if new venue address 2 is not alphanumeric
      * @throws \RangeException if new venue address 2 is more than 128 characters
-     */
-    public function setVenueAddress2(string $newVenueAddress2): void {
+     **/
+    public function setVenueAddress2(?string $newVenueAddress2): void {
         $newVenueAddress2 = filter_var($newVenueAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-
-        //enforce alphanumeric content in venue address 2
-        if(!ctype_alnum($newVenueAddress2)) {
-            throw(new \InvalidArgumentException("venue address 2 must be alphanumeric"));
+        if($newVenueAddress2 === null) {
+            $this->venueAddress2 = null;
+            return;
         }
+
         //enforce 128 characters in venue address 2
         if(strlen($newVenueAddress2) > 128) {
             throw(new \RangeException("venue address 2 must be 128 characters"));
@@ -246,7 +242,7 @@ class Venue implements \jsonSerialize{
     /**
      * accessor method for venue city
      * @return string for venue city
-     */
+     **/
     public function getVenueCity(): string {
         return($this->venueCity);
     }
@@ -256,20 +252,16 @@ class Venue implements \jsonSerialize{
      * @param string $newVenueCity
      * @throws \InvalidArgumentException if the venue city is not composed with letters
      * @throws \RangeException if the the venue city is not less than 32 characters
-     */
+     **/
     public function setVenueCity(string $newVenueCity) : void {
+        $newVenueCity = trim($newVenueCity);
         $newVenueCity = filter_var($newVenueCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //if venue city is null return it posthaste
-        if($newVenueCity === null) {
-            $this->venueCity = null;
-            return;
+        //if venue city is empty throw
+        if(empty($newVenueCity) === true) {
+            throw(new \InvalidArgumentException ("venue city either empty or insecure"));
         }
 
-        //enforce only letters in venue city
-        if(!ctype_alpha($newVenueCity)) {
-            throw(new \InvalidArgumentException("venue city must only be letters"));
-        }
         //enforce 32 characters or less in venue city
         if(strlen($newVenueCity) > 32) {
             throw(new \RangeException("venue city must be less than 32 characters"));
@@ -536,14 +528,15 @@ class Venue implements \jsonSerialize{
 
     public function insert(\PDO $pdo) : void {
         //enforce that venue id is not null
-        if($this->venueId === null) {
-            throw(new \PDOException("unable to insert into a profile that does not exist"));
+        if($this->venueId !== null) {
+            throw(new \PDOException("not a new venue"));
         }
         //create query
-         $query = "INSERT INTO venue(venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venuePassHash, venuePassSalt, venueState, venueZip) VALUES (:venueId, :venueImageId, :venueActivationToken, :venueAddress1, :venueAddress2, :venueCity, :venueContact, :venueContent, :venueName, :venuePassHash, :venuePassSalt, :venueState, :venueZip)";
-        $statement = $pdo-prepare($query);
+         $query = "INSERT INTO venue(venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venuePassHash, venuePassSalt, venueState, venueZip) VALUES (:venueId, :venueImageId, :venueActivationToken, :venueAddress1, :venueAddress2, :venueCity, :venueContact, :venueContent, :venueName, :venuePassHash, :venuePassSalt, :venueState, :venueZip)";
+        $statement = $pdo->prepare($query);
         $parameters = ["venueId" => $this->venueId];
         $statement->execute($parameters);
+        $this->venueId = intval($pdo->lastInsertId());
 
     }
 
@@ -553,7 +546,7 @@ class Venue implements \jsonSerialize{
      * @throws \PDOException when mySQL related errors occur
      * @throws \TypeError if $pdo is not a PDO connection object
      *
-     */
+     **/
 
     public function delete(\PDO $pdo) : void {
         //enforce that venue id is not null
@@ -573,7 +566,7 @@ class Venue implements \jsonSerialize{
      * @param \PDO $pdo PDO connection style
      * @throws \PDOException when mySQL errors occur
      * @throws \TypeError if $pdo is not a pdo connection object
-     */
+     **/
 
     public function update(\PDO $pdo) : void {
         // enforce that venue id is not null
@@ -581,9 +574,9 @@ class Venue implements \jsonSerialize{
             throw(new \PDOException("unable to update a profile that does not exist"));
         }
 
-        $query = "UPDATE venue SET venueAddress1 = :venueAddress1, venueAddress2 = :venueAddress2, venueCity = :venueCity, venueContact = :venueContact, venueContent = :venueContent, venueName = :venueName, venueState = :venueState, venueZip = :venueZip";
+        $query = "UPDATE venue SET venueImageId = :venueImageId, venueAddress1 = :venueAddress1, venueAddress2 = :venueAddress2, venueCity = :venueCity, venueContact = :venueContact, venueContent = :venueContent, venueName = :venueName, venueState = :venueState, venueZip = :venueZip";
         $statement = $pdo->prepare($query);
-        $parameters = ["venueAddress1" => $this->venueAddress1, "venueAddress2" => $this->venueAddress2, "venueCity" => $this->venueCity, "venueContact" => $this->venueContact, "venueContent" => $this->venueContent, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+        $parameters = ["venueImageId" => $this->venueImageId, "venueAddress1" => $this->venueAddress1, "venueAddress2" => $this->venueAddress2, "venueCity" => $this->venueCity, "venueContact" => $this->venueContact, "venueContent" => $this->venueContent, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
         $statement->execute($parameters);
     }
 
@@ -593,7 +586,7 @@ class Venue implements \jsonSerialize{
             throw(new \PDOException("venue id is not positive"));
         }
         //query for venue
-        $query = "SELECT venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip FROM venue WHERE venueId = :venueId";
+        $query = "SELECT venueImageId, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip FROM venue WHERE venueId = :venueId";
         $statement = $pdo->prepare($query);
         $parameters = ["venueId => $venueId"];
         $statement->execute($parameters);
