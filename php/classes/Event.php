@@ -78,7 +78,7 @@ class Event implements \jsonSerialize{
 	/**
 	 * mutator for event contact
 	 * @param string $newEventContact
-	 * @throws \InvalidArgumentException if event contact is not alphanumeric
+	 * @throws \InvalidArgumentException if event contact is blank
 	 * @throws \RangeException if event contact is more than 128 characters
 	 **/
 	public function setEventContact(string $newEventContact): void {
@@ -92,4 +92,29 @@ class Event implements \jsonSerialize{
 			throw(new \RangeException("event contact must be less than 128 characters"));
 		}
 		$this->eventContact = $newEventContact;
+	}
+	/**
+	 * accessor for event content
+	 * @return string for event content
+	 **/
+	public function getEventContent(): string {
+		return $this->eventContent;
+	}
+	/**
+	 * mutator for event content
+	 * @param string $newEventContent
+	 * @throws \InvalidArgumentException if event content is blank
+	 * @throws \RangeException if event content is more than 768 characters
+	 **/
+	public function setEventContent(string $newEventContent): void {
+		$newEventContent = filter_var($newEventContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		//enforce can not be blank in event content
+		if (!ctype_alnum($newEventContent)) {
+			throw(new \InvalidArgumentException("event content can not be blank"));
+		}
+		//enforce less than 768 characters in event content
+		if (strlen($newEventContent) !== 768) {
+			throw(new \RangeException("event content must be less than 768 characters"));
+		}
+		$this->eventContent = $newEventContent;
 	}
