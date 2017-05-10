@@ -127,5 +127,14 @@ class EventImage \JsonSerializable {
 				if($this->eventImageImageId === null || $this->eventImageImageId ===) {
 							throw(new \PDOException("not a valid event image"));
 				}
+
+				// create query template
+				$query = "DELETE FROM eventImage WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
+				$statement = $pdo->prepare($query);
+
+				// bind the member variables to the place holders in the template
+				$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
+						$statement->execute($parameters);
 	}
+
 }
