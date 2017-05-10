@@ -4,7 +4,7 @@ namespace Edu\Cnm\OurVibe;
 
 require_once("autoload.php");
 
-class eventTag implements \jsonSerializable {
+class EventTag implements \jsonSerializable {
 	/**
 	 * id of eventTag
 	 * @var int eventTagEventId
