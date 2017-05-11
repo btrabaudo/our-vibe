@@ -5,7 +5,7 @@ require_once ("autoload.php");
  	* Event for OurVibe
  	* @author kkristl <kkristl@cnm.edu>
  	**/
-	class Event implements \jsonSerialize{
+	class Event implements \JsonSerialize {
 	/**
 	 * Id for this Event; this is the primary key
 	 **/
