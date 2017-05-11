@@ -659,6 +659,41 @@ class Venue implements \JsonSerializable {
         return ($venues);
     }
 
+    public static function getVenueByVenueActivationToken(\PDO $pdo, string $venueActivationToken) : ?Venue
+    {
+        //make sure that the activation token is formatted
+
+        $venueActivationToken = trim($venueActivationToken);
+        if (ctype_xdigit($venueActivationToken) === false) {
+            throw(new \InvalidArgumentException("profile activation token is empty or insecure"));
+
+        }
+
+        $query = "SELECT venueId, venueImageId, venueAddress1, venueAddress2, venueContact, venueContent, venueName, venueState, venueZip FROM venue WHERE venueActivationToken = :venueActivationToken";
+
+        $statement = $pdo->prepare($query);
+
+        //bind the profile activation token to the placeholder
+
+        $parameters = ["venueActivationToken" => $venueActivationToken];
+        $statement->execute($parameters);
+
+        try {
+            $venue = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if ($row !== false) {
+                $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"]);
+            }
+        } catch (\Exception $exception) {
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+        return ($venue);
+
+    }
+
+
+
     /**
      * formats the state variables for JSON serialization
      *
