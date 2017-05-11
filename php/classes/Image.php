@@ -26,7 +26,52 @@ class Image implements \JsonSerializable {
 	 * this is the images constructor
 	 *
 	 * @param int|null $newImageId of this Image or null of a new image
-	 *
-	 * @param string $newImageCloudinaryId
-	 */
+	 * @param string $newImageCloudinaryId this string contains cloudinary api
+	 * @throws \InvalidArgumentException if data values are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g, strings too long, negative integers
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \ Exception if some other exception occurs
+	 **/
+	public function __construct(?int $newImageId, ?string $newImageCloudinaryId) {
+		try {
+			$this->setImageId($newImageId);
+			$this->setImageCloudinaryId($newImageCloudinaryId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			// determine what exception is thrown
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage("say what you will"), 0, $exception));
+		}
+	}
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
