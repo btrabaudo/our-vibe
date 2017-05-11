@@ -149,12 +149,80 @@ class Image implements \JsonSerializable {
 			throw(new \PDOException("there is no image to delete"));
 		}
 
-		// create querytemplate
+		// create query template
 		$query = "DELETE FROM image WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+	}
+
+	/**
+	 * updates this image from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+		// enforce th imageId is not null (i.e., don't insert an image that doesn't exist)
+		if($this->imageId === null) {
+			throw(new \PDOException("unable to update an image that does not exist"));
+		}
+
+		// create query template
+		$query = "UPDATE image SET imageId = :imageId, imageCloudinaryId = :imageCloudinaryId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variable to the place holders in the template
+		$parameters = ["imageId" => $this->imageId, "imageCloudinaryId" => $this->imageCloudinaryId];
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * gets the image by image id
+	 *
+	 * @param \PDO $pdo PDO connection objects
+	 * @param int $imageId image id to search for
+	 * @return Image|null Image or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function  getImageByImageId(\PDO $pdo, int $imageId):?Image {
+		// sanitize the image id before searching
+		if($imageId <= 0) {
+			throw(new \PDOException("image id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT imageId, imageCloudinaryId FROM image WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+
+		// bind the image id to the place holder in the template
+		$parameters = ["imageId" => $imageId];
+		$statement->execute($parameters);
+
+		// grab the image from mySQL
+		try {
+					$image = null;
+					$statement->setFetchMode(\PDO::FETCH_ASSOC);
+					$row = $statement->fetch();
+					if($row !== false) {
+							$image = new Image($row["imageId"], $row["imageCloudinaryId"]);
+					}
+		} catch(\Exception $exception) {
+					// if the row couldn't be converted, rethrow it
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+			return ($image);
 	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables for JSON serialization
+	 **/
+	public function jsonSerialize() {
+				return (get_object_vars($this));
+	}
+}
 
 
 
