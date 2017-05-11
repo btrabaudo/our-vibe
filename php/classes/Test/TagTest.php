@@ -2,7 +2,10 @@
 
 namespace Edu\Cnm\OurVibe\Test;
 
+use Edu\Cnm\OurVibe\Event;
 use Edu\Cnm\OurVibe\Tag;
+use Edu\Cnm\OurVibe\EventTag;
+use Edu\Cnm\OurVibe\Venue;
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -21,6 +24,9 @@ class TagTest extends OurVibeTest {
 	 * @var string $VALID_TAGNAME
 	 **/
 	protected $VALID_TAGNAME = @"passingtests";
+
+
+
 
 	/**
 	 * test inserting a valid Tag and verify that the actual mySQL data matches
@@ -110,8 +116,14 @@ class TagTest extends OurVibeTest {
 		//create a new tag and insert to into mySQL
 		$tag = new Tag(null, $this->VALID_TAGNAME);
 		$tag->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
+$results = EventTag::getEventTagbyEventTagTagId($this->getPDO(),$this->eventTag->getEventTagId());
+$this->assertEquals($numRows +1,$this->getConnection()->getRowCount("eventTag"));
+$this->assertCount(1,$results);
+$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\EventTag", $results);
 
-		$this-> assertContainsOnlyInstancesOf("Edu\\CNM\\OurVibe\\Tag", $results);
+
+
+		$this->assertContainsOnlyInstancesOf("Edu\\CNM\\OurVibe\\Tag", $results);
 		$pdoTag = $results[0];
 		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("Tag"));
 		$this->assertSame($pdoTag->getTagName(), $this->VALID_TAGNAME);
