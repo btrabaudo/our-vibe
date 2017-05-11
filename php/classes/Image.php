@@ -57,13 +57,13 @@ class Image implements \JsonSerializable {
 	 * @throws \RangeException if $newImageId is not positive
 	 * @throws |TypeError if $newImageId is not an integer
 	 **/
-	public function setmageId(?int $newImageId): void {
+	public function setImageId(?int $newImageId): void {
 		if($newImageId === null) {
 			$this->ImageId = null;
 			return;
 		}
 
-		// verify the image id is Positive
+		// verify that  the image id is Positive
 		If($newImageId <= 0) {
 			throw(new \RangeException("image id is not positive"));
 		}
@@ -71,7 +71,48 @@ class Image implements \JsonSerializable {
 		// convert and store the image id
 		$this->profileId = $newImageId;
 
+
 	}
+	/**
+	 * accessor method for phone
+	 *
+	 * @return string value of phone or null
+	 **/
+	public function getImageCloudinaryId(): ?string {
+		return ($this->imageCloudinaryId);
+	}
+
+	/**
+	 * mutator methond fo rphone
+	 *
+	 * @param string $newImageColudinaryId new value of cloudinary id
+	 * @throws \InvalidArgumentException if $newImageCloudinaryId is not a string or is insecure
+	 * @throws \RangeException if $newImageCloudinaryId > 32 characters
+	 * @throws \TypeError if $newImageCloudinaryId is not a string
+	 **/
+	public function setImageCloudinaryId(?string $newImageCloudinaryId): void {
+		// If $imageCloudinaryId is null return it right away
+		if($newImageCloudinaryId === null) {
+			$this->imageCloudinaryId = null;
+			return;
+		}
+
+
+		// verify the imageCloudinaryId is secure
+		$newImageCloudinaryId = trim($newImageCloudinaryId);
+		$newImageCloudinaryId = filter_var($newImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newImageCloudinaryId) === true) {
+			throw(new \RangeException("cloudinary id is empty or insecure"));
+		}
+		// verify the CloudinaryId will fit in the database
+		if(strlen($newImageCloudinaryId) > 32) {
+			throw(new \RangeException("cloudinary id is too large"));
+		}
+
+		// store the cloudinaryId
+		$this->imageCloudinaryId = $newImageCloudinaryId;
+	}
+
 
 	}
 
