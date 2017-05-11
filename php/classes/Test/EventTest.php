@@ -128,5 +128,41 @@ class eventTest extends OurVibeTest {
 		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
 		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
 	}
+	/**
+	 * test grabbing an event that does not exist
+	 *
+	 *  @expectedException \PDOException
+	 **/
+	public function testGetInvalidEventByEventId() : void {
+		// grab an event id that exceeds the maximum allowable event id
+		$event = Event::getEventByEventId($this->getPDO(), EventTest::INVALID_KEY);
+		$this->assertNull($event);
+	}
+	/**
+	 * test grabbing an event by its name
+	 **/
+	public function testGetValidEventByName() : void {
+		// count the number of rows
+		$numRows = $this->getConnection()->getRowCount("event");
+		//create a new event and insert it into mySQL DB
+		$event = new event(null, null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
+		$event->insert($this->getPDO());
+		// grab data from mySQL and enforce the fields match expectations
+		$pdoevent = event::getEventByEventName($this->getPDO(), $event->getEventName());
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertSame($pdoevent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
+	}
+	/**
+	 * test grabbing an event by a name that does not exist
+	 *
+	 * @expectedException \PDOException
+	 **/
+	public function testGetInvalidEventByName() : void {
+		// grab an event that does not exist
+		$event = Event::getEventByEventName($this->getPDO(), "eventName");
+		$this->assertNull($event);
+	}
 
 
