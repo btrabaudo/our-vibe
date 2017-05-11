@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\OurVibe;
+namespace Edu\Cnm\OurVibe\Test;
 // Test Case is the blank test from phpUnit. framework is core phpUnit
 use PHPUnit\Framework\TestCase;
 // Dbunit is the subproject for database testing, testcase traits is an injeted trait

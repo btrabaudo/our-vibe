@@ -1,11 +1,10 @@
 <?php
 namespace Edu\Cnm\OurVibe\Test;
 
-use Edu\Cnm\OurVibe\OurVibeTest;
 use Edu\Cnm\OurVibe\Venue;
 
 // grabs the class to be tested
-require_once(dirname(__DIR__) . "/../autoload.php");
+require_once(dirname(__DIR__, 2) . "/autoload.php");
 
 /**
  * PhpUnit test for Venue class
