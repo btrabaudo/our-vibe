@@ -5,7 +5,7 @@ use Edu\Cnm\OurVibe\OurVibeTest;
 use Edu\Cnm\OurVibe\Venue;
 
 // grabs the class to be tested
-require_once(dirname(__DIR__) . "/autoload.php");
+require_once(dirname(__DIR__) . "/../autoload.php");
 
 /**
  * PhpUnit test for Venue class
@@ -16,10 +16,11 @@ require_once(dirname(__DIR__) . "/autoload.php");
  **/
 
 class VenueTest extends OurVibeTest {
+
     /**
      * Placeholder until account activation is created
      * @var string $VALID_ACTIVATION
-     */
+     **/
 
     protected $VALID_ACTIVATION;
 
