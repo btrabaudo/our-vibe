@@ -8,7 +8,8 @@ require_once ("autoload.php");
  * @author Marcoder <mlester3@cnm.edu
  * @version 7.1.0
  **/
-class EventImage \JsonSerializable {
+class EventImage \JsonSerializable;
+	{
 
 	/**
 	 * id of the image being posted; this is a a component of a composite primary and foreign key
@@ -25,7 +26,7 @@ class EventImage \JsonSerializable {
 	 * constructor for eventImage
 	 *
 	 * @param int $newEventImageImageId id of the parent Image
-	 * @param int $newEventImageEventId id of the parent event image belongs to
+	 * @param int $newEventImageEventId id of the parent eventImage belongs to
 	 * @throws \Exception if some other exception occurs
 	 * @throws \TypeError if data types violate type hints
 	 **/
@@ -94,7 +95,7 @@ class EventImage \JsonSerializable {
 	}
 
 	/**
-	 * inserts this event image into mySQL
+	 * inserts this  into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException whe mySQL related errors occur
@@ -116,7 +117,7 @@ class EventImage \JsonSerializable {
 	}
 
 	/**
-	 * deletes this event image from mySQL
+	 * deletes this eventImage from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -125,7 +126,7 @@ class EventImage \JsonSerializable {
 	public function delete(\PDO $pdo) : void {
 				// ensure the object exists before deleting
 				if($this->eventImageImageId === null || $this->eventImageImageId ===) {
-							throw(new \PDOException("not a valid event image"));
+							throw(new \PDOException("not a valid eventImage"));
 				}
 
 				// create query template
@@ -135,6 +136,54 @@ class EventImage \JsonSerializable {
 				// bind the member variables to the place holders in the template
 				$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
 						$statement->execute($parameters);
+	}
+	/**
+	 * gets the eventImage by image id and event id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $eventImageImageId image id to search for
+	 * @param int $eventImageEventId event id to search for
+	 * @return EventImage|null eventImage found or null if not found
+	 **/
+	public static function getEventImageByEventImageEventIdAndEventImageImageId(\PDO $pdo, int $eventImageImageId, int $eventImageEventId) : ?EventImage {
+				// sanitize the event id and image id before searching
+				if($eventImageImageId<= 0) {
+							throw(new\PDOException("image id is not positive"));
+				}
+				if($eventImageEventId <= 0) {
+							throw(new \PDOException("event id is not positive"));
+				}
+
+				// create query template
+				$query = "SELECT eventImageImageId, eventImageEventId FROM eventImage WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
+				$statement = $pdo->prepare($query);
+
+				// bind the event id and image id to the place holder in the template
+				$parameters = ["$eventImageImageId" => $eventImageImageId, "eventImageEventId" => $eventImageEventId];
+				$statement->execute($parameters);
+
+				// grab the eventImage from mySQL
+				try {
+							$eventImage =null;
+							$statement->setFetchMode(\PDO::FETCH_ASSOC);
+							$row = $statement->fetch();
+							if($row !== false) {
+										$eventImage = new EventImage($row["eventImageImageId"], $row["eventImageEventID"]);
+							}
+				} catch(\Exception $exception) {
+							// if the row couldn't be converted, rethrow it
+							throw(new \PDOException($exception->getMessage(), 0, $exception));
+				}
+				return ($eventImage);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+				$fields = get_object_vars($this);
 	}
 
 }
