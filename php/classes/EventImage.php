@@ -8,8 +8,7 @@ require_once ("autoload.php");
  * @author Marcoder <mlester3@cnm.edu
  * @version 7.1.0
  **/
-class EventImage \JsonSerializable;
-	{
+class EventImage implements \JsonSerializable {
 
 	/**
 	 * id of the image being posted; this is a a component of a composite primary and foreign key
@@ -125,7 +124,7 @@ class EventImage \JsonSerializable;
 	 **/
 	public function delete(\PDO $pdo) : void {
 				// ensure the object exists before deleting
-				if($this->eventImageImageId === null || $this->eventImageImageId ===) {
+				if($this->eventImageImageId === null || $this->eventImageImageId === null) {
 							throw(new \PDOException("not a valid eventImage"));
 				}
 
