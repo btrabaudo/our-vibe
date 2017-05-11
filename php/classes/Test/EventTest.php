@@ -75,4 +75,32 @@ class eventTest extends OurVibeTest {
 		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
 		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
 	}
+	/**
+	 * test updating a event
+	 *
+	 * @expectedException \PDOException
+	 **/
+	public function testUpdateInvalidEvent() {
+		//create a new event and insert it into mySQL DB
+		$event = new event(null, null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
+		$event->update($this->getPDO());
+	}
+	/**
+	 * test creating a event and then deleting it
+	 **/
+	public function testDeleteValidEvent() : void {
+		// count the number of rows
+		$numRows = $this->getConnection()->getRowCount("event");
+		//create a new event and insert it into mySQL DB
+		$event = new event(null, null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
+		$event->insert($this->getPDO());
+		//delete the event from mySQL
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->delete($this->getPDO());
+		// grab the data from mySQL and enforce the event does not exist
+		$pdoevent = event::getEventByeventId($this->getPDO(), $event->getEventId());
+		$this->assertNull($pdoevent);
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
+	}
+
 
