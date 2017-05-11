@@ -261,6 +261,9 @@ class VenueTest extends OurVibeTest {
         //create a new venue and insert it into mySQL DB
         $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
+        $venue->insert($this->getPDO());
+
+
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
@@ -288,6 +291,109 @@ class VenueTest extends OurVibeTest {
         $venue = Venue::getVenueByVenueId($this->getPDO(), VenueTest::INVALID_KEY);
         $this->assertNull($venue);
     }
+
+    /**
+     * test grabbing a venue by venue city
+     **/
+
+    public function testGetVenuebyVenueCity() : void {
+        // count the number of rows
+        $numRows = $this->getConnection()->getRowCount("venue");
+
+        //create a new venue and insert it into mySQL DB
+        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+
+        $venue->insert($this->getPDO());
+
+        //grab data from mySQL
+        $results = Venue::getVenueByVenueCity($this->getPDO (), $this->VALID_CITY);
+        $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("venue"));
+
+        //enforce that no other class is bleeding into venue
+        $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Venue", $results);
+
+        // enforce that the results meet expectations
+
+        $pdoVenue = $results[0];
+        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+    }
+
+    /**
+     * test grabbing a venue by a city that does not exist
+     * @expectedException \PDOException
+     **/
+    public function testGetInvalidVenueByVenueCity() : void {
+        $venue = Venue::getVenueByVenueCity($this->getPDO(), "truthCity");
+        $this->assertCount(0, $venue);
+
+
+    }
+
+    /**
+     * test grabbing a venue by its name
+     **/
+
+    public function testGetValidProfileByName() : void {
+        // count the number of rows
+        $numRows = $this->getConnection()->getRowCount("venue");
+
+        //create a new venue and insert it into mySQL DB
+        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+
+        $venue->insert($this->getPDO());
+
+        // grab data from mySQL and enforce the fields match expectations
+        $pdoVenue = Venue::getVenueByVenueName($this->getPDO(), $venue->getVenueName());
+        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+
+
+    }
+
+    /**
+     * test grabbing a venue by a name that does not exist
+     *
+     * @expectedException \PDOException
+     **/
+
+    public function testGetInvalidVenueByName() : void {
+        // grab a venue that does not exist
+        $venue = Venue::getVenueByVenueName($this->getPDO(), "aHappyPlace");
+
+        $this->assertNull($venue);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
