@@ -43,8 +43,16 @@ class Image implements \JsonSerializable {
 		}
 	}
 
+	/** accessor method for image id
+	 *
+	 * @return int value of image id (or null if new Image)
+	 **/
+	public function getImageId(): int {
+		return ($this->ImageId);
+	}
 
-}
+
+	}
 
 
 
