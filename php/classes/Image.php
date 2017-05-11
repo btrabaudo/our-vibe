@@ -50,7 +50,28 @@ class Image implements \JsonSerializable {
 	public function getImageId(): int {
 		return ($this->ImageId);
 	}
+	/**
+	 * mutator method for image id
+	 *
+	 * @param int|null $newImageId value of new image id
+	 * @throws \RangeException if $newImageId is not positive
+	 * @throws |TypeError if $newImageId is not an integer
+	 **/
+	public function setmageId(?int $newImageId): void {
+		if($newImageId === null) {
+			$this->ImageId = null;
+			return;
+		}
 
+		// verify the image id is Positive
+		If($newImageId <= 0) {
+			throw(new \RangeException("image id is not positive"));
+		}
+
+		// convert and store the image id
+		$this->profileId = $newImageId;
+
+	}
 
 	}
 
