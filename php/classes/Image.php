@@ -18,7 +18,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * api where images are stored
 	 *
-	 * @var string $productProfileId
+	 * @var string $imageCloudinaryId
 	 **/
 	private $imageCloudinaryId;
 
@@ -69,7 +69,7 @@ class Image implements \JsonSerializable {
 		}
 
 		// convert and store the image id
-		$this->profileId = $newImageId;
+		$this->imageId = $newImageId;
 
 
 	}
@@ -113,6 +113,46 @@ class Image implements \JsonSerializable {
 		$this->imageCloudinaryId = $newImageCloudinaryId;
 	}
 
+	/**
+	 *inserts this image into mySQL
+	 *@param \PDO $pdo connection object
+	 *@throws \PDOException when mySQL related errors occur
+	 *@throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+		// enforce the imageId is null (i.e., dont insert a image that already exists)
+		if($this->imageId !== null) {
+			throw(new \PDOException("not a new image"));
+		}
+
+		// create query template
+		$query = "INSERT INTO image(imageId, imageCloudinaryId) VALUES (:imageId, :imageCloudinaryId)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the placeholders in the template
+		$parameters = ["imageId" => $this->imageId, "imageCloudinaryId" => $this->imageCloudinaryId];
+		$statement->execute($parameters);
+		//update the null imageId with mySQL just gave us
+		$this->imageId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * deletes this image from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOExceptionwhen mySQL related errors that occur
+	 * @throws \TypeError if $pdo is not a PDO connection objects
+	 **/
+	public function delete(\PDO $pdo): void {
+		// enforce th imageId is not null (i/e., don't delete a image that does not exist)
+		if($this->imageId) {
+			throw(new \PDOException("there is no image to delete"));
+		}
+
+		// create querytemplate
+		$query = "DELETE FROM image WHERE imageId = :imageId";
+		$statement->execute($parameters);
+	}
 
 	}
 
