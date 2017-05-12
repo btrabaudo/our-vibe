@@ -175,7 +175,7 @@ class eventTest extends OurVibeTest {
 	 **/
 	public function testGetInvalidEventByName(): void {
 		// grab an event that does not exist
-		$event = Event::getEventByEventName($this->getPDO(), "eventName");
+		$event = Event::getEventByEventName($this->getPDO(), "aHappyPlace");
 		$this->assertNull($event);
 	}
 }
