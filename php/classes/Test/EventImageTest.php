@@ -56,9 +56,9 @@ class EventImageTest extends OurVibeTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoEventImage = eventImage::getEventImageByEventImageImageId($this->getPDO(), $eventImage->geteventImageImageId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
-		$this->assertSame($pdoEventImage->geteventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID);
-		$this->assertSame($pdoEventImage->getEventImageEventIdId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
+		$this->assertEquals($pdoEventImage->geteventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID);
+		$this->assertEquals($pdoEventImage->getEventImageEventIdId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
 	}
 
 	/**
@@ -93,9 +93,9 @@ class EventImageTest extends OurVibeTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoEventImage = EventImage::getEventImageByEventImageImageId($this->getPDO(), $eventImage->getEventImageImageId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
-		$this->assertSame($pdoEventImage->getEventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID);
-		$this->assertSame($pdoEventImage->getEventImageEventId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
+		$this->assertEquals($pdoEventImage->getEventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID);
+		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
 
 		}
 	}
