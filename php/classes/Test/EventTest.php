@@ -1,5 +1,7 @@
 <?php
+
 namespace Edu\Cnm\OurVibe\Test;
+
 use Edu\Cnm\OurVibe\OurVibeTest;
 use Edu\Cnm\OurVibe\Event;
 
@@ -13,7 +15,6 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see event
  * @author kkristl
  **/
-
 class eventTest extends OurVibeTest {
 	/**
 	 * valid contact to use
@@ -34,7 +35,7 @@ class eventTest extends OurVibeTest {
 	/**
 	 * test inserting a valid event and verify the mySQL data
 	 **/
-	public function testInsertValidEvent() : void {
+	public function testInsertValidEvent(): void {
 		//count the rows and save it
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
@@ -48,16 +49,18 @@ class eventTest extends OurVibeTest {
 		$this->assertSame($pdoevent->geteventContent(), $this->VALID_CONTENT);
 		$this->assertSame($pdoevent->geteventName(), $this->VALID_NAME);
 	}
+
 	/**
 	 * test inserting an event that already exists
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testInsertInvalidEvent() : void {
+	public function testInsertInvalidEvent(): void {
 		// create event with a non null venueId and see it fail
 		$event = new event(EventTest::INVALID_KEY, null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
 		$event->insert($this->getPDO());
 	}
+
 	/**
 	 * test inserting an event, editing it, and then updating it
 	 **/
@@ -75,6 +78,7 @@ class eventTest extends OurVibeTest {
 		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
 		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
 	}
+
 	/**
 	 * test updating a event
 	 *
@@ -85,10 +89,11 @@ class eventTest extends OurVibeTest {
 		$event = new event(null, null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
 		$event->update($this->getPDO());
 	}
+
 	/**
 	 * test creating a event and then deleting it
 	 **/
-	public function testDeleteValidEvent() : void {
+	public function testDeleteValidEvent(): void {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
@@ -102,20 +107,22 @@ class eventTest extends OurVibeTest {
 		$this->assertNull($pdoevent);
 		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
 	}
+
 	/**
 	 * test deleting an event that does not exist
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testDeleteInvalidEvent() : void {
+	public function testDeleteInvalidEvent(): void {
 		//create a new event but DO NOT INSERT and then delete
 		$event = new event(null, null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
 		$event->delete($this->getPDO());
 	}
+
 	/**
 	 * test inserting event and re-grab it from mySQL
 	 */
-	public function testGetValidEventByEventId() : void {
+	public function testGetValidEventByEventId(): void {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
@@ -128,20 +135,22 @@ class eventTest extends OurVibeTest {
 		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
 		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
 	}
+
 	/**
 	 * test grabbing an event that does not exist
 	 *
-	 *  @expectedException \PDOException
+	 * @expectedException \PDOException
 	 **/
-	public function testGetInvalidEventByEventId() : void {
+	public function testGetInvalidEventByEventId(): void {
 		// grab an event id that exceeds the maximum allowable event id
 		$event = Event::getEventByEventId($this->getPDO(), EventTest::INVALID_KEY);
 		$this->assertNull($event);
 	}
+
 	/**
 	 * test grabbing an event by its name
 	 **/
-	public function testGetValidEventByName() : void {
+	public function testGetValidEventByName(): void {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
@@ -154,15 +163,17 @@ class eventTest extends OurVibeTest {
 		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
 		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
 	}
+
 	/**
 	 * test grabbing an event by a name that does not exist
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testGetInvalidEventByName() : void {
+	public function testGetInvalidEventByName(): void {
 		// grab an event that does not exist
 		$event = Event::getEventByEventName($this->getPDO(), "eventName");
 		$this->assertNull($event);
 	}
+}
 
 

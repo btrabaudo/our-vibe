@@ -37,7 +37,7 @@ class EventTagTest extends OurVibeTest {
 	protected $VALID_EVENT;
 
 	/**
-	 * @var $VALID_HASH;
+	 * @var $VALID_HASH ;
 	 **/
 	protected $VALID_HASH;
 
@@ -47,23 +47,19 @@ class EventTagTest extends OurVibeTest {
 
 	protected $VALID_SALT;
 
-	public final function  setUp(): void{
+	public final function setUp(): void {
 		parent::setUp();
 
-		$password="abc123";
+		$password = "abc123";
 		$this->VALID_SALT = bin2hex(random_bytes(64));
-		$this->VALID_HASH = hash_pbkdf2("sha512",$password, $this->VALID_SALT,262144);
+		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(32));
 
-		$this->VALID_VENUE = new Event(null,null,"phpunit","test@phpunit.de",$this->VALID_HASH, "+12125551212",$this->VALID_SALT);
+		$this->VALID_VENUE = new Event(null, null, "phpunit", "test@phpunit.de", $this->VALID_HASH, "+12125551212", $this->VALID_SALT);
 		$this->VALID_VENUE->insert($this->getPDO());
-		$this->event = new Event(null,$this->venue->getVenueId(),"PHPUnit event tag passing");
-		$this->event->insert($this->getPDO());
+		$this->eventTag = new EventTag(null, $this->venue->getVenueId(), "PHPUnit event tag passing");
+		$this->eventTag->insert($this->getPDO());
 	}
-
-
-
-
 
 
 	/**
@@ -155,7 +151,7 @@ class EventTagTest extends OurVibeTest {
 		$eventTag = new EventTag(null, $this->VALID_TAGTAGID);
 		$eventTag->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event tag"));
 
-		$results = Event
+		$results = Event;
 
 		$this->assertContainsOnlyInstancesOf("Edu\\CNM\\OurVibe\\EventTag", $results);
 		$pdoEventTag = $results[0];
