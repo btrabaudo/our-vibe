@@ -216,7 +216,7 @@ require_once ("autoload.php");
 		if($this->eventId !== null) {
 			throw(new \PDOException("not a new event"));
 		}
-		$query = "UPDATE event SET eventContact = :eventContact, eventContent = :eventContent, eventDateTime = :eventDateTime, eventName = :eventName, WHERE eventId = :eventId";
+		$query = "UPDATE event SET eventVenueId = :eventVenueId, eventContact = :eventContact, eventContent = :eventContent, eventDateTime = :eventDateTime, eventName = :eventName WHERE eventId = :eventId";
 		$statement = $pdo->prepare($query);
 		//binds members to their place holder
 		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s:u");
