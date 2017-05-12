@@ -17,6 +17,11 @@ require_once(dirname(__DIR__) . "/autoload.php");
  **/
 class eventTest extends OurVibeTest {
 	/**
+	 * valid venue id to use
+	 * @var string $VALID_VENUE
+	 **/
+	protected $VALID_VENUE = "12345";
+	/**
 	 * valid contact to use
 	 * @var string $VALID_CONTACT
 	 **/
