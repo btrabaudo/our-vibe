@@ -1,6 +1,7 @@
 <?php
 namespace Edu\Cnm\OurVibe\Test;
 
+use Edu\Cnm\OurVibe\Image;
 use Edu\Cnm\OurVibe\Venue;
 
 // grabs the class to be tested
@@ -15,6 +16,13 @@ require_once(dirname(__DIR__) . "/autoload.php");
  **/
 
 class VenueTest extends OurVibeTest {
+    /**
+     * this is cmd space's fault
+     * @var Image $VALID_IMAGE
+     **/
+
+    protected $VALID_IMAGE = null;
+
 
     /**
      * Placeholder until account activation is created
@@ -108,6 +116,9 @@ class VenueTest extends OurVibeTest {
         $this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 275142);
         $this->VALID_ACTIVATION = bin2hex(random_bytes(32));
 
+        $this->VALID_IMAGE = new Image(null, null);
+        $this->VALID_IMAGE->insert($this->getPDO());
+
     }
 
     /**
@@ -121,7 +132,7 @@ class VenueTest extends OurVibeTest {
 
         //create a new venue and insert it into mySQL DB
 
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null,  $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         //var_dump($venue);
 

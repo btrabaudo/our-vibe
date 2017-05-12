@@ -48,7 +48,7 @@ class Image implements \JsonSerializable {
 	 * @return int value of image id (or null if new Image)
 	 **/
 	public function getImageId(): int {
-		return ($this->ImageId);
+		return ($this->imageId);
 	}
 	/**
 	 * mutator method for image id
