@@ -10,6 +10,7 @@ require_once ("autoload.php");
 	 * Id for this Event; this is the primary key
 	 **/
 	private $eventId;
+	private $eventVenueId;
 	private $eventContact;
 	private $eventContent;
 	private $eventDateTime;
@@ -18,20 +19,23 @@ require_once ("autoload.php");
 	 * constructor for this event
 
 	 * @param int|null $newEventId
+	 * @param int|null $newEventVenueId
 	 * @param string $newEventContact
 	 * @param string $newEventContent
 	 * @param \DateTime|string|null $newEventDateTime
 	 * @param string $newEventName
 	 *
 	 * @throws \InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @throws \RangeException
 	 * @throws \RangeException
 	 * @throws \Exception
 	 * @throws \RangeException
 	 **/
-	public function __construct(?int $newEventId, string $newEventContact, string $newEventContent, $newEventDateTime = null, string $newEventName) {
+	public function __construct(?int $newEventId, int $newEventVenueId, string $newEventContact, string $newEventContent, $newEventDateTime = null, string $newEventName) {
 		try {
 			$this->setEventId($newEventId);
+			$this->setEventVenueId($newEventVenueId);
 			$this->setEventContact($newEventContact);
 			$this->setEventContent($newEventContent);
 			$this->setEventDateTime($newEventDateTime);
@@ -43,32 +47,32 @@ require_once ("autoload.php");
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
-	/**
-	 * accessor for event id
-	 * @return int|null $eventId
-	 **/
-	public function getEventId(): ?int {
-		return ($this->eventId);
-	}
-	/**
-	 * mutator for event id
-	 * @param int|null for event id
-	 * @throws \RangeException if event id is not positive
-	 * @throws \InvalidArgumentException if event id is not an integer
-	 **/
-	public function setEventId(int $newEventId): void {
-		//if event id is null return it
-		if ($newEventId === null) {
-			$this->eventId = null;
-			return;
+		/**
+		 * accessor for event venue id
+		 * @return int|null $eventVenueId
+		 **/
+		public function getEventVenueId(): ?int {
+			return ($this->eventVenueId);
 		}
-		//enforce that event id is a positive int
-		if ($newEventId <= 0) {
-			throw(new \RangeException("event id is not positive"));
+		/**
+		 * mutator for event venue id
+		 * @param int|null for event venue id
+		 * @throws \RangeException if event venue id is not positive
+		 * @throws \InvalidArgumentException if event venue id is not an integer
+		 **/
+		public function setEventVenueId(int $newEventVenueId): void {
+			//if event venue id is null return it
+			if ($newEventVenueId === null) {
+				$this->eventVenueId = null;
+				return;
+			}
+			//enforce that event venue id is a positive int
+			if ($newEventVenueId <= 0) {
+				throw(new \RangeException("event venue id is not positive"));
+			}
+			//store this event venue id
+			$this->eventVenueId = $newEventVenueId;
 		}
-		//store this event id
-		$this->eventId = $newEventId;
-	}
 	/**
 	 * accessor for event contact
 	 * @return string for event contact
@@ -179,11 +183,11 @@ require_once ("autoload.php");
 			throw(new \PDOException("not a new event"));
 		}
 		//create query
-		$query = "INSERT INTO event(eventId, eventContact, eventContent, eventDateTime, eventName) VALUES (:eventId, :eventContact, :eventContent, :eventDateTime, :eventName)";
+		$query = "INSERT INTO event(eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName) VALUES (:eventId, :eventVenueId, :eventContact, :eventContent, :eventDateTime, :eventName)";
 		$statement = $pdo->prepare($query);
 		// bind members to their place holders
 		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s:u");
-		$parameters = ["eventId" => $this->eventId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
+		$parameters = ["eventId" => $this->eventId, "eventVenueId" => $this->eventVenueId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
 		$statement->execute($parameters);
 		$this->eventId = intval($pdo->lastInsertId());
 	}
