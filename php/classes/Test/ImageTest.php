@@ -14,12 +14,14 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Image
  * @author marcoder <mlester3@cnm.edu>
  **/
+
 class ImageTest extends OurVibeTest {
 	/**
 	 *
 	 *
 	 * @var Image image
 	 **/
+
 	protected $image = null;
 
 	/**
@@ -27,10 +29,11 @@ class ImageTest extends OurVibeTest {
 	 *
 	 * @var $VALID_IMAGE_ID
 	 */
+
 	protected $VALID_IMAGE_ID;
 
 	/**
-	 * cloudinary id for this image
+	 * cloudinary id this image belongs to
 	 *
 	 * @Var $VALID_CLOUDINARY_ID
 	 **/
@@ -38,7 +41,7 @@ class ImageTest extends OurVibeTest {
 	protected $VALID_CLOUDINARY_ID;
 
 	/**
-	 * test inserting a valid Imagee and verify that the actual mySQL data matches
+	 * test inserting a valid Image and verify that the actual mySQL data matches
 	 **/
 
 	public function testInsertValidImage(): void {
@@ -48,6 +51,7 @@ class ImageTest extends OurVibeTest {
 
 		// create a new Image and insert to into mySQL
 		$image = new Image(null, $this->VALID_IMAGE_ID, $this->VALID_CLOUDINARY_ID);
+
 		//var_dump($Imagee);
 		$image->insert($this->getPDO());
 

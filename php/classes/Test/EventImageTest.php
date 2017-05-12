@@ -26,7 +26,7 @@ class EventImageTest extends OurVibeTest {
 	protected $eventImage = null;
 
 	/**
-	 * valid eventImageImageId to create the event image object to own the test
+	 * valid event image image id to create the event image object to own the test
 	 *
 	 * @var $VALID_EVENT_IMAGE_IMAGE_ID
 	 **/
@@ -34,15 +34,23 @@ class EventImageTest extends OurVibeTest {
 	protected $VALID_EVENT_IMAGE_IMAGE_ID;
 
 	/**
-	 * test inserting a valid EventImage and verify that the actual mySQL data matches
+	 * valid event image event id to create the event image object to own the test
+	 *
+	 * @var $VALID_EventImageEventId
+	 **/
+
+	/**
+	 * test inserting a valid event image and verify that the actual mySQL data matches
 	 **/
 
 	public function testInsertValidEventImage(): void {
+
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("eventImage");
 
 		// create a new eventImage and insert to into mySQL
 		$eventImage = new eventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
+
 		//var_dump($eventImage);
 		$eventImage->insert($this->getPDO());
 
@@ -76,7 +84,41 @@ class EventImageTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("eventImage");
 
 		// create a new event Image and insert to into mySQL
-		$eventImage = new EventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_I;
+		$eventImage = new EventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
 		$eventImage->insert($this->getPDO());
+
+		// edit the Image and update it in mySQL
+		$eventImage->setEventImageId($this->VALID_EVENT_IMAGE_IMAGE_ID);
+		$eventImage->update($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoEventImage = EventImage::getEventImageByEventImageImageId($this->getPDO(), $eventImage->getEventImageImageId());
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
+		$this->assertSame($pdoEventImage->getEventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID);
+		$this->assertSame($pdoEventImage->getEventImageEventId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
+
+		}
 	}
-	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
