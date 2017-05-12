@@ -70,8 +70,8 @@ class EventTagTest extends OurVibeTest {
 		$eventTag = new Tag(null, $this->VALID_ACTIVATION, $this->VALID_EVENTTAGEVENTID);
 		$eventTag->insert($this->getPDO());
 		$pdoEventTag = EventTag::getEventTagByEventTagEventId($this->getPDO(), $eventTag->getTagId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("eventTag"));
-		$this->assertSame($pdoEventTag->getEventTagTagId(), $this->VALID_EVENTTAGEVENTID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventTag"));
+		$this->assertEquals($pdoEventTag->getEventTagTagId(), $this->VALID_EVENTTAGEVENTID);
 	}
 
 	/**
@@ -94,8 +94,8 @@ class EventTagTest extends OurVibeTest {
 		$eventTag->update($this->getPDO());
 
 		$pdoEventTag = EventTag::getEventTagByEventTagEventId($this->getPDO(), $eventTag->getEventTagEventId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("eventTag"));
-		$this->assertSame($pdoEventTag->setEventTagEventId(), $this->VALID_EVENTTAGEVENTID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventTag"));
+		$this->assertEquals($pdoEventTag->setEventTagEventId(), $this->VALID_EVENTTAGEVENTID);
 	}
 
 	/**
@@ -117,7 +117,7 @@ class EventTagTest extends OurVibeTest {
 
 		$pdoEventTag = EventTag::getEventTagByEventTagEventId($this->getPDO(), $eventTag->getEventTagEventId());
 		$this->assertNUll($pdoEventTag);
-		$this->assertSame($numRows, $this->getConnection()->getRowCount("eventTag"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("eventTag"));
 	}
 
 	/**
@@ -140,8 +140,8 @@ class EventTagTest extends OurVibeTest {
 		$eventTag->insert($this->getPDO());
 
 		$pdoEventTag = EventTag::getEventTagByEventTagEventId($this->getPDO(), $eventTag->getEventTagEventId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event tag"));
-		$this->assertSame($pdoEventTag->getEventTagTagId(), $this->VALID_TAGTAGID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event tag"));
+		$this->assertEquals($pdoEventTag->getEventTagTagId(), $this->VALID_TAGTAGID);
 	}
 
 
@@ -155,8 +155,8 @@ class EventTagTest extends OurVibeTest {
 
 		$this->assertContainsOnlyInstancesOf("Edu\\CNM\\OurVibe\\EventTag", $results);
 		$pdoEventTag = $results[0];
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event Tag"));
-		$this->assertSame($pdoEventTag->getTagTag(), $this->VALID_TAGTAGID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event Tag"));
+		$this->assertEquals($pdoEventTag->getTagTag(), $this->VALID_TAGTAGID);
 	}
 
 	/**

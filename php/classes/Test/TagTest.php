@@ -36,8 +36,8 @@ class TagTest extends OurVibeTest {
 		$tag = new Tag(null, $this->VALID_ACTIVATION, $this->VALID_TAGNAME);
 		$tag->insert($this->getPDO());
 		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("tag"));
-		$this->assertSame($pdoTag->getTagName(), $this->VALID_TAGNAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
+		$this->assertEquals($pdoTag->getTagName(), $this->VALID_TAGNAME);
 	}
 
 	/**
@@ -60,8 +60,8 @@ class TagTest extends OurVibeTest {
 		$tag->update($this->getPDO());
 
 		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("tag"));
-		$this->assertSame($pdoTag->setTagName(), $this->VALID_TAGNAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
+		$this->assertEquals($pdoTag->setTagName(), $this->VALID_TAGNAME);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class TagTest extends OurVibeTest {
 
 		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
 		$this->assertNUll($pdoTag);
-		$this->assertSame($numRows, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
 	}
 
 	/**
@@ -106,8 +106,8 @@ class TagTest extends OurVibeTest {
 		$tag->insert($this->getPDO());
 
 		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("tag"));
-		$this->assertSame($pdoTag->getTagName(), $this->VALID_TAGNAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
+		$this->assertEquals($pdoTag->getTagName(), $this->VALID_TAGNAME);
 	}
 
 
@@ -125,8 +125,8 @@ $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\EventTag", $results);
 
 		$this->assertContainsOnlyInstancesOf("Edu\\CNM\\OurVibe\\Tag", $results);
 		$pdoTag = $results[0];
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("Tag"));
-		$this->assertSame($pdoTag->getTagName(), $this->VALID_TAGNAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Tag"));
+		$this->assertEquals($pdoTag->getTagName(), $this->VALID_TAGNAME);
 	}
 
 	/**
