@@ -44,10 +44,10 @@ class eventTest extends OurVibeTest {
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
 		$pdoevent = event::getEventByEventId($this->getPDO(), $event->getEventId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertSame($pdoevent->geteventContact(), $this->VALID_CONTACT);
-		$this->assertSame($pdoevent->geteventContent(), $this->VALID_CONTENT);
-		$this->assertSame($pdoevent->geteventName(), $this->VALID_NAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertEquals($pdoevent->geteventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoevent->geteventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoevent->geteventName(), $this->VALID_NAME);
 	}
 
 	/**
@@ -73,10 +73,10 @@ class eventTest extends OurVibeTest {
 		$event->update($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
 		$pdoevent = event::getEventByEventId($this->getPDO(), $event->getEventId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertSame($pdoevent->getEventContact(), $this->VALID_CONTACT);
-		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertEquals($pdoevent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoevent->getEventName(), $this->VALID_NAME);
 	}
 
 	/**
@@ -100,12 +100,12 @@ class eventTest extends OurVibeTest {
 		$event = new event(null, null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
 		$event->insert($this->getPDO());
 		//delete the event from mySQL
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->delete($this->getPDO());
 		// grab the data from mySQL and enforce the event does not exist
 		$pdoevent = event::getEventByeventId($this->getPDO(), $event->getEventId());
 		$this->assertNull($pdoevent);
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 	}
 
 	/**
@@ -130,10 +130,10 @@ class eventTest extends OurVibeTest {
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
 		$pdoevent = event::getEventByEventId($this->getPDO(), $event->geteventId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertSame($pdoevent->getEventContact(), $this->VALID_CONTACT);
-		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertEquals($pdoevent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoevent->getEventName(), $this->VALID_NAME);
 	}
 
 	/**
@@ -158,10 +158,10 @@ class eventTest extends OurVibeTest {
 		$event->insert($this->getPDO());
 		// grab data from mySQL and enforce the fields match expectations
 		$pdoevent = event::getEventByEventName($this->getPDO(), $event->getEventName());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertSame($pdoevent->getEventContact(), $this->VALID_CONTACT);
-		$this->assertSame($pdoevent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertSame($pdoevent->getEventName(), $this->VALID_NAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertEquals($pdoevent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoevent->getEventName(), $this->VALID_NAME);
 	}
 
 	/**
