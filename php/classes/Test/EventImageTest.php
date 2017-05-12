@@ -87,8 +87,8 @@ class EventImageTest extends OurVibeTest {
 		$eventImage = new EventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
 		$eventImage->insert($this->getPDO());
 
-		// edit the Image and update it in mySQL
-		$eventImage->setEventImageId($this->VALID_EVENT_IMAGE_IMAGE_ID);
+		// edit the  and update it in mySQL
+		$eventImage->setEventId($this->VALID_EVENT__IMAGE_ID);
 		$eventImage->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -98,7 +98,7 @@ class EventImageTest extends OurVibeTest {
 		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
 	}
 	/**
-	 *test updating an image that does not exist
+	 *test updating an EventImage that does not exist
 	 *
 	 *@expectedException \PDOException 
 	 **/
@@ -156,7 +156,7 @@ class EventImageTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("eventImage");
 
 		// create a new EventImage and insert to into mySQL
-		$eventImage = new Image(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
+		$eventImage = new EventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
 		$eventImage->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -172,8 +172,8 @@ class EventImageTest extends OurVibeTest {
 
 	public function testGetInvalidEventImageByEventImageImageId() : void {
 
-		// grab a image id that exceeds the maximum allowable image id
-		$eventImage = Image::getImageByImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
+		// grab a event image id that exceeds the maximum allowable event image id
+		$eventImage = EventImage::getEventByEventImageImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
 		$this->assertNull($eventImage);
 		}
 	}
