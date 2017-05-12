@@ -34,6 +34,7 @@ class ImageTest extends OurVibeTest {
 	 **/
 
 	public function testInsertValidImage(): void {
+
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 
@@ -93,6 +94,7 @@ class ImageTest extends OurVibeTest {
 	 **/
 
 	public function testUpdateInvalidImage() {
+
 		// create a Image and try to update it without actually inserting it
 		$image = new Image(null, $this->VALID_IMAGE_ID, $this->VALID_CLOUDINARY_ID);
 		$image->update($this->getPDO());
@@ -103,6 +105,7 @@ class ImageTest extends OurVibeTest {
 	 **/
 
 	public function testDeleteValidImage(): void {
+
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 
@@ -158,6 +161,7 @@ class ImageTest extends OurVibeTest {
 	 **/
 
 	public function testGetInvalidImageByImageId() : void {
+
 		// grab a image id that exceeds the maximum allowable image id
 		$image = Image::getImageByImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
 		$this->assertNull($image);
