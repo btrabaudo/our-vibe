@@ -2,7 +2,7 @@
 
 namespace Edu\Cnm\OurVibe\Test;
 
-use Edu\Cnm\OurVibe\OurVibeTest;
+
 use Edu\Cnm\OurVibe\Event;
 
 // grabs the class to be tested
