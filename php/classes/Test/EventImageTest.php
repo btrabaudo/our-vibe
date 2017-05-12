@@ -6,27 +6,31 @@ use Edu\Cnm\OurVibe\EventImage;
 //  grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 
-/**
- * Full php unit test for event image class
- *
- * this is a complete php unit test of the event image class. it's complete because all mySQL/PDO enabled methods are tested for both invalid and valid inputs.
- *
- * @see eventImage
- * @author marcoder <mlester3@cnm.edu>
+	/**
+	 * Full php unit test for event image class
+	 *
+	 * this is a complete php unit test of the event image class. it's complete because all mySQL/PDO enabled methods are tested for both invalid and valid inputs.
+	 *
+	 * @see eventImage
+	 * @author marcoder <mlester3@cnm.edu>
  **/
+
 class EventImageTest extends OurVibeTest {
+
 	/**
 	 *
 	 *
 	 * @var EventImage eventImage
 	 **/
-	protected $eventImage= null;
+
+	protected $eventImage = null;
 
 	/**
 	 * valid eventImageImageId to create the event image object to own the test
 	 *
 	 * @var $VALID_EVENT_IMAGE_IMAGE_ID
-	 */
+	 **/
+
 	protected $VALID_EVENT_IMAGE_IMAGE_ID;
 
 	/**
@@ -74,6 +78,5 @@ class EventImageTest extends OurVibeTest {
 		// create a new event Image and insert to into mySQL
 		$eventImage = new EventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_I;
 		$eventImage->insert($this->getPDO());
-
 	}
 	}

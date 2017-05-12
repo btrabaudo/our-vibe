@@ -30,6 +30,14 @@ class ImageTest extends OurVibeTest {
 	protected $VALID_IMAGE_ID;
 
 	/**
+	 * cloudinary id for this image
+	 *
+	 * @Var $VALID_CLOUDINARY_ID
+	 **/
+
+	protected $VALID_CLOUDINARY_ID;
+
+	/**
 	 * test inserting a valid Imagee and verify that the actual mySQL data matches
 	 **/
 
