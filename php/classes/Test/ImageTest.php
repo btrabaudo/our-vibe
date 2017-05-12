@@ -57,9 +57,9 @@ class ImageTest extends OurVibeTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertSame($pdoImage->getImageId(), $this->VALID_IMAGE_ID);
-		$this->assertSame($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImageId(), $this->VALID_IMAGE_ID);
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
 	}
 
 	/**
@@ -94,9 +94,9 @@ class ImageTest extends OurVibeTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertSame($pdoImage->getImageId(), $this->VALID_IMAGE_ID);
-		$this->assertSame($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImageId(), $this->VALID_IMAGE_ID);
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
 	}
 
 	/**
@@ -126,13 +126,13 @@ class ImageTest extends OurVibeTest {
 		$image->insert($this->getPDO());
 
 		// delete the Image from mySQL
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$image->delete($this->getPDO());
 
-		// grab the data from mySQL and enforce the Profile does not exist
-		$pdoImage = Profile::getImagleByImageId($this->getPDO(), $image->getImageId());
+		// grab the data from mySQL and enforce the EventImage does not exist
+		$pdoImage = EventImage::getImagleByImageId($this->getPDO(), $image->getImageId());
 		$this->assertNull($pdoImage);
-		$this->assertSame($numRows, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("image"));
 	}
 
 	/**
@@ -141,9 +141,9 @@ class ImageTest extends OurVibeTest {
 	 * @expectedException \PDOException
 	 **/
 
-	public function testDeleteInvalidProfile(): void {
+	public function testDeleteInvalidImage(): void {
 
-		// create a Profile and try to delete it without actually inserting it
+		// create a Image and try to delete it without actually inserting it
 		$image = new Image(null, $this->VALID_IMAGE_ID, $this->VALID_CLOUDINARY_ID);
 		$image->delete($this->getPDO());
 	}
@@ -162,14 +162,14 @@ class ImageTest extends OurVibeTest {
 		$image->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoImage = Imagee::getImageByImageId($this->getPDO(), $image->getImageId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertSame($pdoImage->getImageId(), $this->VALID_IMAGE_ID);
-		$this->assertSame($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImageId(), $this->VALID_IMAGE_ID);
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
 	}
 
 	/**
-	 * test grabbing a Profile that does not exist
+	 * test grabbing a EventImage that does not exist
 	 **/
 
 	public function testGetInvalidImageByImageId() : void {
