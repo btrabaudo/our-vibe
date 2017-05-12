@@ -129,18 +129,18 @@ class VenueTest extends OurVibeTest {
 
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
-        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
-        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
-        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
-        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
-        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
-        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
-        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
-        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
-        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
-        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertEquals($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertEquals($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertEquals($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertEquals($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
     }
 
     /**
@@ -175,18 +175,18 @@ class VenueTest extends OurVibeTest {
 
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
-        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
-        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
-        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
-        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
-        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
-        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
-        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
-        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
-        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
-        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertEquals($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertEquals($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertEquals($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertEquals($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
 
     }
 
@@ -221,13 +221,13 @@ class VenueTest extends OurVibeTest {
         $venue->insert($this->getPDO());
 
         //delete the Venue from mySQL
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
         $this->delete($this->getPDO());
 
         // grab the data from mySQL and enforce the Venue does not exist
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertNull($pdoVenue);
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
 
 
     }
@@ -266,18 +266,18 @@ class VenueTest extends OurVibeTest {
 
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
-        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
-        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
-        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
-        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
-        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
-        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
-        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
-        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
-        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
-        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertEquals($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertEquals($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertEquals($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertEquals($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
     }
 
     /**
@@ -315,18 +315,18 @@ class VenueTest extends OurVibeTest {
         // enforce that the results meet expectations
 
         $pdoVenue = $results[0];
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
-        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
-        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
-        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
-        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
-        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
-        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
-        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
-        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
-        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
-        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertEquals($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertEquals($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertEquals($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertEquals($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
     }
 
     /**
@@ -355,18 +355,18 @@ class VenueTest extends OurVibeTest {
 
         // grab data from mySQL and enforce the fields match expectations
         $pdoVenue = Venue::getVenueByVenueName($this->getPDO(), $venue->getVenueName());
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
-        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
-        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
-        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
-        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
-        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
-        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
-        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
-        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
-        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
-        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertEquals($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertEquals($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertEquals($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertEquals($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
 
 
     }
@@ -398,18 +398,18 @@ class VenueTest extends OurVibeTest {
 
         // grab data from mySQL and enforce the fields match expectations
         $pdoVenue = Venue::getVenueByVenueActivationToken($this->getPDO(), $venue->getVenueActivationToken());
-        $this->assertSame($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertSame($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
-        $this->assertSame($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
-        $this->assertSame($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
-        $this->assertSame($pdoVenue->getVenueCity(), $this->VALID_CITY);
-        $this->assertSame($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
-        $this->assertSame($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
-        $this->assertSame($pdoVenue->getVenueName(), $this->VALID_NAME);
-        $this->assertSame($pdoVenue->getVenueState(), $this->VALID_STATE);
-        $this->assertSame($pdoVenue->getVenueZip(), $this->VALID_ZIP);
-        $this->assertSame($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
-        $this->assertSame($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertEquals($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertEquals($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertEquals($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertEquals($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
     }
 
 
