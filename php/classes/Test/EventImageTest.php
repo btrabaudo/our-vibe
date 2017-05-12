@@ -20,13 +20,13 @@ class EventImageTest extends OurVibeTest {
 	/**
 	 *
 	 *
-	 * @var EventImage eventImage
+	 * @var EventImage event
 	 **/
 
-	protected $eventImage = null;
+	protected $event = null;
 
 	/**
-	 * valid event image image id to create the event image object to own the test
+	 * valid event image id to create the event image object to own the test
 	 *
 	 * @var $VALID_EVENT_IMAGE_IMAGE_ID
 	 **/
@@ -55,7 +55,7 @@ class EventImageTest extends OurVibeTest {
 		$eventImage->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoEventImage = eventImage::getEventImageByEventImageImageId($this->getPDO(), $eventImage->geteventImageImageId());
+		$pdoEventImage = eventImage::getEventImageByEventImageImageId($this->getPDO(), $eventImage->geteventImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
 		$this->assertEquals($pdoEventImage->geteventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID);
 		$this->assertEquals($pdoEventImage->getEventImageEventIdId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
@@ -142,7 +142,7 @@ class EventImageTest extends OurVibeTest {
 	public function testDeleteInvalidEventImage(): void {
 
 		// create a EventImage and try to delete it without actually inserting it
-		$eventImage = new Image(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
+		$eventImage = new EventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
 		$eventImage->delete($this->getPDO());
 	}
 

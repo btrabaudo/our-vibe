@@ -129,8 +129,8 @@ class ImageTest extends OurVibeTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$image->delete($this->getPDO());
 
-		// grab the data from mySQL and enforce the EventImage does not exist
-		$pdoImage = EventImage::getImagleByImageId($this->getPDO(), $image->getImageId());
+		// grab the data from mySQL and enforce the Image does not exist
+		$pdoImage = Image::getImagleByImageId($this->getPDO(), $image->getImageId());
 		$this->assertNull($pdoImage);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("image"));
 	}
@@ -169,7 +169,7 @@ class ImageTest extends OurVibeTest {
 	}
 
 	/**
-	 * test grabbing a EventImage that does not exist
+	 * test grabbing a Image that does not exist
 	 **/
 
 	public function testGetInvalidImageByImageId() : void {
