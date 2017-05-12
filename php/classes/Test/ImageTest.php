@@ -144,8 +144,8 @@ class ImageTest extends OurVibeTest {
 	public function testDeleteInvalidImage(): void {
 
 		// create a Image and try to delete it without actually inserting it
-		$image = new Image(null, $this->VALID_IMAGE_ID, $this->VALID_CLOUDINARY_ID);
-		$image->delete($this->getPDO());
+		$imageId = new Image(null, $this->VALID_IMAGE_ID, $this->VALID_CLOUDINARY_ID);
+		$imageId->delete($this->getPDO());
 	}
 
 	/**
