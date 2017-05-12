@@ -130,7 +130,7 @@ class ImageTest extends OurVibeTest {
 		$image->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Image does not exist
-		$pdoImage = Image::getImagleByImageId($this->getPDO(), $image->getImageId());
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertNull($pdoImage);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("image"));
 	}
