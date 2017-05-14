@@ -432,7 +432,7 @@ class VenueTest extends OurVibeTest {
 
     public function testGetInvalidProfileActivation() : void {
         // grab an activation token does not exist
-        $venue = Venue::getVenueByVenueActivationToken($this->getPDO(), 5ebc7867885cb8dd25af05b991dd5609);
+        $venue = Venue::getVenueByVenueActivationToken($this->getPDO(), "5ebc7867885cb8dd25af05b991dd5609");
         $this->assertNull($venue);
     }
 
