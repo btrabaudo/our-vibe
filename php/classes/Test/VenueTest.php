@@ -345,7 +345,7 @@ class VenueTest extends OurVibeTest {
      * @expectedException \PDOException
      **/
     public function testGetInvalidVenueByVenueCity() : void {
-        $venue = Venue::getVenueByVenueCity($this->getPDO(), "truthCity");
+        $venue = Venue::getVenueByVenueCity($this->getPDO(), VenueTest::INVALID_KEY);
         $this->assertCount(0, $venue);
 
 
@@ -390,7 +390,7 @@ class VenueTest extends OurVibeTest {
 
     public function testGetInvalidVenueByName() : void {
         // grab a venue that does not exist
-        $venue = Venue::getVenueByVenueName($this->getPDO(), "aHappyPlace");
+        $venue = Venue::getVenueByVenueName($this->getPDO(), VenueTest::INVALID_KEY);
 
         $this->assertNull($venue);
     }
@@ -432,7 +432,7 @@ class VenueTest extends OurVibeTest {
 
     public function testGetInvalidProfileActivation() : void {
         // grab an activation token does not exist
-        $venue = Venue::getVenueByVenueActivationToken($this->getPDO(), "PtPf67rUtkfs5tIXHkWo3QHofdXGc9Fm");
+        $venue = Venue::getVenueByVenueActivationToken($this->getPDO(), 5ebc7867885cb8dd25af05b991dd5609);
         $this->assertNull($venue);
     }
 
