@@ -176,7 +176,7 @@ class VenueTest extends OurVibeTest {
 
         //create a new venue and insert it into mySQL DB
 
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
 
@@ -211,7 +211,7 @@ class VenueTest extends OurVibeTest {
 
         //create a new venue and insert it into mySQL DB
 
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
         $venue->update($this->getPDO());
 
     }
@@ -227,7 +227,7 @@ class VenueTest extends OurVibeTest {
 
         //create a new venue and insert it into mySQL DB
 
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
 
@@ -253,7 +253,7 @@ class VenueTest extends OurVibeTest {
 
         //create a new venue but DO NOT INSERT and then delete
 
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->delete($this->getPDO());
 
@@ -270,7 +270,7 @@ class VenueTest extends OurVibeTest {
         $numRows = $this->getConnection()->getRowCount("venue");
 
         //create a new venue and insert it into mySQL DB
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
 
@@ -312,7 +312,7 @@ class VenueTest extends OurVibeTest {
         $numRows = $this->getConnection()->getRowCount("venue");
 
         //create a new venue and insert it into mySQL DB
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
 
@@ -360,7 +360,7 @@ class VenueTest extends OurVibeTest {
         $numRows = $this->getConnection()->getRowCount("venue");
 
         //create a new venue and insert it into mySQL DB
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
 
@@ -403,7 +403,7 @@ class VenueTest extends OurVibeTest {
         $numRows = $this->getConnection()->getRowCount("venue");
 
         //create a new venue and insert it into mySQL DB
-        $venue = new Venue(null, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
 
