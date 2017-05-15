@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/deepdivedylan/angular4-example"
+    "url": "https://github.com/btrabaudo/our-vibe"
   },
   "dependencies": {
     "@angular/common": "~4.1.1",
