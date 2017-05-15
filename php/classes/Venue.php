@@ -298,7 +298,7 @@ class Venue implements \JsonSerializable {
         }
 
         //enforce that venue contact is less than 128 characters
-        if(strlen($newVenueContact) < 128) {
+        if(strlen($newVenueContact) > 128) {
             throw(new \RangeException("venue contact must be less than 128 characters"));
         }
 
