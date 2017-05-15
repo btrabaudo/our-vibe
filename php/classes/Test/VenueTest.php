@@ -111,9 +111,9 @@ class VenueTest extends OurVibeTest {
         parent::setUp();
 
         //inputs for setup
-        $password = "InsertYourSudoPassHere";
+        $password = "PassWord";
         $this->VALID_SALT = bin2hex(random_bytes(32));
-        $this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 275142);
+        $this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 26143);
         $this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
         $this->VALID_IMAGE = new Image(null, null);
