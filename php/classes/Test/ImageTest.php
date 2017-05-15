@@ -54,7 +54,7 @@ class ImageTest extends OurVibeTest {
 
 		//var_dump($Image);
 		$image->insert($this->getPDO());
-
+	}
 
 	/**
 	 * test inserting a Image that already exists
@@ -62,7 +62,7 @@ class ImageTest extends OurVibeTest {
 	 * @expectedException \PDOException
 	 **/
 
-	public function testInsertInvalidImage(): void {
+	public function testInsertInvalidImageId(): void {
 
 		// create a image with a non null imageId and watch it fail
 		$image = new Image(OurVibeTest::INVALID_KEY, $this->VALID_IMAGE_ID, $this->VALID_CLOUDINARY_ID);
