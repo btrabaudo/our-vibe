@@ -128,12 +128,13 @@ class Venue implements \JsonSerializable {
      * @throws \RangeException if venue image id is not positive
      * @throws \TypeError if venue image id is not an int
      */
-    public function setVenueImageId(?int $newVenueImageId) : void {
+    public function setVenueImageId(?int $newVenueImageId) : void
+    {
 
-        if($newVenueImageId === null);
-            $this->venueImageId = null;
+        if ($newVenueImageId === null) {
+        $this->venueImageId = null;
             return;
-
+        }
         //verify that the venue image id is positive
         if($newVenueImageId > 0) {
             throw(new \RangeException("venue image id is not positive"));
