@@ -136,7 +136,7 @@ class Venue implements \JsonSerializable {
             return;
         }
         //verify that the venue image id is positive
-        if($newVenueImageId > 0) {
+        if($newVenueImageId < 0) {
             throw(new \RangeException("venue image id is not positive"));
         }
 
