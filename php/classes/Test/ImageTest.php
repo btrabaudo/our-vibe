@@ -157,7 +157,6 @@ class ImageTest extends OurVibeTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertEquals($pdoImage->getImageId(), $this->VALID_IMAGE_ID);
 	}
 
 	/**
