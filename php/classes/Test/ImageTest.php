@@ -52,12 +52,11 @@ class ImageTest extends OurVibeTest {
 		// create a new Image and insert to into mySQL
 		$image = new Image(null, $this->VALID_IMAGE_ID, $this->VALID_CLOUDINARY_ID);
 
-		//var_dump($Imagee);
+		//var_dump($Image);
 		$image->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoImageId = Image::getImageByImageId($this->getPDO(), $image->getImageId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImageId->getImageId(), $this->VALID_IMAGE_ID);
 		$this->assertEquals($pdoImageId->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
 	}
