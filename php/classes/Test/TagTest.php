@@ -23,7 +23,7 @@ class TagTest extends OurVibeTest {
 	/**
 	 * @var string $VALID_TAGNAME
 	 **/
-	protected $VALID_TAGNAME = @"passingtests";
+	protected $VALID_TAGNAME = "passingtests";
 
 
 

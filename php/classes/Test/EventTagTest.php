@@ -24,7 +24,7 @@ class EventTagTest extends OurVibeTest {
 	/**
 	 * @var int $VALID_EVENTTAGEVENTID
 	 **/
-	protected $VALID_EVENTTAGEVENTID = @"passingtests";
+	protected $VALID_EVENTTAGEVENTID = "passingtests";
 
 	/**
 	 * @var Venue Venue
