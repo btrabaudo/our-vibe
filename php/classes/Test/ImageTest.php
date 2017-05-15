@@ -55,10 +55,6 @@ class ImageTest extends OurVibeTest {
 		//var_dump($Image);
 		$image->insert($this->getPDO());
 
-		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoImageId = Image::getImageByImageId($this->getPDO(), $image->getImageId());
-		$this->assertEquals($pdoImageId->getImageCloudinaryId(), $this->VALID_CLOUDINARY_ID);
-	}
 
 	/**
 	 * test inserting a Image that already exists
