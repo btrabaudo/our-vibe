@@ -145,7 +145,7 @@ class Image implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo): void {
 		// enforce that imageId is not null (i/e., don't delete a image that does not exist)
-		if($this->imageId === null) {
+		if($this->imageId === null || $this->ImageCloudinaryId === null) {
 			throw(new \PDOException("there is no image to delete"));
 		}
 
