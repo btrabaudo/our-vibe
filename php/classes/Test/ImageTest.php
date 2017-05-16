@@ -75,7 +75,7 @@ class ImageTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("image");
 
 		// create a new Image and insert to into mySQL
-		$image = new Image($this->VALID_CLOUDINARY_ID);
+		$image = new Image($this->venue->getCloudinaryId(), $this->VALID_CLOUDINARY_ID);
 		$image->insert($this->getPDO());
 
 		// delete the Image from mySQL
