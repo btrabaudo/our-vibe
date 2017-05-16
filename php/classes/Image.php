@@ -140,12 +140,12 @@ class Image implements \JsonSerializable {
 	 * deletes this image from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOExceptionwhen mySQL related errors that occur
+	 * @throws \PDOException when mySQL related errors that occur
 	 * @throws \TypeError if $pdo is not a PDO connection objects
 	 **/
 	public function delete(\PDO $pdo): void {
-		// enforce th imageId is not null (i/e., don't delete a image that does not exist)
-		if($this->imageId) {
+		// enforce that imageId is not null (i/e., don't delete a image that does not exist)
+		if($this->imageId === null) {
 			throw(new \PDOException("there is no image to delete"));
 		}
 
