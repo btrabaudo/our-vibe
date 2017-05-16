@@ -150,30 +150,9 @@ class Image implements \JsonSerializable {
 		}
 
 		// create query template
+		// TODO: add missing arguments to delete
 		$query = "DELETE FROM image WHERE imageId = :imageId AND imageCloudinaryId = :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
-	}
-
-	/**
-	 * updates this image from mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo): void {
-		// enforce th imageId is not null (i.e., don't insert an image that doesn't exist)
-		if($this->imageId === null) {
-			throw(new \PDOException("unable to update an image that does not exist"));
-		}
-
-		// create query template
-		$query = "UPDATE image SET imageId = :imageId, imageCloudinaryId = :imageCloudinaryId";
-		$statement = $pdo->prepare($query);
-
-		// bind the member variable to the place holders in the template
-		$parameters = ["imageId" => $this->imageId, "imageCloudinaryId" => $this->imageCloudinaryId];
-		$statement->execute($parameters);
 	}
 
 	/**
