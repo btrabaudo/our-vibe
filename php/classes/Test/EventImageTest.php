@@ -44,7 +44,6 @@ class EventImageTest extends OurVibeTest {
 	/**
 	 * test inserting a valid event image and verify that the actual mySQL data matches
 	 **/
-
 	public function testInsertValidEventImage(): void {
 
 		// count the number of rows and save it for later

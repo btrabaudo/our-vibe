@@ -4,6 +4,7 @@ namespace Edu\Cnm\OurVibe\Test;
 
 use Edu\Cnm\OurVibe\Event;
 use Edu\Cnm\OurVibe\EventTag;
+use Edu\Cnm\OurVibe\Image;
 use Edu\Cnm\OurVibe\Tag;
 use Edu\Cnm\OurVibe\Venue;
 
@@ -45,7 +46,18 @@ class EventTagTest extends OurVibeTest {
 	 * @var string $VALID_SALT
 	 **/
 
+	/**
+	 * @var VenueImageId VenueImageId
+	 **/
+	protected $VALID_VENUE_IMAGE_ID;
+
+
 	protected $VALID_SALT;
+
+	/**
+	 * @var Image image
+	 **/
+	protected $VALID_IMAGE = null;
 
 	public final function setUp(): void {
 		parent::setUp();
@@ -55,11 +67,28 @@ class EventTagTest extends OurVibeTest {
 		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(32));
 
-		$this->VALID_VENUE = new Event(null, null, "phpunit", "test@phpunit.de", $this->VALID_HASH, "+12125551212", $this->VALID_SALT);
+
+		$this->VALID_IMAGE = new Image(null, null);
+		$this->VALID_IMAGE->insert($this->getPDO());
+
+
+
+		$this->VALID_VENUE = new Venue(
+			null,
+				$this->VALID_IMAGE->getImageId(),
+				$this->VALID_ACTIVATION,
+				"123 High St.",
+				null, "abq",
+				"123washingtonstreet",
+				"+12125551212",
+				"theatre","newmexico","87114",				$this->VALID_HASH,
+			 $this->VALID_SALT);
 		$this->VALID_VENUE->insert($this->getPDO());
+
 		$this->eventTag = new EventTag(null, $this->venue->getVenueId(), "PHPUnit event tag passing");
 		$this->eventTag->insert($this->getPDO());
 	}
+
 
 
 	/**
