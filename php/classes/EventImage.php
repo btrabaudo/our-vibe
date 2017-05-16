@@ -15,25 +15,29 @@ class EventImage implements \JsonSerializable {
 	 * @var int $eventImageImageId
 	 **/
 	private $eventImageImageId;
+
 	/**
 	 * id of the event the image belongs to; this is a a component of a composite primary and foreign key
 	 * @var int $eventImageEventId
 	 **/
 	private $eventImageEventId;
 
+
 	/**
 	 * constructor for eventImage
 	 *
 	 * @param int $newEventImageImageId id of the parent Image
 	 * @param int $newEventImageEventId id of the parent eventImage belongs to
-	 * @throws \Exception if some other exception occurs
+	 * @throws \InvalidArgumentException if data values are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., stringstoo long, negative integers)
 	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+
 	 **/
 	public function __construct(int $newEventImageImageId, int $newEventImageEventId = null) {
 		try {
 			$this->setEventImageImageId($newEventImageImageId);
 			$this->setEventImageEventId($newEventImageEventId);
-
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 
 			// determine what exception type was thrown
@@ -54,7 +58,7 @@ class EventImage implements \JsonSerializable {
 	/**
 	 * mutator for image id
 	 *
-	 * @param int $newEventImageImageId new value of profile id
+	 * @param int $newEventImageImageId new value of image id
 	 * @throws \RangeException if $newImageId is not positive
 	 * @throws \TypeError if $newImageId is not an integer
 	 **/
@@ -110,7 +114,7 @@ class EventImage implements \JsonSerializable {
 		$query = "DELETE FROM eventImage WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
 		$statement = $pdo->prepare($query);
 
-		// bind the member variables to the lace holders in the template
+		// bind the member variables to the place holders in the template
 		$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
 		$statement - execute($parameters);
 	}
