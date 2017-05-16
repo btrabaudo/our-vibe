@@ -596,7 +596,8 @@ class Venue implements \JsonSerializable {
             "venueState" => $this->venueState,
             "venueZip" => $this->venueZip,
             "venuePassHash" => $this->venuePassHash,
-            "venuePassSalt" => $this->venuePassSalt];
+            "venuePassSalt" => $this->venuePassSalt
+        ];
         $statement->execute($parameters);
     }
 
