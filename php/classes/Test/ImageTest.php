@@ -86,6 +86,8 @@ class ImageTest extends OurVibeTest {
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertNull($pdoImage);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $image->getImageCloudinaryId());
+
 	}
 
 	/**
@@ -118,6 +120,8 @@ class ImageTest extends OurVibeTest {
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $image->getImageCloudinaryId());
+
+
 
 	}
 
