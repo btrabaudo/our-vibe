@@ -47,14 +47,7 @@ class Venue implements \JsonSerializable {
      * @var string $venueName
      **/
     private $venueName;
-    /**
-     * @var string $venuePassHash
-     **/
-    private $venuePassHash;
-    /**
-     * @var string $venuePassSalt
-     **/
-    private $venuePassSalt;
+
     /**
      * @var string $venueState
      **/
@@ -64,7 +57,16 @@ class Venue implements \JsonSerializable {
      **/
     private $venueZip;
 
-    public function __construct(?int $newVenueId, ?int $newVenueImageId, string $newVenueActivationToken, string $newVenueAddress1, ?string $newVenueAddress2, string $newVenueCity, string $newVenueContact, string $newVenueContent, string $newVenueName, string $newVenuePassHash, string $newVenuePassSalt, string $newVenueState, string $newVenueZip) {
+    /**
+     * @var string $venuePassHash
+     **/
+    private $venuePassHash;
+    /**
+     * @var string $venuePassSalt
+     **/
+    private $venuePassSalt;
+
+    public function __construct(?int $newVenueId, ?int $newVenueImageId, string $newVenueActivationToken, string $newVenueAddress1, ?string $newVenueAddress2, string $newVenueCity, string $newVenueContact, string $newVenueContent, string $newVenueName, string $newVenueState, string $newVenueZip, string $newVenuePassHash, string $newVenuePassSalt) {
         try {
             $this->setVenueId($newVenueId);
             $this->setVenueImageId($newVenueImageId);
@@ -75,10 +77,10 @@ class Venue implements \JsonSerializable {
             $this->setVenueContact($newVenueContact);
             $this->setVenueContent($newVenueContent);
             $this->setVenueName($newVenueName);
-            $this->setVenuePassHash($newVenuePassHash);
-            $this->setVenuePassSalt($newVenuePassSalt);
             $this->setVenueState($newVenueState);
             $this->setVenueZip($newVenueZip);
+            $this->setVenuePassHash($newVenuePassHash);
+            $this->setVenuePassSalt($newVenuePassSalt);
 		}
 		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
             $exceptionType = get_class($exception);
@@ -370,87 +372,7 @@ class Venue implements \JsonSerializable {
         $this->venueName = $newVenueName;
     }
 
-    /**
-     * accessor method for venue pass hash
-     * @return string for venue pass hash
-     **/
-    public function getVenuePassHash(): string {
-        return($this->venuePassHash);
-    }
 
-    /**
-     * mutator method for venue password hash
-     * @param string $newVenuePassHash
-     * $newVenuePassHash is trimmed and converted to lowercase
-     * @throws \InvalidArgumentException if the hash is empty
-     * @throws \InvalidArgumentException if the hash is not in hex
-     * @throws \RangeException if the hash is not exactly 128 characters
-     **/
-    public function setVenuePassHash(string $newVenuePassHash) : void {
-        //enforce that the hash is formatted properly
-        $newVenuePassHash = trim($newVenuePassHash);
-        $newVenuePassHash = strtolower($newVenuePassHash);
-
-        //enforce that the pass hash is not empty
-        if(empty($newVenuePassHash) === true) {
-            throw(new \InvalidArgumentException("pass hash is either empty or insecure"));
-        }
-        //enforce that the pass hash is hex
-        if(!ctype_xdigit($newVenuePassHash)) {
-            throw(new \InvalidArgumentException("pass hash is either empty or insecure"));
-        }
-        //enforce that the hash is exactly 128 characters
-        if(strlen($newVenuePassHash) !==128) {
-            throw(new \RangeException("pass hash must be exactly 128"));
-        }
-
-        //take new venue pass hash and store it in venue pass hash
-        $this->venuePassHash = $newVenuePassHash;
-    }
-
-    /**
-     * accessor method for venue pass salt
-     * @return string for venue pass salt
-     **/
-    public function getVenuePassSalt(): string {
-        return($this->venuePassSalt);
-    }
-
-    /**
-     * mutator method for venue pass salt
-     * @param string $newVenuePassSalt
-     * $newVenuePassSalt is trimmed and converted to lowercase
-     * @throws \InvalidArgumentException when venue pass salt is not in hex
-     * @throws \InvalidArgumentException when venue pass salt is empty
-     * @throws \RangeException when venue pass salt is not exactly 64 characters
-     **/
-    public function setVenuePassSalt(string $newVenuePassSalt) : void {
-        //enforce that the salt is formatted properly
-        $newVenuePassSalt = trim($newVenuePassSalt);
-        $newVenuePassSalt = strtolower($newVenuePassSalt);
-
-        //enforce that the pass hash is not empty
-        if(empty($newVenuePassSalt) === true) {
-            throw(new \InvalidArgumentException("pass salt is either empty or insecure"));
-        }
-
-        //enforce that the pass hash is hex
-        if(!ctype_xdigit($newVenuePassSalt)) {
-            throw(new \InvalidArgumentException("pass salt is either empty or insecure"));
-        }
-
-        //enforce that the salt is exactly 64 characters
-        if(strlen($newVenuePassSalt) !== 64) {
-            throw(new \RangeException("pass salt must be exactly 64 characters"));
-        }
-        //take new venue pass salt and store it in venue pass salt
-        $this->venuePassSalt = $newVenuePassSalt;
-    }
-
-    /**
-     * accessor method for venue state
-     * @return string for venue state
-     **/
     public function getVenueState(): string {
         return($this->venueState);
     }
@@ -508,6 +430,89 @@ class Venue implements \JsonSerializable {
         //take new venue zip and store it in venue zip
         $this->venueZip = $newVenueZip;
     }
+
+    /**
+     * accessor method for venue pass hash
+     * @return string for venue pass hash
+     **/
+    public function getVenuePassHash(): string {
+        return($this->venuePassHash);
+    }
+
+    /**
+     * mutator method for venue password hash
+     * @param string $newVenuePassHash
+     * $newVenuePassHash is trimmed and converted to lowercase
+     * @throws \InvalidArgumentException if the hash is empty
+     * @throws \InvalidArgumentException if the hash is not in hex
+     * @throws \RangeException if the hash is not exactly 128 characters
+     **/
+    public function setVenuePassHash(string $newVenuePassHash) : void {
+        //enforce that the hash is formatted properly
+        $newVenuePassHash = trim($newVenuePassHash);
+        $newVenuePassHash = strtolower($newVenuePassHash);
+
+
+        //enforce that the pass hash is not empty
+        if(empty($newVenuePassHash) === true) {
+            throw(new \InvalidArgumentException("pass hash is either empty or insecure"));
+        }
+        //enforce that the pass hash is hex
+        if(!ctype_xdigit($newVenuePassHash)) {
+            throw(new \InvalidArgumentException("pass hash is either empty or insecure"));
+        }
+        //enforce that the hash is exactly 128 characters
+        if(strlen($newVenuePassHash) !== 128) {
+            throw(new \RangeException("pass hash must be exactly 128"));
+        }
+
+        //take new venue pass hash and store it in venue pass hash
+        $this->venuePassHash = $newVenuePassHash;
+    }
+
+    /**
+     * accessor method for venue pass salt
+     * @return string for venue pass salt
+     **/
+    public function getVenuePassSalt(): string {
+        return($this->venuePassSalt);
+    }
+
+    /**
+     * mutator method for venue pass salt
+     * @param string $newVenuePassSalt
+     * $newVenuePassSalt is trimmed and converted to lowercase
+     * @throws \InvalidArgumentException when venue pass salt is not in hex
+     * @throws \InvalidArgumentException when venue pass salt is empty
+     * @throws \RangeException when venue pass salt is not exactly 64 characters
+     **/
+    public function setVenuePassSalt(string $newVenuePassSalt) : void {
+        //enforce that the salt is formatted properly
+        $newVenuePassSalt = trim($newVenuePassSalt);
+        $newVenuePassSalt = strtolower($newVenuePassSalt);
+
+        //enforce that the pass hash is not empty
+        if(empty($newVenuePassSalt) === true) {
+            throw(new \InvalidArgumentException("pass salt is either empty or insecure"));
+        }
+
+        //enforce that the pass hash is hex
+        if(!ctype_xdigit($newVenuePassSalt)) {
+            throw(new \InvalidArgumentException("pass salt is either empty or insecure"));
+        }
+
+        //enforce that the salt is exactly 64 characters
+        if(strlen($newVenuePassSalt) !== 64) {
+            throw(new \RangeException("pass salt must be exactly 64 characters"));
+        }
+        //take new venue pass salt and store it in venue pass salt
+        $this->venuePassSalt = $newVenuePassSalt;
+    }
+
+    /**
+     * accessor method for venue state
+     * @return string for venue state
+     **/
 
     /**
      *

@@ -115,9 +115,10 @@ class VenueTest extends OurVibeTest {
         $this->VALID_SALT = bin2hex(random_bytes(32));
         $this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 26143);
         $this->VALID_ACTIVATION = bin2hex(random_bytes(16));
-
         $this->VALID_IMAGE = new Image(null, null);
         $this->VALID_IMAGE->insert($this->getPDO());
+
+        var_dump($this->VALID_HASH);
 
     }
 
@@ -132,9 +133,22 @@ class VenueTest extends OurVibeTest {
 
         //create a new venue and insert it into mySQL DB
 
-        $venue = new Venue(null,  $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(
+            null,
+            $this->VALID_IMAGE->getImageId(),
+            $this->VALID_ACTIVATION,
+            $this->VALID_ADDRESS1,
+            $this->VALID_ADDRESS2,
+            $this->VALID_CITY,
+            $this->VALID_CONTACT,
+            $this->VALID_CONTENT,
+            $this->VALID_NAME,
+            $this->VALID_STATE,
+            $this->VALID_ZIP,
+            $this->VALID_HASH,
+            $this->VALID_SALT);
 
-        //var_dump($venue);
+
 
         $venue->insert($this->getPDO());
 
