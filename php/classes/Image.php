@@ -74,16 +74,16 @@ class Image implements \JsonSerializable {
 
 	}
 	/**
-	 * accessor method for phone
+	 * accessor method for cloudinary id
 	 *
-	 * @return string value of phone or null
+	 * @return string value of cloudinary id or null
 	 **/
 	public function getImageCloudinaryId(): ?string {
 		return ($this->imageCloudinaryId);
 	}
 
 	/**
-	 * mutator method for phone
+	 * mutator method for cloudinary id
 	 *
 	 * @param string $newImageColudinaryId new value of cloudinary id
 	 * @throws \InvalidArgumentException if $newImageCloudinaryId is not a string or is insecure
