@@ -83,7 +83,7 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator methond fo rphone
+	 * mutator method for phone
 	 *
 	 * @param string $newImageColudinaryId new value of cloudinary id
 	 * @throws \InvalidArgumentException if $newImageCloudinaryId is not a string or is insecure
@@ -145,12 +145,12 @@ class Image implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo): void {
 		// enforce that imageId is not null (i/e., don't delete a image that does not exist)
-		if($this->imageId === null || $this->ImageCloudinaryId === null) {
+		if($this->imageId === null || $this->imageCloudinaryId === null) {
 			throw(new \PDOException("there is no image to delete"));
 		}
 
 		// create query template
-		$query = "DELETE FROM image WHERE imageId = :imageId";
+		$query = "DELETE FROM image WHERE imageId = :imageId AND imageCloudinaryId = :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
 	}
 
