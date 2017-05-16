@@ -153,6 +153,7 @@ class VenueTest extends OurVibeTest {
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -199,6 +200,7 @@ class VenueTest extends OurVibeTest {
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -290,6 +292,7 @@ class VenueTest extends OurVibeTest {
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -339,6 +342,7 @@ class VenueTest extends OurVibeTest {
 
         $pdoVenue = $results[0];
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -379,6 +383,7 @@ class VenueTest extends OurVibeTest {
         // grab data from mySQL and enforce the fields match expectations
         $pdoVenue = Venue::getVenueByVenueName($this->getPDO(), $venue->getVenueName());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -422,6 +427,7 @@ class VenueTest extends OurVibeTest {
         // grab data from mySQL and enforce the fields match expectations
         $pdoVenue = Venue::getVenueByVenueActivationToken($this->getPDO(), $venue->getVenueActivationToken());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
