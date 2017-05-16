@@ -22,7 +22,6 @@ class EventImage implements \JsonSerializable {
 	 **/
 	private $eventImageEventId;
 
-
 	/**
 	 * constructor for eventImage
 	 *
@@ -116,7 +115,7 @@ class EventImage implements \JsonSerializable {
 
 		// bind the member variables to the place holders in the template
 		$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
-		$statement - execute($parameters);
+		$statement->execute($parameters);
 	}
 
 	/**
@@ -133,13 +132,14 @@ class EventImage implements \JsonSerializable {
 				}
 
 				// create query template
-				$query = "DELETE FROM eventImage WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
+				$query = "DELETE FROM 'eventImage' WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
 				$statement = $pdo->prepare($query);
 
 				// bind the member variables to the place holders in the template
 				$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
-						$statement->execute($parameters);
+				$statement->execute($parameters);
 	}
+
 	/**
 	 * gets the eventImage by image id and event id
 	 *
@@ -148,10 +148,10 @@ class EventImage implements \JsonSerializable {
 	 * @param int $eventImageEventId event id to search for
 	 * @return EventImage|null eventImage found or null if not found
 	 **/
-	public static function getEventImageByEventImageImageIdAndEventImageEventId(\PDO $pdo, int $eventImageImageId, int $eventImageEventId) : ?EventImage {
+	public static function getEventImageByEventImageEventIdAndEventImageImageId(\PDO $pdo, int $eventImageImageId, int $eventImageEventId) : ?EventImage {
 				// sanitize the event id and image id before searching
 				if($eventImageImageId<= 0) {
-							throw(new\PDOException("image id is not positive"));
+							throw(new \PDOException("image id is not positive"));
 				}
 				if($eventImageEventId <= 0) {
 							throw(new \PDOException("event id is not positive"));
@@ -167,7 +167,7 @@ class EventImage implements \JsonSerializable {
 
 				// grab the eventImage from mySQL
 				try {
-							$eventImage =null;
+							$eventImage = null;
 							$statement->setFetchMode(\PDO::FETCH_ASSOC);
 							$row = $statement->fetch();
 							if($row !== false) {
