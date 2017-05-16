@@ -527,7 +527,7 @@ class Venue implements \JsonSerializable {
             throw(new \PDOException("not a new venue"));
         }
         //create query
-         $query = "INSERT INTO venue(venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venuePassHash, venuePassSalt, venueState, venueZip) VALUES (:venueImageId, :venueActivationToken, :venueAddress1, :venueAddress2, :venueCity, :venueContact, :venueContent, :venueName, :venuePassHash, :venuePassSalt, :venueState, :venueZip)";
+         $query = "INSERT INTO venue(venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venuePassHash, venuePassSalt, venueState, venueZip) VALUES (:venueImageId, :venueActivationToken, :venueAddress1, :venueAddress2, :venueCity, :venueContact, :venueContent, :venueName, :venueState, :venueZip, :venuePassHash, :venuePassSalt)";
         $statement = $pdo->prepare($query);
         $parameters = ["venueId" => $this->venueId];
         $statement->execute($parameters);

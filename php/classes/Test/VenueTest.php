@@ -118,7 +118,7 @@ class VenueTest extends OurVibeTest {
         $this->VALID_IMAGE = new Image(null, null);
         $this->VALID_IMAGE->insert($this->getPDO());
 
-        var_dump($this->VALID_HASH);
+        //var_dump($this->VALID_HASH);
 
     }
 
@@ -135,18 +135,9 @@ class VenueTest extends OurVibeTest {
 
         $venue = new Venue(
             null,
-            $this->VALID_IMAGE->getImageId(),
-            $this->VALID_ACTIVATION,
-            $this->VALID_ADDRESS1,
-            $this->VALID_ADDRESS2,
-            $this->VALID_CITY,
-            $this->VALID_CONTACT,
-            $this->VALID_CONTENT,
-            $this->VALID_NAME,
-            $this->VALID_STATE,
-            $this->VALID_ZIP,
-            $this->VALID_HASH,
-            $this->VALID_SALT);
+            $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2,
+            $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE,
+            $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
 
 
