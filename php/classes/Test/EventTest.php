@@ -20,7 +20,7 @@ class eventTest extends OurVibeTest {
 	 * valid venue id to use
 	 * @var string $VALID_VENUE
 	 **/
-	protected $VALID_VENUE = "12345";
+	protected $VALID_VENUE = null;
 	/**
 	 * valid contact to use
 	 * @var string $VALID_CONTACT
@@ -44,7 +44,7 @@ class eventTest extends OurVibeTest {
 		//count the rows and save it
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
-		$event = new event(null,null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
+		$event = new event(null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
 		//var_dump($event);
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
@@ -161,9 +161,11 @@ class eventTest extends OurVibeTest {
 	public function testGetValidEventByName(): void {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
+
 		//create a new event and insert it into mySQL DB
 		$event = new event(null, null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
 		$event->insert($this->getPDO());
+
 		// grab data from mySQL and enforce the fields match expectations
 		$pdoevent = event::getEventByEventName($this->getPDO(), $event->getEventName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
