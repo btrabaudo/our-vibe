@@ -51,7 +51,7 @@ class EventImageTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("eventImage");
 
 		// create a new eventImage and insert to into mySQL
-		$eventImage = new eventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, null, $this->VALID_EVENT_IMAGE_EVENT_ID);
+		$eventImage = new eventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID,$this->VALID_EVENT_IMAGE_EVENT_ID);
 
 		//var_dump($eventImage);
 		$eventImage->insert($this->getPDO());
