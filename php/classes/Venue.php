@@ -530,7 +530,20 @@ class Venue implements \JsonSerializable {
         //create query
          $query = "INSERT INTO venue(venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip,  venuePassHash, venuePassSalt) VALUES (:venueImageId, :venueActivationToken, :venueAddress1, :venueAddress2, :venueCity, :venueContact, :venueContent, :venueName, :venueState, :venueZip, :venuePassHash, :venuePassSalt)";
         $statement = $pdo->prepare($query);
-        $parameters = ["venueId" => $this->venueId];
+        $parameters = [
+            "venueImageId" => $this->venueImageId,
+            "venueActivationToken" => $this->venueActivationToken,
+            "venueAddress1" => $this->venueAddress1,
+            "venueAddress2" => $this->venueAddress2,
+            "venueCity" => $this->venueCity,
+            "venueContact" => $this->venueContact,
+            "venueContent" => $this->venueContent,
+            "venueName" => $this->venueName,
+            "venueState" => $this->venueState,
+            "venueZip" => $this->venueZip,
+            "venuePassHash" => $this->venuePassHash,
+            "venuePassSalt" => $this->venuePassSalt
+        ];
         $statement->execute($parameters);
         $this->venueId = intval($pdo->lastInsertId());
 
@@ -570,9 +583,20 @@ class Venue implements \JsonSerializable {
             throw(new \PDOException("unable to update a profile that does not exist"));
         }
 
-        $query = "UPDATE venue SET venueImageId = :venueImageId, venueAddress1 = :venueAddress1, venueAddress2 = :venueAddress2, venueCity = :venueCity, venueContact = :venueContact, venueContent = :venueContent, venueName = :venueName, venueState = :venueState, venueZip = :venueZip";
+        $query = "UPDATE venue SET venueImageId = :venueImageId, venueAddress1 = :venueAddress1, venueAddress2 = :venueAddress2, venueCity = :venueCity, venueContact = :venueContact, venueContent = :venueContent, venueName = :venueName, venueState = :venueState, venueZip = :venueZip, venuePassHash = :venuePassHash, venuePassSalt = :venuePassSalt";
         $statement = $pdo->prepare($query);
-        $parameters = ["venueImageId" => $this->venueImageId, "venueAddress1" => $this->venueAddress1, "venueAddress2" => $this->venueAddress2, "venueCity" => $this->venueCity, "venueContact" => $this->venueContact, "venueContent" => $this->venueContent, "venueName" => $this->venueName, "venueState" => $this->venueState, "venueZip" => $this->venueZip];
+        $parameters = [
+            "venueImageId" => $this->venueImageId,
+            "venueAddress1" => $this->venueAddress1,
+            "venueAddress2" => $this->venueAddress2,
+            "venueCity" => $this->venueCity,
+            "venueContact" => $this->venueContact,
+            "venueContent" => $this->venueContent,
+            "venueName" => $this->venueName,
+            "venueState" => $this->venueState,
+            "venueZip" => $this->venueZip,
+            "venuePassHash" => $this->venuePassHash,
+            "venuePassSalt" => $this->venuePassSalt];
         $statement->execute($parameters);
     }
 
