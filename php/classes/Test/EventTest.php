@@ -37,6 +37,29 @@ class eventTest extends OurVibeTest {
 	 */
 	protected $VALID_NAME = "austin thundercats";
 
+	// CREATE SETUP METHOD HERE - CREATE A VALID VENUE HERE FIRST
+	public function __construct(?int $newVenueId, ?int $newVenueImageId, string $newVenueActivationToken, string $newVenueAddress1, ?string $newVenueAddress2, string $newVenueCity, string $newVenueContact, string $newVenueContent, string $newVenueName, string $newVenueState, string $newVenueZip, string $newVenuePassHash, string $newVenuePassSalt) {
+		try {
+			$this->setVenueId($newVenueId);
+			$this->setVenueImageId($newVenueImageId);
+			$this->setVenueActivationToken($newVenueActivationToken);
+			$this->setVenueAddress1($newVenueAddress1);
+			$this->setVenueAddress2($newVenueAddress2);
+			$this->setVenueCity($newVenueCity);
+			$this->setVenueContact($newVenueContact);
+			$this->setVenueContent($newVenueContent);
+			$this->setVenueName($newVenueName);
+			$this->setVenueState($newVenueState);
+			$this->setVenueZip($newVenueZip);
+			$this->setVenuePassHash($newVenuePassHash);
+			$this->setVenuePassSalt($newVenuePassSalt);
+		}
+		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
+
 	/**
 	 * test inserting a valid event and verify the mySQL data
 	 **/
@@ -44,7 +67,7 @@ class eventTest extends OurVibeTest {
 		//count the rows and save it
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
-		$event = new event(null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
+		$event = new Event(null, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME);
 		//var_dump($event);
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
