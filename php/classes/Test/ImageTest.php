@@ -75,7 +75,7 @@ class ImageTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("image");
 
 		// create a new Image and insert to into mySQL
-		$image = new Image(null, $this->VALID_CLOUDINARY_ID);
+		$image = new Image($this->VALID_CLOUDINARY_ID);
 		$image->insert($this->getPDO());
 
 		// delete the Image from mySQL
@@ -85,7 +85,7 @@ class ImageTest extends OurVibeTest {
 		// grab the data from mySQL and enforce the Image does not exist
 		$pdoImage = Image::getImageByCloudinaryId($this->getPDO(), $this->image->getCloudinaryId());
 		$this->assertNull($pdoImage);
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("image"));
 
 	}
 
