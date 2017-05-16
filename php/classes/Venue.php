@@ -372,6 +372,11 @@ class Venue implements \JsonSerializable {
         $this->venueName = $newVenueName;
     }
 
+    /**
+     * accessor method for venue state
+     * @return string for venue state
+     **/
+
 
     public function getVenueState(): string {
         return($this->venueState);
@@ -509,10 +514,6 @@ class Venue implements \JsonSerializable {
         $this->venuePassSalt = $newVenuePassSalt;
     }
 
-    /**
-     * accessor method for venue state
-     * @return string for venue state
-     **/
 
     /**
      *
