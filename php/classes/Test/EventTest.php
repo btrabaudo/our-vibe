@@ -4,6 +4,7 @@ namespace Edu\Cnm\OurVibe\Test;
 
 
 use Edu\Cnm\OurVibe\Event;
+use Edu\Cnm\OurVibe\Venue;
 
 // grabs the class to be tested
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -42,27 +43,11 @@ class eventTest extends OurVibeTest {
 	 */
 	protected $VALID_NAME = "austin thundercats";
 
-	// CREATE SETUP METHOD HERE - CREATE A VALID VENUE HERE FIRST
-	public function __construct(?int $newVenueId, ?int $newVenueImageId, string $newVenueActivationToken, string $newVenueAddress1, ?string $newVenueAddress2, string $newVenueCity, string $newVenueContact, string $newVenueContent, string $newVenueName, string $newVenueState, string $newVenueZip, string $newVenuePassHash, string $newVenuePassSalt) {
-		try {
-			$this->setVenueId($newVenueId);
-			$this->setVenueImageId($newVenueImageId);
-			$this->setVenueActivationToken($newVenueActivationToken);
-			$this->setVenueAddress1($newVenueAddress1);
-			$this->setVenueAddress2($newVenueAddress2);
-			$this->setVenueCity($newVenueCity);
-			$this->setVenueContact($newVenueContact);
-			$this->setVenueContent($newVenueContent);
-			$this->setVenueName($newVenueName);
-			$this->setVenueState($newVenueState);
-			$this->setVenueZip($newVenueZip);
-			$this->setVenuePassHash($newVenuePassHash);
-			$this->setVenuePassSalt($newVenuePassSalt);
-		}
-		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
+	// set up method
+	public final function setUp() {
+	parent::setUp();
+	$venue = new Venue(null, $this->image->getImageId(), $this->VALID_ACTIVATIONTOKEN, "address", "address2", "burque", "5553456789", "this is a venue", "the unit test ampitheatre", "NM", "87106", $this->HASH, $this->SALT);
+	$venue->insert($this->getPDO());
 	}
 
 	/**
