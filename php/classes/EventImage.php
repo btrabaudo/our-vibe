@@ -45,7 +45,7 @@ class EventImage implements \JsonSerializable {
 	/**
 	 * accessor method for image id
 	 *
-	 * @return int value of profile id
+	 * @return int value of image id
 	 **/
 	public function getEventImageImageId(): int {
 		return ($this->eventImageImageId);
@@ -55,7 +55,7 @@ class EventImage implements \JsonSerializable {
 	 * mutator for image id
 	 *
 	 * @param int $newEventImageImageId new value of profile id
-	 * @throws \RangeException if $newImageId is not posititve
+	 * @throws \RangeException if $newImageId is not positive
 	 * @throws \TypeError if $newImageId is not an integer
 	 **/
 	public function setEventImageImageId(int $newImageId): void {
@@ -71,7 +71,7 @@ class EventImage implements \JsonSerializable {
 	/**
 	 * accessor method for event id
 	 *
-	 * @return int value of image id
+	 * @return int value of event id
 	 **/
 	public function getEventImageEventId(): int {
 		return ($this->eventImageEventId);
@@ -101,17 +101,17 @@ class EventImage implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo): void {
-		// ensure the object exists befor inserting
-		if($this->eventImageImageId === null || $this->eventImageImageId === null) {
+		// ensure the object exists before inserting
+		if($this->eventImageImageId === null || $this->eventImageEventId === null) {
 			throw(new \PDOException("not a valid image"));
 		}
 
 		// create query template
-		$query = "DELETE FROM eventImage WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = 		:eventImageEventId";
+		$query = "DELETE FROM eventImage WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the lace holders in the template
-		$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageImageId];
+		$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
 		$statement - execute($parameters);
 	}
 
@@ -124,7 +124,7 @@ class EventImage implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo) : void {
 				// ensure the object exists before deleting
-				if($this->eventImageImageId === null || $this->eventImageImageId === null) {
+				if($this->eventImageImageId === null || $this->eventImageEventId === null) {
 							throw(new \PDOException("not a valid eventImage"));
 				}
 
@@ -144,7 +144,7 @@ class EventImage implements \JsonSerializable {
 	 * @param int $eventImageEventId event id to search for
 	 * @return EventImage|null eventImage found or null if not found
 	 **/
-	public static function getEventImageByEventImageEventIdAndEventImageImageId(\PDO $pdo, int $eventImageImageId, int $eventImageEventId) : ?EventImage {
+	public static function getEventImageByEventImageImageIdAndEventImageEventId(\PDO $pdo, int $eventImageImageId, int $eventImageEventId) : ?EventImage {
 				// sanitize the event id and image id before searching
 				if($eventImageImageId<= 0) {
 							throw(new\PDOException("image id is not positive"));
@@ -158,7 +158,7 @@ class EventImage implements \JsonSerializable {
 				$statement = $pdo->prepare($query);
 
 				// bind the event id and image id to the place holder in the template
-				$parameters = ["$eventImageImageId" => $eventImageImageId, "eventImageEventId" => $eventImageEventId];
+				$parameters = ["eventImageImageId" => $eventImageImageId, "eventImageEventId" => $eventImageEventId];
 				$statement->execute($parameters);
 
 				// grab the eventImage from mySQL
