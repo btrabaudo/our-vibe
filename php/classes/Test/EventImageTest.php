@@ -39,6 +39,8 @@ class EventImageTest extends OurVibeTest {
 	 * @var $VALID_EventImageEventId
 	 **/
 
+	protected $VALID_EVENT_IMAGE_EVENT_ID;
+
 	/**
 	 * test inserting a valid event image and verify that the actual mySQL data matches
 	 **/
