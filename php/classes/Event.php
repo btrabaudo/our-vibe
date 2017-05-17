@@ -13,7 +13,7 @@ require_once ("autoload.php");
 	private $eventVenueId;
 	private $eventContact;
 	private $eventContent;
-	private $eventDateTime;
+	private $eventDate;
 	private $eventName;
 	/**
 	 * constructor for this event
@@ -22,7 +22,7 @@ require_once ("autoload.php");
 	 * @param int|null $newEventVenueId
 	 * @param string $newEventContact
 	 * @param string $newEventContent
-	 * @param \DateTime|string|null $newEventDateTime
+	 * @param \Date|string|null $newEventDate
 	 * @param string $newEventName
 	 *
 	 * @throws \InvalidArgumentException
@@ -32,13 +32,13 @@ require_once ("autoload.php");
 	 * @throws \Exception
 	 * @throws \RangeException
 	 **/
-	public function __construct(?int $newEventId, int $newEventVenueId, string $newEventContact, string $newEventContent, $newEventDateTime = null, string $newEventName) {
+	public function __construct(?int $newEventId, int $newEventVenueId, string $newEventContact, string $newEventContent, $newEventDate = null, string $newEventName) {
 		try {
 			$this->setEventId($newEventId);
 			$this->setEventVenueId($newEventVenueId);
 			$this->setEventContact($newEventContact);
 			$this->setEventContent($newEventContent);
-			$this->setEventDateTime($newEventDateTime);
+			$this->setEventDate($newEventDate);
 			$this->setEventName($newEventName);
 		}
 		//determine the type of exception
@@ -125,26 +125,26 @@ require_once ("autoload.php");
 	}
 	/**
 	 * accessor method for event date
-	 * @return \DateTime value of event date
+	 * @return \Date value of event date
 	 **/
-	public function getEventDateTime(): \DateTime {
-		return $this->eventDateTime;
+	public function getEventDate(): \Date {
+		return $this->eventDate;
 	}
 	/**
-	 * @param \DateTime $eventDateTime
+	 * @param \Date $eventDate
 	 **/
-	public function setEventDateTime($newEventDateTime = null): void {
-		if($newEventDateTime === null) {
-			$this->eventDateTime = new \DateTime();
+	public function setEventDate($newEventDate = null): void {
+		if($newEventDate === null) {
+			$this->eventDate = new \Date();
 			return;
 		}
 		try {
-			$newEventDateTime = self::validateDateTime($newEventDateTime);
+			$newEventDate = self::validateDate($newEventDate);
 		} catch (\InvalidArgumentException | \RangeException  $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-		$this->eventDateTime = $newEventDateTime;
+		$this->eventDate = $newEventDate;
 	}
 	/**
 	 * accessor for event name
@@ -183,11 +183,11 @@ require_once ("autoload.php");
 			throw(new \PDOException("not a new event"));
 		}
 		//create query
-		$query = "INSERT INTO event(eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName) VALUES (:eventId, :eventVenueId, :eventContact, :eventContent, :eventDateTime, :eventName)";
+		$query = "INSERT INTO event(eventId, eventVenueId, eventContact, eventContent, eventDate, eventName) VALUES (:eventId, :eventVenueId, :eventContact, :eventContent, :eventDate, :eventName)";
 		$statement = $pdo->prepare($query);
 		// bind members to their place holders
-		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s:u");
-		$parameters = ["eventId" => $this->eventId, "eventVenueId" => $this->eventVenueId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
+		$formattedDate = $this->eventDate->format("Y-m-d H:i:s:u");
+		$parameters = ["eventId" => $this->eventId, "eventVenueId" => $this->eventVenueId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDate" => $formattedDate, "eventName" => $this->eventName];
 		$statement->execute($parameters);
 		$this->eventId = intval($pdo->lastInsertId());
 	}
@@ -220,11 +220,11 @@ require_once ("autoload.php");
 		if($this->eventId !== null) {
 			throw(new \PDOException("not a new event"));
 		}
-		$query = "UPDATE event SET eventVenueId = :eventVenueId, eventContact = :eventContact, eventContent = :eventContent, eventDateTime = :eventDateTime, eventName = :eventName WHERE eventId = :eventId";
+		$query = "UPDATE event SET eventVenueId = :eventVenueId, eventContact = :eventContact, eventContent = :eventContent, eventDate = :eventDate, eventName = :eventName WHERE eventId = :eventId";
 		$statement = $pdo->prepare($query);
 		//binds members to their place holder
-		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s:u");
-		$parameters = ["eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
+		$formattedDate = $this->eventDate->format("Y-m-d H:i:s:u");
+		$parameters = ["eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDate" => $formattedDate, "eventName" => $this->eventName];
 		$statement->execute($parameters);
 	}
 	/**
@@ -235,7 +235,7 @@ require_once ("autoload.php");
 	public function JsonSerialize() {
 		$fields = get_object_vars($this);
 		//format the sate so that the front end can consume it
-		$fields["eventDateTime"] = round(floatval($this->eventDateTime->format("U.u")) * 1000);
+		$fields["eventDate"] = round(floatval($this->eventDate->format("U.u")) * 1000);
 		return($fields);
 	}
 }
