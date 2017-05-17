@@ -66,7 +66,7 @@ class Venue implements \JsonSerializable {
      **/
     private $venuePassSalt;
 
-    public function __construct(?int $newVenueId, ?int $newVenueImageId, string $newVenueActivationToken, string $newVenueAddress1, ?string $newVenueAddress2, string $newVenueCity, string $newVenueContact, string $newVenueContent, string $newVenueName, string $newVenueState, string $newVenueZip, string $newVenuePassHash, string $newVenuePassSalt) {
+    public function __construct(?int $newVenueId, ?int $newVenueImageId, ?string $newVenueActivationToken, string $newVenueAddress1, ?string $newVenueAddress2, string $newVenueCity, string $newVenueContact, string $newVenueContent, string $newVenueName, string $newVenueState, string $newVenueZip, string $newVenuePassHash, string $newVenuePassSalt) {
         try {
             $this->setVenueId($newVenueId);
             $this->setVenueImageId($newVenueImageId);
@@ -108,7 +108,7 @@ class Venue implements \JsonSerializable {
             return;
         }
         //verify that the venue id is positive
-        if($newVenueId <=0) {
+        if($newVenueId < 0) {
             throw(new \RangeException("venue id is not positive"));
         }
 
@@ -167,7 +167,12 @@ class Venue implements \JsonSerializable {
     public function setVenueActivationToken(string $newVenueActivationToken) : void {
         //enforce formatting on activation token
         $newVenueActivationToken = trim($newVenueActivationToken);
-        $newVenueActivationToken = strtolower($newVenueActivationToken);
+        $newVenueActivationToken = filter_var($newVenueActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+        if ($newVenueActivationToken === null) {
+            $this->venueActivationToken = null;
+            return;
+        }
 
         //enforce content in venue activation Token
         if(empty($newVenueActivationToken) === true) {
@@ -356,6 +361,7 @@ class Venue implements \JsonSerializable {
      * @throws \RangeException if the venue name is greater than 32 characters
      **/
     public function setVenueName(string $newVenueName) : void {
+        $newVenueName = trim($newVenueName);
         $newVenueName = filter_var($newVenueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
         //enforce that venue name is not empty
@@ -363,11 +369,11 @@ class Venue implements \JsonSerializable {
             throw(new \InvalidArgumentException("venue name is either empty or insecure"));
         }
 
-
         //enforce max string length of venue name
         if(strlen($newVenueName) > 32) {
             throw(new \RangeException("venue name must be less than 32 characters"));
         }
+
         //take new venue name and store it in venue name
         $this->venueName = $newVenueName;
     }
@@ -398,8 +404,8 @@ class Venue implements \JsonSerializable {
         }
 
         //enforce that venue state is less than 32 characters
-        if(strlen($newVenueState) > 32) {
-            throw(new \RangeException("venue state must be less than 32 characters"));
+        if(strlen($newVenueState) !== 2) {
+            throw(new \RangeException("venue state must be exactly 2 characters"));
         }
 
         //take new venue state and store it in venue state
@@ -583,7 +589,7 @@ class Venue implements \JsonSerializable {
             throw(new \PDOException("unable to update a profile that does not exist"));
         }
 
-        $query = "UPDATE venue SET venueImageId = :venueImageId, venueActivationToken = :venueActivationToken, venueAddress1 = :venueAddress1, venueAddress2 = :venueAddress2, venueCity = :venueCity, venueContact = :venueContact, venueContent = :venueContent, venueName = :venueName, venueState = :venueState, venueZip = :venueZip, venuePassHash = :venuePassHash, venuePassSalt = :venuePassSalt";
+        $query = "UPDATE venue SET venueImageId = :venueImageId, venueActivationToken = :venueActivationToken, venueAddress1 = :venueAddress1, venueAddress2 = :venueAddress2, venueCity = :venueCity, venueContact = :venueContact, venueContent = :venueContent, venueName = :venueName, venueState = :venueState, venueZip = :venueZip, venuePassHash = :venuePassHash, venuePassSalt = :venuePassSalt WHERE venueId = :venueId";
         $statement = $pdo->prepare($query);
         $parameters = [
             "venueImageId" => $this->venueImageId,
@@ -597,7 +603,8 @@ class Venue implements \JsonSerializable {
             "venueState" => $this->venueState,
             "venueZip" => $this->venueZip,
             "venuePassHash" => $this->venuePassHash,
-            "venuePassSalt" => $this->venuePassSalt
+            "venuePassSalt" => $this->venuePassSalt,
+            "venueId" => $this->venueId
         ];
         $statement->execute($parameters);
     }
@@ -611,7 +618,7 @@ class Venue implements \JsonSerializable {
         $query = "SELECT venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueId = :venueId";
 
         $statement = $pdo->prepare($query);
-        $parameters = ["venueId => $venueId"];
+        $parameters = ["venueId" => $venueId];
         $statement->execute($parameters);
 
         //fetch venue from mySQL
@@ -620,7 +627,7 @@ class Venue implements \JsonSerializable {
             $statement->setFetchMode(\PDO::FETCH_ASSOC);
             $row = $statement->fetch();
             if($row !== false) {
-                $venue = new Venue($row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
+                $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
 
             }
         } catch (\Exception $exception) {
@@ -651,16 +658,16 @@ class Venue implements \JsonSerializable {
         //build array
         $venues = new \SplFixedArray($statement->rowCount());
         $statement->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $statement->fetch() !== false) ;
+        while (($row = $statement->fetch()) !== false) {
 
-        try {
-            $venue = new Venue( $venue = new Venue($row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]));
-            $venues[$venues->key()] = $venue;
-            $venues->next();
-        } catch (\Exception $exception) {
-            throw(new \PDOException($exception->getMessage(), 0, $exception));
+            try {
+                $venue = new Venue ($row["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
+                $venues[$venues->key()] = $venue;
+                $venues->next();
+            } catch (\Exception $exception) {
+                throw(new \PDOException($exception->getMessage(), 0, $exception));
+            }
         }
-
         return ($venues);
     }
 
@@ -682,18 +689,19 @@ class Venue implements \JsonSerializable {
         $statement->execute($parameters);
 
         //build array
+
         $venues = new \SplFixedArray($statement->rowCount());
         $statement->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $statement->fetch() !== false) ;
+        while(($row = $statement->fetch()) !== false) {
 
-        try {
-            $venue = new Venue( $venue = new Venue($row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]));
-            $venues[$venues->key()] = $venue;
-            $venues->next();
-        } catch (\Exception $exception) {
-            throw(new \PDOException($exception->getMessage(), 0, $exception));
+            try {
+                $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
+                $venues[$venues->key()] = $venue;
+                $venues->next();
+            } catch (\Exception $exception) {
+                throw(new \PDOException($exception->getMessage(), 0, $exception));
+            }
         }
-
         return ($venues);
     }
 
@@ -721,7 +729,7 @@ class Venue implements \JsonSerializable {
             $statement->setFetchMode(\PDO::FETCH_ASSOC);
             $row = $statement->fetch();
             if ($row !== false) {
-                $venue = new Venue( $venue = new Venue($row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]));
+                $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
             }
         } catch (\Exception $exception) {
             throw(new \PDOException($exception->getMessage(), 0, $exception));
