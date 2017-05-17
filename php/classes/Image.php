@@ -145,17 +145,17 @@ class Image implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo): void {
 		// enforce that imageId is not null (i/e., don't delete a image that does not exist)
-		if($this->imageId === null || $this->imageCloudinaryId === null) {
+		if($this->imageId === null) {
 			throw(new \PDOException("there is no image to delete"));
 		}
 
 		// create query template
 		// TODO: add missing arguments to delete
-		$query = "DELETE FROM image WHERE imageId = :imageId AND imageCloudinaryId = :imageCloudinaryId";
+		$query = "DELETE FROM image WHERE imageId = :imageId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["imageId" => $this->imageId, "imageCloudinaryId" => $this->imageCloudinaryId];
+		$parameters = ["imageId" => $this->imageId];
 		$statement->execute($parameters);
 	}
 
