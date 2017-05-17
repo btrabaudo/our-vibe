@@ -79,7 +79,7 @@ class eventTest extends OurVibeTest {
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_EVENTDATE = new \DateTime();
 
-		$venue = new Venue(null, $image->getImageId(), $this->VALID_ACTIVATIONTOKEN , "address", "address2", "burque", "is this supposed to be less than 128 characters or more than because it looks like more than in venue php", "this is a venue", "the unit test ampitheatre", "NM", "87106", $this->VALID_HASH, $this->VALID_SALT);
+		$venue = new Venue(null, $image->getImageId(), $this->VALID_ACTIVATIONTOKEN , "address", "address2", "burque", "505-555-1234", "this is a venue", "the unit test ampitheatre", "NM", "87106", $this->VALID_HASH, $this->VALID_SALT);
 	$venue->insert($this->getPDO());
 	}
 
