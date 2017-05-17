@@ -93,7 +93,7 @@ require_once ("autoload.php");
 			throw(new \InvalidArgumentException("event contact can not be blank"));
 		}
 		//enforce less than 128 characters in event contact
-		if (strlen($newEventContact) !== 128) {
+		if (strlen($newEventContact) < 128) {
 			throw(new \RangeException("event contact must be less than 128 characters"));
 		}
 		$this->eventContact = $newEventContact;
@@ -166,7 +166,7 @@ require_once ("autoload.php");
 			throw(new \InvalidArgumentException("event name can not be blank"));
 		}
 		//enforce less than 128 characters in event name
-		if (strlen($newEventName) !== 128) {
+		if (strlen($newEventName) < 128) {
 			throw(new \RangeException("event name must be less than 128 characters"));
 		}
 		$this->eventName = $newEventName;
