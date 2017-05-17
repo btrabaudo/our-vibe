@@ -127,7 +127,7 @@ require_once ("autoload.php");
 	 * accessor method for event date
 	 * @return \Date value of event date
 	 **/
-	public function getEventDate(): \Date {
+	public function getEventDate(): \DateTime {
 		return $this->eventDate;
 	}
 	/**
@@ -135,11 +135,11 @@ require_once ("autoload.php");
 	 **/
 	public function setEventDate($newEventDate = null): void {
 		if($newEventDate === null) {
-			$this->eventDate = new \Date();
+			$this->eventDate = new \DateTime();
 			return;
 		}
 		try {
-			$newEventDate = self::validateDate($newEventDate);
+			$newEventDate = self::validateDateTime($newEventDate);
 		} catch (\InvalidArgumentException | \RangeException  $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
