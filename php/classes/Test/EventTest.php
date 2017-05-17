@@ -40,7 +40,7 @@ class eventTest extends OurVibeTest {
 	protected $VALID_CONTENT = "Blah blah blah blah blah ";
 	/**
 	 * valid date to use
-	 * @var string $VALID_DATETIME
+	 * @var string $VALID_DATE
 	 */
 	protected $VALID_EVENTDATE = "asd;lfkjads";
 	/**
@@ -77,7 +77,7 @@ class eventTest extends OurVibeTest {
 
 
 		// calculate the date (just use the time the unit test was setup...)
-		$this->VALID_EVENTDATE = new \DateTime();
+		$this->VALID_EVENTDATE = new \Date();
 
 		$venue = new Venue(null, $image->getImageId(), $this->VALID_ACTIVATIONTOKEN , "address", "address2", "burque", "5553456789", "this is a venue", "the unit test ampitheatre", "NM", "87106", $this->VALID_HASH, $this->VALID_SALT);
 	$venue->insert($this->getPDO());
