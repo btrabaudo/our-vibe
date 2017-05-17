@@ -33,7 +33,7 @@ class EventImage implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 
 	 **/
-	public function __construct(int $newEventImageImageId, int $newEventImageEventId = null) {
+	public function __construct(?int $newEventImageImageId, int $newEventImageEventId) {
 		try {
 			$this->setEventImageImageId($newEventImageImageId);
 			$this->setEventImageEventId($newEventImageEventId);
