@@ -32,7 +32,7 @@ require_once ("autoload.php");
 	 * @throws \Exception
 	 * @throws \RangeException
 	 **/
-	public function __construct(?int $newEventId, int $newEventVenueId, string $newEventContact, string $newEventContent, $newEventDate = null, string $newEventName) {
+	public function __construct(?int $newEventId, ?int $newEventVenueId, string $newEventContact, string $newEventContent, $newEventDate = null, string $newEventName) {
 		try {
 			$this->setEventId($newEventId);
 			$this->setEventVenueId($newEventVenueId);
