@@ -153,6 +153,10 @@ class Image implements \JsonSerializable {
 		// TODO: add missing arguments to delete
 		$query = "DELETE FROM image WHERE imageId = :imageId AND imageCloudinaryId = :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["imageId" => $this->imageId, "imageCloudinaryId" => $this->imageCloudinaryId];
+		$statement->execute($parameters);
 	}
 
 	/**
