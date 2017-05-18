@@ -60,7 +60,7 @@ require_once ("autoload.php");
 		 * @throws \RangeException if event id is not positive
 		 * @throws \InvalidArgumentException if event id is not an integer
 		 **/
-		public function setEventId(int $newEventId): void {
+		public function setEventId(?int $newEventId): void {
 			//if event id is null return it
 			if ($newEventId === null) {
 				$this->eventId = null;

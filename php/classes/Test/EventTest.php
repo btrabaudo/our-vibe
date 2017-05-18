@@ -79,8 +79,8 @@ class eventTest extends OurVibeTest {
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_EVENTDATE = new \DateTime();
 
-		$venue = new Venue(null, $image->getImageId(), $this->VALID_ACTIVATIONTOKEN , "address", "address2", "burque","505-709-0999", "this is a venue", "the unit test ampitheatre", "NM", "87106", $this->VALID_HASH, $this->VALID_SALT);
-	$venue->insert($this->getPDO());
+		$this->VALID_VENUE = new Venue(null, $image->getImageId(), $this->VALID_ACTIVATIONTOKEN , "address", "address2", "burque","505-709-0999", "this is a venue", "the unit test ampitheatre", "NM", "87106", $this->VALID_HASH, $this->VALID_SALT);
+	$this->VALID_VENUE->insert($this->getPDO());
 	}
 
 
@@ -91,7 +91,7 @@ class eventTest extends OurVibeTest {
 		//count the rows and save it
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
-		$event = new Event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$event = new Event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
 		//var_dump($event);
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
