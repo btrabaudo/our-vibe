@@ -181,12 +181,52 @@ class EventImage implements \JsonSerializable {
 	}
 
 	/**
+	 * get event image by image id
+	 *
+	 * @param \PDO $pdo $pdo PDO connection object
+	 * @param int $eventImageImageId Imge id to search for
+	 * @return Image|null Image or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+
+	public static function getEventImageByEventImageImageId(\PDO $pdo, int $eventImageImageId):?EventImage {
+		// sanitize the image id before searching
+		if($eventImageImageId <= 0) {
+					throw(new \PDOException("image id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT eventImageImageId, eventImageEventId FROM eventImage WHERE eventImageImageId = :eventImageImageId";
+		$statement = $pdo->prepare($query);
+
+		// bind the event id to the place holder
+		$parameters = ["eventImageImageId" => $eventImageImageId];
+		$statement->execute($parameters);
+
+		// grab the eventImage from my SQL
+		try{
+					$eventImage = null;
+					$statement->setFetchMode(\PDO::FETCH_ASSOC);
+					$row = $statement->fetch();
+					if($row !== false) {
+								$eventImage = new EventImage($row["eventImageImageId"], $row["eventImageEventId"]);
+					}
+		} catch(\Exception $exception) {
+					// if the row couldn't be converted, rethrow it
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($eventImage);
+	}
+
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
 	 **/
 	public function jsonSerialize() {
-				$fields = get_object_vars($this);
+		$fields = get_object_vars($this);
+		return($fields);
 	}
 
 }
