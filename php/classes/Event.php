@@ -48,6 +48,32 @@ require_once ("autoload.php");
 		}
 	}
 		/**
+		 * accessor for event id
+		 * @return int|null $eventId
+		 **/
+		public function getEventId(): ?int {
+			return ($this->eventId);
+		}
+		/**
+		 * mutator for event id
+		 * @param int|null for event id
+		 * @throws \RangeException if event id is not positive
+		 * @throws \InvalidArgumentException if event id is not an integer
+		 **/
+		public function setEventId(int $newEventId): void {
+			//if event id is null return it
+			if ($newEventId === null) {
+				$this->eventId = null;
+				return;
+			}
+			//enforce that event id is a positive int
+			if ($newEventId <= 0) {
+				throw(new \RangeException("event id is not positive"));
+			}
+			//store this event id
+			$this->eventId = $newEventId;
+		}
+		/**
 		 * accessor for event venue id
 		 * @return int|null $eventVenueId
 		 **/
