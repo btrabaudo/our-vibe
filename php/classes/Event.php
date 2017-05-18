@@ -6,6 +6,7 @@ require_once ("autoload.php");
  	* @author kkristl <kkristl@cnm.edu>
  	**/
 	class Event implements \JsonSerializable {
+		use ValidateDate;
 	/**
 	 * Id for this Event; this is the primary key
 	 **/
@@ -115,7 +116,7 @@ require_once ("autoload.php");
 	public function setEventContact(string $newEventContact): void {
 		$newEventContact = filter_var($newEventContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		//enforce can not be blank in event contact
-		if (!ctype_alnum($newEventContact)) {
+		if (empty($newEventContact)) {
 			throw(new \InvalidArgumentException("event contact can not be blank"));
 		}
 		//enforce less than 128 characters in event contact
@@ -138,15 +139,17 @@ require_once ("autoload.php");
 	 * @throws \RangeException if event content is more than 768 characters
 	 **/
 	public function setEventContent(string $newEventContent): void {
+		// verify the event content is secure
+		$newEventContent = trim($newEventContent);
 		$newEventContent = filter_var($newEventContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		//enforce can not be blank in event content
-		if (!ctype_alnum($newEventContent)) {
-			throw(new \InvalidArgumentException("event content can not be blank"));
+		if(empty($newEventContent) === true) {
+			throw(new \InvalidArgumentException("event content is empty or insecure"));
 		}
-		//enforce less than 768 characters in event content
-		if (strlen($newEventContent) !== 768) {
-			throw(new \RangeException("event content must be less than 768 characters"));
+		// verify the event content will fit in the database
+		if(strlen($newEventContent) > 768) {
+			throw(new \RangeException("event content too large"));
 		}
+		// store the tweet content
 		$this->eventContent = $newEventContent;
 	}
 	/**
@@ -156,21 +159,23 @@ require_once ("autoload.php");
 	public function getEventDate(): \DateTime {
 		return $this->eventDate;
 	}
-	/**
-	 * @param \Date $eventDate
-	 **/
-	public function setEventDate($newEventDate = null): void {
-		if($newEventDate === null) {
-			$this->eventDate = new \DateTime();
-			return;
-		}
-		try {
-			$newEventDate = self::validateDateTime($newEventDate);
-		} catch (\InvalidArgumentException | \RangeException  $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-		$this->eventDate = $newEventDate;
+
+		//* mutator method for event date
+
+		public function setEventDate($newEventDate = null) : void {
+			// base case: if the date is null, use the current date and time
+			if($newEventDate === null) {
+				$this->eventDate = new \DateTime();
+				return;
+			}
+			// store the like date using the ValidateDate trait
+			try {
+				$newEventDate = self::validateDateTime($newEventDate);
+			} catch(\InvalidArgumentException | \RangeException $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			}
+			$this->eventDate = $newEventDate;
 	}
 	/**
 	 * accessor for event name

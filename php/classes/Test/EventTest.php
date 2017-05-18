@@ -91,6 +91,7 @@ class eventTest extends OurVibeTest {
 		//count the rows and save it
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
+		var_dump($this->VALID_CONTACT);
 		$event = new Event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
 		//var_dump($event);
 		$event->insert($this->getPDO());
