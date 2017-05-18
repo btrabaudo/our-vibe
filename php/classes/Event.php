@@ -6,7 +6,6 @@ require_once ("autoload.php");
  	* @author kkristl <kkristl@cnm.edu>
  	**/
 	class Event implements \JsonSerializable {
-		use ValidateDate;
 	/**
 	 * Id for this Event; this is the primary key
 	 **/
@@ -105,7 +104,7 @@ require_once ("autoload.php");
 	 * @return string for event contact
 	 **/
 	public function getEventContact(): string {
-		return $this->eventContact;
+		return ($this->eventContact);
 	}
 	/**
 	 * mutator for event contact
@@ -114,9 +113,11 @@ require_once ("autoload.php");
 	 * @throws \RangeException if event contact is more than 128 characters
 	 **/
 	public function setEventContact(string $newEventContact): void {
+		// verify the event content is secure
+		$newEventContact = trim($newEventContact);
 		$newEventContact = filter_var($newEventContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		//enforce can not be blank in event contact
-		if (empty($newEventContact)) {
+		if (empty($newEventContact) === true) {
 			throw(new \InvalidArgumentException("event contact can not be blank"));
 		}
 		//enforce less than 128 characters in event contact
@@ -157,7 +158,7 @@ require_once ("autoload.php");
 	 * @return \Date value of event date
 	 **/
 	public function getEventDate(): \DateTime {
-		return $this->eventDate;
+		return ($this->eventDate);
 	}
 
 		//* mutator method for event date
@@ -168,7 +169,7 @@ require_once ("autoload.php");
 				$this->eventDate = new \DateTime();
 				return;
 			}
-			// store the like date using the ValidateDate trait
+			// store the event date using the ValidateDate trait
 			try {
 				$newEventDate = self::validateDateTime($newEventDate);
 			} catch(\InvalidArgumentException | \RangeException $exception) {
@@ -182,7 +183,7 @@ require_once ("autoload.php");
 	 * @return string for event name
 	 **/
 	public function getEventName(): string {
-		return $this->eventName;
+		return ($this->eventName);
 	}
 	/**
 	 * mutator for event name
@@ -191,13 +192,15 @@ require_once ("autoload.php");
 	 * @throws \RangeException if event content is more than 128 characters
 	 **/
 	public function setEventName(string $newEventName): void {
+		// verify the event name is secure
+		$newEventName = trim($newEventName);
 		$newEventName = filter_var($newEventName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		//enforce event name can not be blank
-		if (!ctype_alnum($newEventName)) {
+		if (empty($newEventName) === true) {
 			throw(new \InvalidArgumentException("event name can not be blank"));
 		}
 		//enforce less than 128 characters in event name
-		if (strlen($newEventName) < 128) {
+		if (strlen($newEventName) > 128) {
 			throw(new \RangeException("event name must be less than 128 characters"));
 		}
 		$this->eventName = $newEventName;
