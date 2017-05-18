@@ -328,17 +328,17 @@ class VenueTest extends OurVibeTest {
      * test grabbing a venue by venue city
      **/
 
-    public function testGetVenuebyVenueCity() : void {
+    public function testGetVenueByVenueCity() : void {
         // count the number of rows
         $numRows = $this->getConnection()->getRowCount("venue");
-    var_dump($this->VALID_ACTIVATION);
+
         //create a new venue and insert it into mySQL DB
         $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
 
         //grab data from mySQL
-        $results = Venue::getVenueByVenueCity($this->getPDO (), $this->VALID_CITY);
+        $results = Venue::getVenueByVenueCity($this->getPDO(), $this->VALID_CITY);
         $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("venue"));
 
         //enforce that no other class is bleeding into venue
