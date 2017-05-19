@@ -221,7 +221,7 @@ require_once ("autoload.php");
 		$query = "INSERT INTO event(eventId, eventVenueId, eventContact, eventContent, eventDate, eventName) VALUES (:eventId, :eventVenueId, :eventContact, :eventContent, :eventDate, :eventName)";
 		$statement = $pdo->prepare($query);
 		// bind members to their place holders
-		$formattedDate = $this->eventDate->format("Y-m-d H:i:s:u");
+		$formattedDate = $this->eventDate->format("Y-m-d H:i:s");
 		$parameters = ["eventId" => $this->eventId, "eventVenueId" => $this->eventVenueId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDate" => $formattedDate, "eventName" => $this->eventName];
 		$statement->execute($parameters);
 		$this->eventId = intval($pdo->lastInsertId());
@@ -244,6 +244,81 @@ require_once ("autoload.php");
 		$parameters = ["eventId" => $this->eventId];
 		$statement->execute($parameters);
 	}
+		public static function getEventByEventId(\PDO $pdo, int $eventId) : ?Event {
+			// sanitize the eventId before searching
+			if($eventId <= 0) {
+				throw(new \PDOException("event id is not positive"));
+			}
+			// create query template
+			$query = "SELECT eventId, eventVenueId, eventContent, eventDate FROM event WHERE eventId = :eventId";
+			$statement = $pdo->prepare($query);
+			// bind the event id to the place holder in the template
+			$parameters = ["eventId" => $eventId];
+			$statement->execute($parameters);
+			// grab the event from mySQL
+			try {
+				$event = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
+				}
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+			return($event);
+		}
+		public static function getEventByEventVenueId(\PDO $pdo, int $eventId) : ?Event {
+			// sanitize the eventVenueId before searching
+			if($eventVenueId <= 0) {
+				throw(new \PDOException("event venue id is not positive"));
+			}
+			// create query template
+			$query = "SELECT eventId, eventVenueId, eventContent, eventDate FROM event WHERE eventVenueId = :eventVenueId";
+			$statement = $pdo->prepare($query);
+			// bind the event venue id to the place holder in the template
+			$parameters = ["eventVenueId" => $eventVenueId];
+			$statement->execute($parameters);
+			// grab the event from mySQL
+			try {
+				$event = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
+				}
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+			return($event);
+		}
+		public static function getEventByEventContent(\PDO $pdo, int $tweetId) : ?Tweet {
+			// sanitize the tweetId before searching
+			if($tweetId <= 0) {
+				throw(new \PDOException("tweet id is not positive"));
+			}
+			// create query template
+			$query = "SELECT tweetId, tweetProfileId, tweetContent, tweetDate FROM tweet WHERE tweetId = :tweetId";
+			$statement = $pdo->prepare($query);
+			// bind the tweet id to the place holder in the template
+			$parameters = ["tweetId" => $tweetId];
+			$statement->execute($parameters);
+			// grab the tweet from mySQL
+			try {
+				$tweet = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$tweet = new Tweet($row["tweetId"], $row["tweetProfileId"], $row["tweetContent"], $row["tweetDate"]);
+				}
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+			return($tweet);
+		}
 	/**
 	 * Updates an event in mySQL
 	 * @param \PDO $pdo PDO connection object
@@ -258,7 +333,7 @@ require_once ("autoload.php");
 		$query = "UPDATE event SET eventVenueId = :eventVenueId, eventContact = :eventContact, eventContent = :eventContent, eventDate = :eventDate, eventName = :eventName WHERE eventId = :eventId";
 		$statement = $pdo->prepare($query);
 		//binds members to their place holder
-		$formattedDate = $this->eventDate->format("Y-m-d H:i:s:u");
+		$formattedDate = $this->eventDate->format("Y-m-d H:i:s");
 		$parameters = ["eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDate" => $formattedDate, "eventName" => $this->eventName];
 		$statement->execute($parameters);
 	}
