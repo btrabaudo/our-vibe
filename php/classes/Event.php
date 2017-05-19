@@ -6,6 +6,7 @@ require_once ("autoload.php");
  	* @author kkristl <kkristl@cnm.edu>
  	**/
 	class Event implements \JsonSerializable {
+		use ValidateDate;
 	/**
 	 * Id for this Event; this is the primary key
 	 **/
@@ -271,5 +272,7 @@ require_once ("autoload.php");
 		//format the sate so that the front end can consume it
 		$fields["eventDate"] = round(floatval($this->eventDate->format("U.u")) * 1000);
 		return($fields);
+
+
 	}
 }
