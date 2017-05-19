@@ -260,7 +260,6 @@ class EventImage implements \JsonSerializable {
 		}
 		return($eventImages);
 	}
-	//todo: create get by method for event id based off of get tweet by tweet profile id
 	/**
 	 * formats the state variables for JSON serialization
 	 *
