@@ -21,7 +21,7 @@ class VenueTest extends OurVibeTest {
      * @var Image $VALID_IMAGE
      **/
 
-    protected $VALID_IMAGE = null;
+    protected $VALID_IMAGE;
 
 
     /**
@@ -118,7 +118,7 @@ class VenueTest extends OurVibeTest {
         $this->VALID_IMAGE = new Image(null, null);
         $this->VALID_IMAGE->insert($this->getPDO());
 
-        //var_dump($this->VALID_ACTIVATION);
+        //var_dump($this->VALID_IMAGE);
 
     }
 
@@ -154,7 +154,7 @@ class VenueTest extends OurVibeTest {
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
+        $this->assertEquals($pdoVenue->getVenueImageId(), $venue->getVenueImageId());
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -176,7 +176,7 @@ class VenueTest extends OurVibeTest {
 
     public function testInsertInvalidVenue() : void {
         // create venue with a non null venueId and see it fail
-        $venue = new Venue(VenueTest::INVALID_KEY, null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+        $venue = new Venue(VenueTest::INVALID_KEY, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
         $venue->insert($this->getPDO());
     }
@@ -185,7 +185,7 @@ class VenueTest extends OurVibeTest {
      * test inserting a venue, editing it, and then updating it
      **/
 
-    public function testUpdateValidVenue() {
+    public function testUpdateValidVenue() : void {
         $numRows = $this->getConnection()->getRowCount("venue");
 
         //create a new venue and insert it into mySQL DB
@@ -193,18 +193,16 @@ class VenueTest extends OurVibeTest {
         $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
 
 
-        //var_dump($this->VALID_NAME);
-
         $venue->insert($this->getPDO());
 
         //edit the venue and then update
-        $venue->setVenueAddress1($this->VALID_ADDRESS2);
+        $venue->setVenueAddress1($this->VALID_ADDRESS1);
         $venue->update($this->getPDO());
 
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
+        $this->assertEquals($pdoVenue->getVenueImageId(), $venue->getVenueImageId());
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -222,7 +220,7 @@ class VenueTest extends OurVibeTest {
     /**
      * test updating a venue that is the product of lies
      *
-     * @expectedException \PDOException
+     * @expectedException PDOException
      **/
 
     public function testUpdateInvalidVenue() {
@@ -238,7 +236,7 @@ class VenueTest extends OurVibeTest {
      * test creating a venue and then deleting it
      **/
 
-    public function testDeleteValidProfile() : void {
+    public function testDeleteValidVenue() : void {
 
         // count the number of rows
         $numRows = $this->getConnection()->getRowCount("venue");
@@ -257,7 +255,7 @@ class VenueTest extends OurVibeTest {
         // grab the data from mySQL and enforce the Venue does not exist
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertNull($pdoVenue);
-        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($numRows, $this->getConnection()->getRowCount("venue"));
 
 
     }
@@ -296,7 +294,7 @@ class VenueTest extends OurVibeTest {
         //grab data from mySQL and enforce that they match our expectations
         $pdoVenue = Venue::getVenueByVenueId($this->getPDO(), $venue->getVenueId());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
+        $this->assertEquals($pdoVenue->getVenueImageId(), $venue->getVenueImageId());
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -314,20 +312,17 @@ class VenueTest extends OurVibeTest {
 
     /**
      * test grabbing a venue that does not exist
-     *
-     *  @expectedException \PDOException
      **/
 
     public function testGetInvalidVenueByVenueId() : void {
         // grab a venue id that exceeds the maximum allowable venue id
-        $venue = Venue::getVenueByVenueId($this->getPDO(), VenueTest::INVALID_KEY);
+        $venue = Venue::getVenueByVenueId($this->getPDO(), OurVibeTest::INVALID_KEY);
         $this->assertNull($venue);
     }
 
     /**
      * test grabbing a venue by venue city
      **/
-
     public function testGetVenueByVenueCity() : void {
         // count the number of rows
         $numRows = $this->getConnection()->getRowCount("venue");
@@ -339,16 +334,16 @@ class VenueTest extends OurVibeTest {
 
         //grab data from mySQL
         $results = Venue::getVenueByVenueCity($this->getPDO(), $this->VALID_CITY);
-        $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertCount(1, $results);
 
         //enforce that no other class is bleeding into venue
         $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Venue", $results);
 
         // enforce that the results meet expectations
-
         $pdoVenue = $results[0];
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
+        $this->assertEquals($pdoVenue->getVenueImageId(), $venue->getVenueImageId());
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -364,7 +359,6 @@ class VenueTest extends OurVibeTest {
 
     /**
      * test grabbing a venue by a city that does not exist
-     * @expectedException \PDOException
      **/
     public function testGetInvalidVenueByVenueCity() : void {
         $venue = Venue::getVenueByVenueCity($this->getPDO(), "@doesnotexist");
@@ -388,13 +382,16 @@ class VenueTest extends OurVibeTest {
 
         $results = Venue::getVenueByVenueName($this->getPDO(), $this->VALID_NAME);
         $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("venue"));
+        $this->assertCount(1, $results);
 
         $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Venue", $results);
 
+
         // grab data from mySQL and enforce the fields match expectations
         $pdoVenue = $results[0];
+
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
+        $this->assertEquals($pdoVenue->getVenueImageId(), $venue->getVenueImageId());
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -413,14 +410,13 @@ class VenueTest extends OurVibeTest {
     /**
      * test grabbing a venue by a name that does not exist
      *
-     * @expectedException \PDOException
      **/
 
     public function testGetInvalidVenueByName() : void {
         // grab a venue that does not exist
-        $venue = Venue::getVenueByVenueName($this->getPDO(), "@doesnotexist");
+        $venue = Venue::getVenueByVenueName($this->getPDO(), "doesnotexist");
 
-        $this->assertNull($venue);
+        $this->assertCount(0, $venue);
     }
 
     /**
@@ -438,7 +434,7 @@ class VenueTest extends OurVibeTest {
         // grab data from mySQL and enforce the fields match expectations
         $pdoVenue = Venue::getVenueByVenueActivationToken($this->getPDO(), $venue->getVenueActivationToken());
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
-        $this->assertEquals($pdoVenue->getVenueImageId(), $this->VALID_IMAGE);
+        $this->assertEquals($pdoVenue->getVenueImageId(), $venue->getVenueImageId());
         $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
         $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
         $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
@@ -456,7 +452,6 @@ class VenueTest extends OurVibeTest {
     /**
      * test grabbing a venue by an activation Token that does not exist
      *
-     * @expectedException \PDOException
      **/
 
     public function testGetInvalidProfileActivation() : void {

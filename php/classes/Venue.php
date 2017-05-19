@@ -130,15 +130,14 @@ class Venue implements \JsonSerializable {
      * @throws \RangeException if venue image id is not positive
      * @throws \TypeError if venue image id is not an int
      */
-    public function setVenueImageId(?int $newVenueImageId) : void
-    {
+    public function setVenueImageId(?int $newVenueImageId) : void {
 
         if ($newVenueImageId === null) {
         $this->venueImageId = null;
             return;
         }
         //verify that the venue image id is positive
-        if($newVenueImageId < 0) {
+        if($newVenueImageId <= 0) {
             throw(new \RangeException("venue image id is not positive"));
         }
 
@@ -152,7 +151,7 @@ class Venue implements \JsonSerializable {
      * accessor method for Venue Activation Token
      * @return string
      */
-    public function getVenueActivationToken(): string {
+    public function getVenueActivationToken(): ?string {
         return($this->venueActivationToken);
     }
 
@@ -610,6 +609,7 @@ class Venue implements \JsonSerializable {
     }
 
     public static function getVenueByVenueId(\PDO $pdo, int $venueId) : ?Venue {
+
         //make sure venue id is positive
         if($venueId <= 0) {
             throw(new \PDOException("venue id is not positive"));
@@ -638,30 +638,32 @@ class Venue implements \JsonSerializable {
 
 
     }
-    public static function getVenueByVenueCity(\PDO $pdo, string $venueCity) : \SPLFixedArray {
+    public static function getVenueByVenueCity(\PDO $pdo, string $venueCity) : \SplFixedArray {
         //Sanitize city
         $venueCity = trim($venueCity);
         $venueCity = filter_var($venueCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        if (empty ($venueCity) === true) {
+        if(empty($venueCity) === true) {
             throw(new \PDOException("not a valid city"));
         }
         //query for venue using venueCity
-        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueCity = :venueCity";
+        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueCity LIKE :venueCity";
         $statement = $pdo->prepare($query);
 
         // bind the venue city to the placeholder
-        $venueCity = "%venueCity%";
+        $venueCity = "%$venueCity%";
         $parameters = ["venueCity" => $venueCity];
         $statement->execute($parameters);
 
         //build array
         $venues = new \SplFixedArray($statement->rowCount());
         $statement->setFetchMode(\PDO::FETCH_ASSOC);
+
         while (($row = $statement->fetch()) !== false) {
 
             try {
-                $venue = new Venue ($row["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
+                $venue = new Venue($row["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
+
                 $venues[$venues->key()] = $venue;
                 $venues->next();
             } catch (\Exception $exception) {
@@ -680,11 +682,11 @@ class Venue implements \JsonSerializable {
             throw(new \PDOException("not a valid city"));
         }
         //query for venue using venueCity
-        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueName = :venueName";
+        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueName LIKE :venueName";
         $statement = $pdo->prepare($query);
 
         // bind the venue city to the placeholder
-        $venueName = "%venueName%";
+        $venueName = "%$venueName%";
         $parameters = ["venueName" => $venueName];
         $statement->execute($parameters);
 
@@ -705,7 +707,7 @@ class Venue implements \JsonSerializable {
         return ($venues);
     }
 
-    public static function getVenueByVenueActivationToken(\PDO $pdo, string $venueActivationToken) : ?Venue
+    public static function getVenueByVenueActivationToken(\PDO $pdo, ?string $venueActivationToken) : ?Venue
     {
         //make sure that the activation token is formatted
 
