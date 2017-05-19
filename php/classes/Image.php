@@ -132,6 +132,7 @@ class Image implements \JsonSerializable {
 		// bind the member variables to the placeholders in the template
 		$parameters = ["imageId" => $this->imageId, "imageCloudinaryId" => $this->imageCloudinaryId];
 		$statement->execute($parameters);
+
 		//update the null imageId with mySQL just gave us
 		$this->imageId = intval($pdo->lastInsertId());
 	}
