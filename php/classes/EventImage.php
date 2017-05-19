@@ -99,23 +99,26 @@ class EventImage implements \JsonSerializable {
 	/**
 	 * inserts this  into mySQL
 	 *
-	 * @param \PDO $pdo PDO connection object
+	 * @param \PDO $pdo connection object
 	 * @throws \PDOException whe mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo): void {
-		// ensure the object exists before inserting
-		if($this->eventImageImageId === null || $this->eventImageEventId === null) {
-			throw(new \PDOException("not a valid image"));
+		// emforce the event image image id is null (i.e., dont insert a event image that already exists)
+		if($this->eventImageImageId !== null) {
+			throw(new \PDOException("not a new image"));
 		}
 
 		// create query template
-		$query = "DELETE FROM eventImage WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
+		$query = "INSERT INTO eventImage(eventImageImageId, eventImageEventId) VALUES (:eventImageImageId, :eventImageEventId)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
 		$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
 		$statement->execute($parameters);
+
+		// update the null event image image id with what mySQL gave us
+		$this->eventImageImageId = intval($pdo->lastInsertId());
 	}
 
 	/**
@@ -219,6 +222,45 @@ class EventImage implements \JsonSerializable {
 		return ($eventImage);
 	}
 
+	/**
+	 * get event image by event image event id
+	 *
+	 * @param \PDO $pdo PDo connection object
+	 * @param int $eventImageEventId image id to search by
+	 * @return \SplFixedArray of event image found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+
+	public static function getEventImageByEventImageEventId(\PDO $pdo, int $eventImageEventId) : \SplFixedArray {
+		// sanitize the event Id before searching
+		if($eventImageEventId <= 0) {
+					throw(new \RangeException("event image event id must be positive"));
+		}
+		// create query template
+		$query = "SELECT eventImageImageId, eventImageEventId FROM eventImage WHERE eventImageEventId = :eventImageEventId";
+		$statement = $pdo->prepare($query);
+
+		// bind the event image event id to the place holder in the template
+		$parameters = ["eventImageEventId" => $eventImageEventId];
+		$statement->execute($parameters);
+
+		// build an array of event images
+		$eventImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+					try {
+								$eventImage = new EventImage($row["eventImageImageId"], $row["eventImageEventId"]);
+								$eventImages[$eventImage->key()] =$eventImage;
+								$eventImages->next();
+					} catch(\Exception $exception) {
+								// if the row couldn't be converted, rethrow it
+						throw(new \PDOException($exception->getMessage(), 0, $exception));
+					}
+		}
+		return($eventImages);
+	}
+	//todo: create get by method for event id based off of get tweet by tweet profile id
 	/**
 	 * formats the state variables for JSON serialization
 	 *
