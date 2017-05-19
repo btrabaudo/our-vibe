@@ -294,30 +294,80 @@ require_once ("autoload.php");
 			}
 			return($event);
 		}
-		public static function getEventByEventContent(\PDO $pdo, int $tweetId) : ?Tweet {
-			// sanitize the tweetId before searching
-			if($tweetId <= 0) {
-				throw(new \PDOException("tweet id is not positive"));
+		public static function getEventByEventContent(\PDO $pdo, int $eventContent) : ?Event {
+			// sanitize the eventContent before searching
+			if($eventContent <= 0) {
+				throw(new \PDOException("event content is not positive"));
 			}
 			// create query template
-			$query = "SELECT tweetId, tweetProfileId, tweetContent, tweetDate FROM tweet WHERE tweetId = :tweetId";
+			$query = "SELECT eventId, eventVenueId, eventContent, eventDate FROM event WHERE eventContent = :eventContent";
 			$statement = $pdo->prepare($query);
-			// bind the tweet id to the place holder in the template
-			$parameters = ["tweetId" => $tweetId];
+			// bind the event content to the place holder in the template
+			$parameters = ["tweetId" => $eventContent];
 			$statement->execute($parameters);
 			// grab the tweet from mySQL
 			try {
-				$tweet = null;
+				$event = null;
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				$row = $statement->fetch();
 				if($row !== false) {
-					$tweet = new Tweet($row["tweetId"], $row["tweetProfileId"], $row["tweetContent"], $row["tweetDate"]);
+					$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
 				}
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-			return($tweet);
+			return($event);
+		}
+		public static function getTweetByEventDate(\PDO $pdo, int $tweetId) : ?Event {
+			// sanitize the event date before searching
+			if($eventDate <= 0) {
+				throw(new \PDOException("event date is not positive"));
+			}
+			// create query template
+			$query = "SELECT eventId, eventVenueId, eventContent, eventDate FROM event WHERE eventContent = :eventContent";
+			$statement = $pdo->prepare($query);
+			// bind the event date to the place holder in the template
+			$parameters = ["eventDate" => $eventDate];
+			$statement->execute($parameters);
+			// grab the tweet from mySQL
+			try {
+				$event = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
+				}
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+			return($event);
+		}
+		public static function getEventByEventName(\PDO $pdo, int $eventName) : ?Event {
+			// sanitize the event name before searching
+			if($eventName <= 0) {
+				throw(new \PDOException("event name is not positive"));
+			}
+			// create query template
+			$query = "SELECT eventId, eventVenueId, eventContent, eventDate FROM event WHERE eventContent = :eventContent";
+			$statement = $pdo->prepare($query);
+			// bind the event name to the place holder in the template
+			$parameters = ["eventName" => $eventName];
+			$statement->execute($parameters);
+			// grab the event from mySQL
+			try {
+				$event = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
+				}
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+			return($event);
 		}
 	/**
 	 * Updates an event in mySQL
