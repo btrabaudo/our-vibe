@@ -2,12 +2,11 @@
 
 namespace Edu\Cnm\OurVibe\Test;
 
+use Edu\Cnm\OurVibe\Tag;
+use Edu\Cnm\OurVibe\Image;
+use Edu\Cnm\OurVibe\Venue;
 use Edu\Cnm\OurVibe\Event;
 use Edu\Cnm\OurVibe\EventTag;
-use Edu\Cnm\OurVibe\Image;
-use Edu\Cnm\OurVibe\Tag;
-use Edu\Cnm\OurVibe\Venue;
-
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -17,15 +16,6 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Tag
  **/
 class EventTagTest extends OurVibeTest {
-	/**
-	 * @var string $valid_Activation
-	 **/
-	protected $VALID_ACTIVATION;
-
-	/**
-	 * @var int $VALID_EVENT_TAG_EVENT_ID
-	 **/
-	protected $VALID_EVENT_TAG_EVENT_ID = "passingtests";
 
 	/**
 	 * @var Venue Venue
@@ -36,6 +26,21 @@ class EventTagTest extends OurVibeTest {
 	 * @var Event Event
 	 **/
 	protected $VALID_EVENT;
+
+	/**
+	 * @var Image image
+	 **/
+	protected $VALID_IMAGE;
+
+	/**
+	 * @var Tag Tag
+	 **/
+	protected $VALID_TAG;
+
+	/**
+	 * @var string $valid_Activation
+	 **/
+	protected $VALID_ACTIVATION;
 
 	/**
 	 * @var \DateTime valid event datetime
@@ -55,50 +60,37 @@ class EventTagTest extends OurVibeTest {
 	/**
 	 * @var VenueImageId VenueImageId
 	 **/
-	protected $VALID_VENUE_IMAGE_ID;
-
-	/**
-	 * @var Image image
-	 **/
-	protected $VALID_IMAGE = null;
-
-	/**
-	 * @var tagName tagName
-	 **/
-	protected $VALID_TAG_NAME="string";
-
-	/**
-	 * @var Tag Tag
-	 **/
-	protected $VALID_TAG;
+	protected $VALID_IMAGE_CLOUD_ID;
 
 	public final function setUp(): void {
 		parent::setUp();
 
 		$password = "abc123";
 		$this->VALID_PASS_SALT = bin2hex(random_bytes(32));
-
 		$this->VALID_PASS_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PASS_SALT, 262144);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
-		$this->VALID_IMAGE = new Image(null, null);
+		$this->VALID_TAG = new Tag(null,"validTag");
+		$this->VALID_TAG->insert($this->getPDO());
+
+		$this->VALID_IMAGE_CLOUD_ID = bin2hex(random_bytes(32));
+		$this->VALID_IMAGE = new Image(null, $this->VALID_IMAGE_CLOUD_ID);
 		$this->VALID_IMAGE->insert($this->getPDO());
 
 		$this->VALID_VENUE = new Venue(
 			null,
-				$this->VALID_IMAGE->getImageId(),
-				$this->VALID_ACTIVATION,
-				"123 High St.",
+			$this->VALID_IMAGE->getImageId(),
+			$this->VALID_ACTIVATION,
+			"123 High St.",
 			"abq",
-				"paul baca",
-				"+12125551212",
-				"boI",
-				"theatre",
-				"nm",
-				"87114",
+			"paul baca",
+			"+12125551212",
+			"boI",
+			"theatre",
+			"nm",
+			"87114",
 			$this->VALID_PASS_HASH,
-				$this->VALID_PASS_SALT);
-
+			$this->VALID_PASS_SALT);
 		$this->VALID_VENUE->insert($this->getPDO());
 
 		$this->VALID_EVENT_DATE = new \DateTime();
@@ -110,10 +102,6 @@ class EventTagTest extends OurVibeTest {
 			"Boi",
 			$this->VALID_EVENT_DATE,
 			"theatre");
-
-		$this->VALID_TAG = new Tag(
-		null,
-		"whatever");
 	}
 
 	/**`

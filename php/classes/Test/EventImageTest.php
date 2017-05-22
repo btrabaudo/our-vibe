@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\OurVibe\Test;
 
-use Edu\Cnm\OurVibe\EventImage;
+use Edu\Cnm\OurVibe\{Venue, Event, Image, EventImage};
 
 //  grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -18,19 +18,19 @@ require_once(dirname(__DIR__) . "/autoload.php");
 class EventImageTest extends OurVibeTest {
 
 	/**
-	 *
-	 *
+	 * finish this docblock
 	 * @var EventImage event
 	 **/
+	protected $event;
 
-	protected $event = null;
+
+	// todo: we need a varible to hold the Venue, Image we need to create too, and variables for all the data we need to put into Event and Image
 
 	/**
 	 * valid event image id to create the event image object to own the test
 	 *
 	 * @var $VALID_EVENT_IMAGE_IMAGE_ID
 	 **/
-
 	protected $VALID_EVENT_IMAGE_IMAGE_ID;
 
 	/**
@@ -38,7 +38,6 @@ class EventImageTest extends OurVibeTest {
 	 *
 	 * @var $VALID_EventImageEventId
 	 **/
-
 	protected $VALID_EVENT_IMAGE_EVENT_ID;
 
 	/**
