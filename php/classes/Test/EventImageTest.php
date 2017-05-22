@@ -1,20 +1,22 @@
 <?php
+
 namespace Edu\Cnm\OurVibe\Test;
 
-use Edu\Cnm\OurVibe\{Venue, Event, Image, EventImage};
+use Edu\Cnm\OurVibe\{
+	Tag, Venue, Event, Image, EventImage
+};
 
 //  grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 
-	/**
-	 * Full php unit test for event image class
-	 *
-	 * this is a complete php unit test of the event image class. it's complete because all mySQL/PDO enabled methods are tested for both invalid and valid inputs.
-	 *
-	 * @see eventImage
-	 * @author marcoder <mlester3@cnm.edu>
+/**
+ * Full php unit test for event image class
+ *
+ * this is a complete php unit test of the event image class. it's complete because all mySQL/PDO enabled methods are tested for both invalid and valid inputs.
+ *
+ * @see eventImage
+ * @author marcoder <mlester3@cnm.edu>
  **/
-
 class EventImageTest extends OurVibeTest {
 
 	/**
@@ -92,7 +94,7 @@ class EventImageTest extends OurVibeTest {
 		$this->VALID_PASS_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PASS_SALT, 262144);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
-		$this->VALID_TAG = new Tag(null,"validTag");
+		$this->VALID_TAG = new Tag(null, "validTag");
 		$this->VALID_TAG->insert($this->getPDO());
 
 		$this->VALID_IMAGE_CLOUD_ID = bin2hex(random_bytes(32));
@@ -126,23 +128,13 @@ class EventImageTest extends OurVibeTest {
 			"theatre");
 	}
 
-
-
-
-
-
-
-
-
-
-
 	public function testInsertValidEventImage(): void {
 
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("eventImage");
 
 		// create a new eventImage and insert to into mySQL
-		$eventImage = new EventImage(null, $this->event->getEventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID,$this->VALID_EVENT_IMAGE_EVENT_ID);
+		$eventImage = new EventImage(null, $this->event->getEventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALID_EVENT_IMAGE_EVENT_ID);
 
 		//var_dump($eventImage);
 		$eventImage->insert($this->getPDO());
@@ -190,10 +182,11 @@ class EventImageTest extends OurVibeTest {
 		$this->assertEquals($pdoEventImage->getEventImageImageId(), $this->VALID_EVENT_IMAGE_IMAGE_ID);
 		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->VALID_EVENT_IMAGE_EVENT_ID);
 	}
+
 	/**
 	 *test updating an EventImage that does not exist
 	 *
-	 *@expectedException \PDOException 
+	 * @expectedException \PDOException
 	 **/
 
 	public function testUpdateInvalidEventImage() {
@@ -208,14 +201,14 @@ class EventImageTest extends OurVibeTest {
 	 **/
 
 	public function testDeleteValidEventImage(): void {
-		
+
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("eventImage");
-		
+
 		// create a new EventImage and insert to into mySQL
 		$eventImage = new EventImage(null, $this->VALID_EVENT_IMAGE_IMAGE_ID, $this->VALILD_EVENT_IMAGE_EVENT_ID);
 		$eventImage->insert($this->getPDO());
-		
+
 		// delete the EventImage from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
 		$eventImage->delete($this->getPDO());
@@ -263,13 +256,13 @@ class EventImageTest extends OurVibeTest {
 	 * test grabbing a EventImage that does not exist
 	 **/
 
-	public function testGetInvalidEventImageByEventImageImageId() : void {
+	public function testGetInvalidEventImageByEventImageImageId(): void {
 
 		// grab a event image id that exceeds the maximum allowable event image id
 		$eventImage = EventImage::getEventByEventImageImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
 		$this->assertNull($eventImage);
-		}
 	}
+}
 
 
 
