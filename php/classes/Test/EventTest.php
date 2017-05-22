@@ -18,7 +18,8 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @author kkristl
  **/
 class eventTest extends OurVibeTest {
-	/**
+
+    /**
 	 * valid venue id to use
 	 * @var string $VALID_VENUE
 	 **/
@@ -27,12 +28,8 @@ class eventTest extends OurVibeTest {
 	 * valid contact to use
 	 * @var string $VALID_CONTACT
 	 **/
-	/**
-	 * @var string $VALID_ACTIVATIONTOKEN
-	 */
-	protected $VALID_ACTIVATIONTOKEN;
 
-	protected $VALID_CONTACT = "555-555-5555, BLah blah blah blah blah@blah.com";
+	protected $VALID_CONTACT = "555-555-5555";
 	/**
 	 * valid content to use
 	 * @var string $VALID_CONTENT
@@ -42,67 +39,108 @@ class eventTest extends OurVibeTest {
 	 * valid date to use
 	 * @var string $VALID_DATE
 	 */
-	protected $VALID_EVENTDATE = "asd;lfkjads";
-	/**
-	 * valid hash to use
-	 * @var string $VALID_HASH
-	 */
-	protected $VALID_HASH;
-	/**
-	 * valid image to use
-	 * @var string $VALID_image
-	 */
-	protected $VALID_image;
-	/**
-	 * valid name to use
-	 * @var string $VALID_NAME
-	 */
-	protected $VALID_NAME = "austin thundercats";
-	/**
-	 * valid salt to use
-	 * @var string $VALID_SALT
-	 */
-	protected $VALID_SALT;
+	protected $VALID_EVENTDATE;
 
-	// set up method
-	public final function setUp() {
-		parent::setUp();
-		$this->VALID_ACTIVATIONTOKEN = bin2hex(random_bytes(16));
-		$password = "abc123";
-		$this->VALID_SALT = bin2hex(random_bytes(32));
-		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
+    /**
+     * @var $VALID_EVENTNAME
+     */
+	protected $VALID_EVENTNAME = "Banana Bear";
 
-		$image = new Image(null, "asdfasdfasdfasdfasdf");
-		$image->insert($this->getPDO());
+    /**
+     * this is cmd space's fault
+     * @var Image $VALID_IMAGE
+     **/
+
+    protected $VALID_IMAGE;
+    /**
+     * valid hash to use
+     * @var string $VALID_HASH
+     **/
 
 
-		// calculate the date (just use the time the unit test was setup...)
-		$this->VALID_EVENTDATE = new \DateTime();
+    protected $VALID_HASH;
 
-		$this->VALID_VENUE = new Venue(null, $image->getImageId(), $this->VALID_ACTIVATIONTOKEN , "address", "address2", "burque","505-709-0999", "this is a venue", "the unit test ampitheatre", "NM", "87106", $this->VALID_HASH, $this->VALID_SALT);
-	$this->VALID_VENUE->insert($this->getPDO());
-	}
+    /**
+     * valid salt to use
+     * @var string $VALID_SALT;
+     **/
+
+    protected $VALID_SALT;
+    /**
+     * Placeholder until account activation is created
+     * @var string $VALID_ACTIVATION
+     **/
+
+    protected $VALID_ACTIVATION;
+
+    /**
+     * set it up
+     */
+    public final function setUp() : void {
+        parent::setUp();
+
+        $password = "abc123";
+        $this->VALID_SALT = bin2hex(random_bytes(32));
+
+        $this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
+        $this->VALID_ACTIVATION = bin2hex(random_bytes(16));
+
+        $this->VALID_IMAGE = new Image(null, null);
+        $this->VALID_IMAGE->insert($this->getPDO());
+
+        $this->VALID_VENUE = new Venue(
+            null,
+            $this->VALID_IMAGE->getImageId(),
+            $this->VALID_ACTIVATION,
+            "3237 Bartlett Avenue",
+            "abq",
+            "ourvibe",
+            "+12125551212",
+            "Kale chips",
+            "theatre",
+            "nm",
+            "87114",
+            $this->VALID_HASH,
+            $this->VALID_SALT);
+
+        $this->VALID_VENUE->insert($this->getPDO());
+
+        $this->VALID_EVENTDATE = new \DateTime();
+
+    }
 
 
-	/**
+    /**
 	 * test inserting a valid event and verify the mySQL data
 	 **/
 	public function testInsertValidEvent(): void {
 		//count the rows and save it
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
-		var_dump($this->VALID_CONTACT);
-		$event = new Event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$event = new Event(
+		    null,
+            $this->VALID_VENUE->getVenueId(),
+            $this->VALID_CONTACT,
+            $this->VALID_CONTENT,
+            $this->VALID_EVENTDATE,
+            $this->VALID_EVENTNAME,
+            $this->VALID_IMAGE,
+            $this->VALID_HASH,
+            $this->VALID_SALT,
+            $this->VALID_ACTIVATION
+
+        );
+
 		//var_dump($event);
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
-		$pdoevent = event::getEventByEventId($this->getPDO(), $event->getEventId());
+		$pdoEvent = event::getEventByEventId($this->getPDO(), $event->getEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertEquals($pdoevent->getEventVenueId(), $this->VALID_VENUE);
-		$this->assertEquals($pdoevent->getEventContact(), $this->VALID_CONTACT);
-		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertEquals($pdoevent->getEventDate(), $this->VALID_EVENTDATE);
-		$this->assertEquals($pdoevent->getEventName(), $this->VALID_NAME);
+		$this->assertEquals($pdoEvent->getEventVenueId(), $this->VALID_VENUE);
+		$this->assertEquals($pdoEvent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoEvent->getEventDate(), $this->VALID_EVENTDATE);
+		$this->assertEquals($pdoEvent->getEventName(), $this->VALID_EVENTNAME);
 	}
 
 	/**
