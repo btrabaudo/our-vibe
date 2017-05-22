@@ -3,7 +3,7 @@ namespace Edu\Cnm\OurVibe;
 
 
 /**
- *TODO: ADD JSON, AUTO-LOADER, UNIT TEST, CHECK WHAT YOU HAVE NULLED
+ *
  * Class Venue
  * @package Edu\Cnm\OurVibe
  * @author QED
