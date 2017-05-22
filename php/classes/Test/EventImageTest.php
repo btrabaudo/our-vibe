@@ -105,14 +105,14 @@ class EventImageTest extends OurVibeTest {
 			null,
 			$this->VALID_IMAGE->getImageId(),
 			$this->VALID_ACTIVATION,
-			"123 High St.",
+			"321 mountain St.",
 			"abq",
 			"paul baca",
 			"+12125551212",
 			"boI",
 			"theatre",
 			"nm",
-			"87114",
+			"87221",
 			$this->VALID_PASS_HASH,
 			$this->VALID_PASS_SALT);
 		$this->VALID_VENUE->insert($this->getPDO());
