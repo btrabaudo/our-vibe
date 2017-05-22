@@ -14,12 +14,11 @@ class Tag implements \JsonSerializable {
 	 * tagName for this tag
 	 * @var string $tagName
 	 **/
-
 	private $tagName;
-
 
 	/**
 	 * constructor for this tag
+	 *
 	 * @param int|null $newTagId id of this tag or null if new tag
 	 * @param string $newTagName name of the tag
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -27,8 +26,7 @@ class Tag implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-
-	public function __construct(?int $newTagId, ?string $newTagName) {
+	public function __construct(?int $newTagId, string $newTagName) {
 		try {
 			$this->setTagId($newTagId);
 			$this->setTagName($newTagName);
@@ -36,19 +34,19 @@ class Tag implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-
 	}
 
 	/**
 	 * accessor method for tagId
 	 * @return int value of profile id
 	 **/
-	public function getTagId(): int {
+	public function getTagId(): ?int {
 		return ($this->tagId);
 	}
 
 	/**
 	 * mutator method for tag id
+	 *
 	 * @param int|null $newTagId value of new tag id
 	 * @throws \RangeException if $newTagId is not positive
 	 * @throws \TypeError if $newTagId is not an integer
@@ -75,40 +73,36 @@ class Tag implements \JsonSerializable {
 
 	/**
 	 * mutator method for tagName
+	 *
 	 * @param string $newTagName
 	 * @throws \InvalidArgumentException if the tag name is not a string or insecure
 	 * @throws \RangeException if the tag name is not exactly 32 characters
 	 * @throws \TypeError id the tag name is not a string
 	 **/
-
-	public function setTagName(?string $newTagName): void {
-		if($newTagName === null) {
-			$this->tagName = null;
-			return;
+	public function setTagName(string $newTagName): void {
+		$newTagName = trim($newTagName);
+		$newTagName = filter_var($newTagName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTagName) === true) {
+			throw(new \RangeException("user tag name is not valid or empty"));
 		}
-		$newTagName = strtolower(trim($newTagName));
-		if(ctype_xdigit($newTagName) === false) {
-			throw(new \RangeException("user tag name is not valid"));
-		}
-		if(strlen($newTagName) !== 32) {
-			throw(new \RangeException("user tag name has to be 32"));
-
+		if(strlen($newTagName) > 32) {
+			throw(new \RangeException("user tag name is greater than 32"));
 		}
 		$this->tagName = $newTagName;
 	}
 
 	/**
 	 * insert tag name into mySQL
+	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-
 	public function insert(\PDO $pdo): void {
-		if($this->tagName !== null) {
+		if($this->tagId !== null) {
 			throw(new \PDOException("not a new tag name"));
 		}
-		$query = "INSERT INTO tag(tagId,tagName) VALUES (:tagId,tagName)";
+		$query = "INSERT INTO tag(tagId,tagName) VALUES (:tagId,:tagName)";
 		$statement = $pdo->prepare($query);
 
 		$parameters = ["tagId" => $this->tagId, "tagName" => $this->tagName];
@@ -119,6 +113,7 @@ class Tag implements \JsonSerializable {
 
 	/**
 	 * deletes this profile from mySQL
+	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
@@ -134,38 +129,21 @@ class Tag implements \JsonSerializable {
 	}
 
 	/**
-	 * updates this profile from mySQL
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo, $statement): void {
-		if($this->tagId === null) {
-			throw(new \PDOException("unable to delete a tag that does not exist"));
-		}
-		$query = "UPDATE tag SET tagId = :tagId,tagName = :tagId,tagName =tagName WHERE tagId=:tagId";
-
-		$parameters = ["tagId" => $this->tagId, "tagName" => $this->tagName];
-
-		$statement->execute($parameters);
-
-	}
-
-	/**
 	 * gets the tag by the tag id
+	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $tagId tag id to search for
 	 * @return tag|null tag or null if not found
 	 * @throws \PDOException when mySQL related errors occcur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getTagByTagId(\PDO $pdo, int $tagId):?tag {
+	public static function getTagByTagId(\PDO $pdo, int $tagId): ?Tag {
 		if($tagId <= 0) {
 			throw(new \PDOException("tag id is not positive"));
 		}
-		$query = "SELECT tagId, tagName";
+		$query = "SELECT tagId, tagName FROM tag WHERE tagId = :tagId";
 		$statement = $pdo->prepare($query);
-		$parameters = ["tagId => $tagId"];
+		$parameters = ["tagId" => $tagId];
 		$statement->execute($parameters);
 		try {
 			$tag = null;
@@ -173,7 +151,6 @@ class Tag implements \JsonSerializable {
 			$row = $statement->fetch();
 			if($row !== false) {
 				$tag = new tag($row["tagId"], $row["tagName"]);
-
 			}
 		} catch(\Exception $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
@@ -183,8 +160,9 @@ class Tag implements \JsonSerializable {
 
 	/**
 	 * get the tag by the tag name
+	 *
 	 * @param \PDO $pdo connection object
-	 * @string $tagName to search for
+	 * @param string $tagName tag name to search for
 	 * @return \SplFixedArray of all tags found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
@@ -195,7 +173,7 @@ class Tag implements \JsonSerializable {
 		if(empty($tagName) === true) {
 			throw(new \PDOException("not a valid tag"));
 		}
-		$query = "SELECT tagId, tagName FROM tag WHERE tagName = :tagName";
+		$query = "SELECT tagId, tagName FROM tag WHERE tagName LIKE :tagName";
 		$statement = $pdo->prepare($query);
 		$parameters = ["tagName" => $tagName];
 		$statement->execute($parameters);
@@ -212,9 +190,33 @@ class Tag implements \JsonSerializable {
 			} catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		return ($tags);
 		}
+		return ($tags);
+	}
 
+	/**
+	 * get all tags method
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Tweets found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 **/
+	public static function getAllTags(\PDO $pdo): \SplFixedArray {
+		$query = "SELECT tagId, tagName FROM tag";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		$tags = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$tag = new Tag($row["tagId"], $row["tagName"]);
+				$tags[$tags->key()] = $tag;
+				$tags->next();
+			} catch(\Exception $exception) {
+				throw(new \PDOException($exception->getMessage(), $exception));
+			}
+		}
+		return ($tags);
 	}
 
 	/**
@@ -222,8 +224,39 @@ class Tag implements \JsonSerializable {
 	 * @return array resulting
 	 **/
 	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
 		// TODO: Implement jsonSerialize() method.
 	}
 
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

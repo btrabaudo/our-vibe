@@ -297,7 +297,9 @@ class Venue implements \JsonSerializable {
      * @throws |\RangeException if venue contact is greater than 128 characters
      **/
     public function setVenueContact(string $newVenueContact) : void {
-        $newVenueContact = filter_var($newVenueContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+      $newVenueContact= trim($newVenueContact);
+
+      $newVenueContact = filter_var($newVenueContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
         if(empty($newVenueContact) === true) {
             throw(new \InvalidArgumentException("venue contact is either empty or insecure"));

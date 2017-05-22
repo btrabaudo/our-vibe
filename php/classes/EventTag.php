@@ -25,7 +25,7 @@ class EventTag implements \jsonSerializable {
 	 * @throws \TypeError id data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(?int $newEventTagEventId, ?int $newEventTagTagId = null) {
+	public function __construct(int $newEventTagEventId, int $newEventTagTagId) {
 		try {
 			$this->setEventTagEventId($newEventTagEventId);
 			$this->setEventTagTagId($newEventTagTagId);
@@ -95,7 +95,7 @@ class EventTag implements \jsonSerializable {
 			throw(new \PDOException("not a new EventTagEventId"));
 		}
 		$query = "INSERT INTO eventTag(eventTagEventId,eventTagTagId) VALUES(:eventTagEventId,eventTagTagId)";
-		$statement = $pdo->prepare($query);
+		 $statement = $pdo->prepare($query);
 		$this->eventTagEventId = intval($pdo->lastInsertId());
 	}
 
@@ -172,7 +172,7 @@ class EventTag implements \jsonSerializable {
 		if($eventTagTagId <= 0) {
 			throw(new \RangeException("eventTag must be positive"));
 		}
-		$query = "SELECT eventTag, eventTagEventId, eventTagTagId FROM eventTag WHERE eventTagTagId =:eventTagTagId";
+		$query = "SELECT eventTag.eventTagEventId, eventTagTagId FROM eventTag WHERE eventTagTagId =:eventTagTagId";
 		$statement = $pdo->prepare($query);
 		$parameters = ["eventTagTagId" => $eventTagTagId];
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -187,6 +187,29 @@ class EventTag implements \jsonSerializable {
 		}
 		return ($eventTags);
 	}
+
+	/**
+	 * gets event by eventTagEventId and EventTagTagId
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $eventTagEventId event id to search for
+	 * @param int $eventTagTagId Event Tag id to search for
+	 * @return Event|null Event found or null if not found
+	**/
+
+	public static function getEventTagEventByEventTagIdAndEvenTagTagId(\PDO $pdo, int $eventTagEventId, int $eventTagTagId) : ?Event{
+		// sanitize the tweet id and profile id before searching
+		if($eventTagEventId <= 0) {
+			throw(new \PDOException("eventTagEventId is not positive"));
+		}
+		if($eventTagTagId <= 0) {
+			throw(new \PDOException("eventTagTagId is not positive"));
+		}
+		// create query template
+		$query = "SELECT eventTagEventId, eventTagTagId FROM `eventTag` WHERE eventTagEventId= :EventTagEventId AND eventTagEventId = :EventTagEventId";
+		$statement = $pdo->prepare($query);
+		// bind the tweet id and profile id to the place holder in the template
+		$parameters = ["eventTagEventId" => $eventTagEventId, "eventTagTagID" => $eventTagEventId];
+		$statement->execute($parameters);}
 
 	/**
 	 * gets all events tags

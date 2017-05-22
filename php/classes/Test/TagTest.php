@@ -2,10 +2,7 @@
 
 namespace Edu\Cnm\OurVibe\Test;
 
-use Edu\Cnm\OurVibe\Event;
 use Edu\Cnm\OurVibe\Tag;
-use Edu\Cnm\OurVibe\EventTag;
-use Edu\Cnm\OurVibe\Venue;
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -16,16 +13,14 @@ require_once(dirname(__DIR__) . "/autoload.php");
  **/
 class TagTest extends OurVibeTest {
 	/**
-	 * @var string $valid_Activation
-	 **/
-	protected $VALID_ACTIVATION;
-
-	/**
 	 * @var string $VALID_TAGNAME
 	 **/
-	protected $VALID_TAGNAME = "passingtests";
+	protected $VALID_TAGNAME = "validTag";
 
-
+	/**
+	 * @var string $INVALID_TAGNAME
+	 **/
+	protected $INVALID_TAGNAME = "thisIsAnInvalidTagNameBecauseItIsWayTooLong";
 
 
 	/**
@@ -33,7 +28,8 @@ class TagTest extends OurVibeTest {
 	 **/
 	public function testInsertValidTag(): void {
 		$numRows = $this->getConnection()->getRowCount("tag");
-		$tag = new Tag(null, $this->VALID_ACTIVATION, $this->VALID_TAGNAME);
+		//var_dump($this->VALID_TAGNAME);
+		$tag = new Tag(null, $this->VALID_TAGNAME);
 		$tag->insert($this->getPDO());
 		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
@@ -42,35 +38,11 @@ class TagTest extends OurVibeTest {
 
 	/**
 	 * test inserting a tag that already exists
-	 * @expectedExxception \PDOException
+	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidTag(): void {
 		$tag = new Tag(OurVibeTest::INVALID_KEY, $this->VALID_TAGNAME);
 		$tag->insert($this->getPDO());
-	}
-
-	/**
-	 * test inserting a tag, editing it, and then updating it
-	 **/
-	public function testUpdateValidTag() {
-		$numRows = $this->getConnection()->getRowCount("tag");
-		$tag = new Tag(null, $this->VALID_TAGNAME);
-		$tag->insert($this->getPDO());
-		$tag->setTagName($this->VALID_TAGNAME);
-		$tag->update($this->getPDO());
-
-		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
-		$this->assertEquals($pdoTag->setTagName(), $this->VALID_TAGNAME);
-	}
-
-	/**
-	 * test updating tag that does not exist
-	 * @expectedException \PDOException
-	 **/
-	public function testUpdateInvalidTag() {
-		$tag = new Tag(null, $this->VALID_TAGNAME);
-		$tag->update($this->getPDO());
 	}
 
 	/**
@@ -81,9 +53,13 @@ class TagTest extends OurVibeTest {
 		$tag = new Tag(null, $this->VALID_TAGNAME);
 		$tag->insert($this->getPDO());
 
+		//delete tag from mysql
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
+		$tag->delete($this->getPDO());
+
 		$pdoTag = Tag::getTagByTagId($this->getPDO(), $tag->getTagId());
-		$this->assertNUll($pdoTag);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
+		$this->assertNull($pdoTag);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("tag"));
 	}
 
 	/**
@@ -111,21 +87,21 @@ class TagTest extends OurVibeTest {
 	}
 
 
-	public function testValidTagByTagName() {
+	public function testGetValidTagByTagName() {
 		$numRows = $this->getConnection()->getRowCount("tag");
+
 		//create a new tag and insert to into mySQL
 		$tag = new Tag(null, $this->VALID_TAGNAME);
-		$tag->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tag"));
-$results = EventTag::getEventTagbyEventTagTagId($this->getPDO(),$this->eventTag->getEventTagId());
-$this->assertEquals($numRows +1,$this->getConnection()->getRowCount("eventTag"));
-$this->assertCount(1,$results);
-$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\EventTag", $results);
+		$tag->insert($this->getPDO());
 
+		$results = Tag::getTagByTagName($this->getPDO(), $tag->getTagName());
+		$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("tag"));
+		$this->assertCount(1,$results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Tag", $results);
 
-
-		$this->assertContainsOnlyInstancesOf("Edu\\CNM\\OurVibe\\Tag", $results);
 		$pdoTag = $results[0];
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Tag"));
+		// create assertEquals statements here to check TagName is what we inserted
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("tag"));
 		$this->assertEquals($pdoTag->getTagName(), $this->VALID_TAGNAME);
 	}
 
@@ -134,6 +110,58 @@ $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\EventTag", $results);
 	 **/
 	public function testGetInvalidTagByTagName(): void {
 		$tag = Tag::getTagByTagName($this->getPDO(), "@doesnotexist");
+		$this->assertCount(0, $tag);
 	}
 
+	//do a getAllTags test method here
+
+	/**
+	 * test get all tags
+	 */
+	public function testAllValidTags() : void {
+		$numrows = $this->getConnection()->getRowCount("tag");
+
+		$tag = new Tag(null, $this->VALID_TAGNAME);
+		$tag->insert($this->getPDO());
+
+		$results = Tag::getAllTags($this->getPDO());
+		$this->assertEquals($numrows +1, $this->getConnection()->getRowCount("tag"));
+		$this->assertCount(1,$results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Tag",$results);
+
+		$pdoTag = $results[0];
+		$this->assertEquals($pdoTag->getTagId(), $tag->getTagId());
+		$this->assertEquals($pdoTag->getTagName(), $this->VALID_TAGNAME);
+	}
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

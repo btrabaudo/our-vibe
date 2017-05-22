@@ -23,9 +23,9 @@ class EventTagTest extends OurVibeTest {
 	protected $VALID_ACTIVATION;
 
 	/**
-	 * @var int $VALID_EVENTTAGEVENTID
+	 * @var int $VALID_EVENT_TAG_EVENT_ID
 	 **/
-	protected $VALID_EVENTTAGEVENTID = "passingtests";
+	protected $VALID_EVENT_TAG_EVENT_ID = "passingtests";
 
 	/**
 	 * @var Venue Venue
@@ -38,69 +38,97 @@ class EventTagTest extends OurVibeTest {
 	protected $VALID_EVENT;
 
 	/**
-	 * @var $VALID_HASH ;
+	 * @var \DateTime valid event datetime
 	 **/
-	protected $VALID_HASH;
+	protected $VALID_EVENT_DATE;
 
 	/**
-	 * @var string $VALID_SALT
+	 * @var $VALID__PASS_HASH ;
 	 **/
+	protected $VALID_PASS_HASH;
+
+	/**
+	 * @var string $VALID_PASS_SALT
+	 **/
+	protected $VALID_PASS_SALT;
 
 	/**
 	 * @var VenueImageId VenueImageId
 	 **/
 	protected $VALID_VENUE_IMAGE_ID;
 
-
-	protected $VALID_SALT;
-
 	/**
 	 * @var Image image
 	 **/
 	protected $VALID_IMAGE = null;
 
+	/**
+	 * @var tagName tagName
+	 **/
+	protected $VALID_TAG_NAME="string";
+
+	/**
+	 * @var Tag Tag
+	 **/
+	protected $VALID_TAG;
+
 	public final function setUp(): void {
 		parent::setUp();
 
 		$password = "abc123";
-		$this->VALID_SALT = bin2hex(random_bytes(64));
-		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
-		$this->VALID_ACTIVATION = bin2hex(random_bytes(32));
+		$this->VALID_PASS_SALT = bin2hex(random_bytes(32));
 
+		$this->VALID_PASS_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PASS_SALT, 262144);
+		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
 		$this->VALID_IMAGE = new Image(null, null);
 		$this->VALID_IMAGE->insert($this->getPDO());
-
-
 
 		$this->VALID_VENUE = new Venue(
 			null,
 				$this->VALID_IMAGE->getImageId(),
 				$this->VALID_ACTIVATION,
 				"123 High St.",
-				null, "abq",
-				"123washingtonstreet",
+			"abq",
+				"paul baca",
 				"+12125551212",
-				"theatre","newmexico","87114",				$this->VALID_HASH,
-			 $this->VALID_SALT);
+				"boI",
+				"theatre",
+				"nm",
+				"87114",
+			$this->VALID_PASS_HASH,
+				$this->VALID_PASS_SALT);
+
 		$this->VALID_VENUE->insert($this->getPDO());
 
-		$this->eventTag = new EventTag(null, $this->venue->getVenueId(), "PHPUnit event tag passing");
-		$this->eventTag->insert($this->getPDO());
+		$this->VALID_EVENT_DATE = new \DateTime();
+
+		$this->VALID_EVENT = new Event(
+			null,
+			$this->VALID_VENUE->getVenueId(),
+			"paul baca",
+			"Boi",
+			$this->VALID_EVENT_DATE,
+			"theatre");
+
+		$this->VALID_TAG = new Tag(
+		null,
+		"whatever");
 	}
 
-
-
-	/**
+	/**`
 	 * test inserting a valid Tag and verify that the actual mySQL data matches
 	 **/
 	public function testInsertValidTag(): void {
-		$numRows = $this->getConnection()->getRowCount("tag");
-		$eventTag = new Tag(null, $this->VALID_ACTIVATION, $this->VALID_EVENTTAGEVENTID);
+		$numRows = $this->getConnection()->getRowCount("eventTag");
+
+//		var_dump($this->VALID_EVENT);
+
+		$eventTag = new EventTag($this->VALID_EVENT->getEventId(),$this->VALID_TAG->getTagId());
 		$eventTag->insert($this->getPDO());
-		$pdoEventTag = EventTag::getEventTagByEventTagEventId($this->getPDO(), $eventTag->getTagId());
+		$pdoEventTag = EventTag::getEventTagByEventTagEventId($this->getPDO(), $eventTag->getEventTagEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventTag"));
-		$this->assertEquals($pdoEventTag->getEventTagTagId(), $this->VALID_EVENTTAGEVENTID);
+		$this->assertEquals($pdoEventTag->getEventTagEventId(), $this->VALID_EVENT->getEventId());
 	}
 
 	/**
@@ -108,7 +136,7 @@ class EventTagTest extends OurVibeTest {
 	 * @expectedExxception \PDOException
 	 **/
 	public function testInsertInvalidTag(): void {
-		$eventTag = new Tag(OurVibeTest::INVALID_KEY, $this->VALID_EVENTTAGEVENTID);
+		$eventTag = new EventTag(OurVibeTest::INVALID_KEY, OurVibeTest::INVALID_KEY);
 		$eventTag->insert($this->getPDO());
 	}
 
