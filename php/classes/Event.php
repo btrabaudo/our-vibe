@@ -92,8 +92,7 @@ class Event implements \JsonSerializable {
      * @throws \RangeException if event venue id is not positive
      * @throws \InvalidArgumentException if event venue id is not an integer
      **/
-    public function setEventVenueId(int $newEventVenueId): void
-    {
+    public function setEventVenueId(int $newEventVenueId): void {
         //enforce that event venue id is a positive int
         if ($newEventVenueId <= 0) {
             throw(new \RangeException("event venue id is not positive"));
@@ -254,8 +253,7 @@ class Event implements \JsonSerializable {
      * @throws \PDOException when mySQL errors occur
      * @throws  \TypeError if $pdo is not PDO connection object
      **/
-    public function delete(\PDO $pdo): void
-    {
+    public function delete(\PDO $pdo): void {
         //enforce that the event is not null i.e. that it exists
         if ($this->eventId === null) {
             throw(new \PDOException("unable to delete an event that does not exist"));
@@ -274,17 +272,16 @@ class Event implements \JsonSerializable {
      * @throws \PDOException when mySQL errors occur
      * @throws  \TypeError if $pdo is not PDO connection object
      **/
-    public function update(\PDO $pdo): void
-    {
+    public function update(\PDO $pdo): void {
         // enforce the eventId is null
-        if ($this->eventId !== null) {
+        if($this->eventId === null) {
             throw(new \PDOException("not a new event"));
         }
         $query = "UPDATE event SET eventVenueId = :eventVenueId, eventContact = :eventContact, eventContent = :eventContent, eventDateTime = :eventDateTime, eventName = :eventName WHERE eventId = :eventId";
         $statement = $pdo->prepare($query);
         //binds members to their place holder
         $formattedDate = $this->eventDateTime->format("Y-m-d H:i:s");
-        $parameters = ["eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName];
+        $parameters = ["eventVenueId" => $this->eventVenueId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName, "eventId" => $this->eventVenueId];
         $statement->execute($parameters);
     }
 
