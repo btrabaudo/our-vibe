@@ -22,7 +22,7 @@ class eventTest extends OurVibeTest {
 	 * valid venue id to use
 	 * @var string $VALID_VENUE
 	 **/
-	protected $VALID_VENUE = null;
+	protected $VALID_VENUE;
 	/**
 	 * valid contact to use
 	 * @var string $VALID_CONTACT
