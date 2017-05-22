@@ -22,9 +22,50 @@ class EventImageTest extends OurVibeTest {
 	 * @var EventImage event
 	 **/
 	protected $event;
+	/**
+	 * @var Venue Venue
+	 **/
+	protected $VALID_VENUE;
 
+	/**
+	 * @var Event Event
+	 **/
+	protected $VALID_EVENT;
 
-	// todo: we need a varible to hold the Venue, Image we need to create too, and variables for all the data we need to put into Event and Image
+	/**
+	 * @var Image image
+	 **/
+	protected $VALID_IMAGE;
+
+	/**
+	 * @var Tag Tag
+	 **/
+	protected $VALID_TAG;
+
+	/**
+	 * @var string $valid_Activation
+	 **/
+	protected $VALID_ACTIVATION;
+
+	/**
+	 * @var \DateTime valid event datetime
+	 **/
+	protected $VALID_EVENT_DATE;
+
+	/**
+	 * @var $VALID__PASS_HASH ;
+	 **/
+	protected $VALID_PASS_HASH;
+
+	/**
+	 * @var string $VALID_PASS_SALT
+	 **/
+	protected $VALID_PASS_SALT;
+
+	/**
+	 * @var VenueImageId VenueImageId
+	 **/
+	protected $VALID_IMAGE_CLOUD_ID;
 
 	/**
 	 * valid event image id to create the event image object to own the test
@@ -43,6 +84,58 @@ class EventImageTest extends OurVibeTest {
 	/**
 	 * test inserting a valid event image and verify that the actual mySQL data matches
 	 **/
+	public final function setUp(): void {
+		parent::setUp();
+
+		$password = "abc123";
+		$this->VALID_PASS_SALT = bin2hex(random_bytes(32));
+		$this->VALID_PASS_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PASS_SALT, 262144);
+		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
+
+		$this->VALID_TAG = new Tag(null,"validTag");
+		$this->VALID_TAG->insert($this->getPDO());
+
+		$this->VALID_IMAGE_CLOUD_ID = bin2hex(random_bytes(32));
+		$this->VALID_IMAGE = new Image(null, $this->VALID_IMAGE_CLOUD_ID);
+		$this->VALID_IMAGE->insert($this->getPDO());
+
+		$this->VALID_VENUE = new Venue(
+			null,
+			$this->VALID_IMAGE->getImageId(),
+			$this->VALID_ACTIVATION,
+			"123 High St.",
+			"abq",
+			"paul baca",
+			"+12125551212",
+			"boI",
+			"theatre",
+			"nm",
+			"87114",
+			$this->VALID_PASS_HASH,
+			$this->VALID_PASS_SALT);
+		$this->VALID_VENUE->insert($this->getPDO());
+
+		$this->VALID_EVENT_DATE = new \DateTime();
+
+		$this->VALID_EVENT = new Event(
+			null,
+			$this->VALID_VENUE->getVenueId(),
+			"paul baca",
+			"Boi",
+			$this->VALID_EVENT_DATE,
+			"theatre");
+	}
+
+
+
+
+
+
+
+
+
+
+
 	public function testInsertValidEventImage(): void {
 
 		// count the number of rows and save it for later
