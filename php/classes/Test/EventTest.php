@@ -88,6 +88,7 @@ class eventTest extends OurVibeTest {
         $this->VALID_IMAGE = new Image(null, null);
         $this->VALID_IMAGE->insert($this->getPDO());
 
+
         $this->VALID_VENUE = new Venue(
             null,
             $this->VALID_IMAGE->getImageId(),
@@ -124,17 +125,12 @@ class eventTest extends OurVibeTest {
             $this->VALID_CONTENT,
             $this->VALID_EVENTDATE,
             $this->VALID_EVENTNAME,
-            $this->VALID_IMAGE,
-            $this->VALID_HASH,
-            $this->VALID_SALT,
-            $this->VALID_ACTIVATION
+            $this->VALID_IMAGE);
+        $event->insert($this->getPDO());
 
-        );
 
-		//var_dump($event);
-		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
-		$pdoEvent = event::getEventByEventId($this->getPDO(), $event->getEventId());
+		$pdoEvent = Event::getEventByEventId($this->getPDO(), $event->getEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->assertEquals($pdoEvent->getEventVenueId(), $this->VALID_VENUE);
 		$this->assertEquals($pdoEvent->getEventContact(), $this->VALID_CONTACT);
@@ -150,7 +146,7 @@ class eventTest extends OurVibeTest {
 	 **/
 	public function testInsertInvalidEvent(): void {
 		// create event with a non null eventId and see it fail
-		$venue = new Event(EventTest::INVALID_KEY, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$venue = new Event(EventTest::INVALID_KEY, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$venue->insert($this->getPDO());
 	}
 
@@ -160,18 +156,18 @@ class eventTest extends OurVibeTest {
 	public function testUpdateValidEvent() {
 		$numRows = $this->getConnection()->getRowCount("venue");
 		//create a new event and insert it into mySQL DB
-		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->insert($this->getPDO());
 		//edit the event and then update
 		$event->update($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
-		$pdoevent = event::getEventByEventId($this->getPDO(), $event->getEventId());
+		$pdoEvent = event::getEventByEventId($this->getPDO(), $event->getEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertEquals($pdoevent->getEventVenueId(), $this->VALID_VENUE);
-		$this->assertEquals($pdoevent->getEventContact(), $this->VALID_CONTACT);
-		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertEquals($pdoevent->getEventDate(), $this->VALID_EVENTDATE);
-		$this->assertEquals($pdoevent->getEventName(), $this->VALID_NAME);
+		$this->assertEquals($pdoEvent->getEventVenueId(), $this->VALID_VENUE);
+		$this->assertEquals($pdoEvent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoEvent->getEventDate(), $this->VALID_EVENTDATE);
+		$this->assertEquals($pdoEvent->getEventName(), $this->VALID_EVENTNAME);
 	}
 
 	/**
@@ -181,7 +177,7 @@ class eventTest extends OurVibeTest {
 	 **/
 	public function testUpdateInvalidEvent() {
 		//create a new event and insert it into mySQL DB
-		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->update($this->getPDO());
 	}
 
@@ -210,7 +206,7 @@ class eventTest extends OurVibeTest {
 	 **/
 	public function testDeleteInvalidEvent(): void {
 		//create a new event but DO NOT INSERT and then delete
-		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->delete($this->getPDO());
 	}
 
@@ -221,22 +217,22 @@ class eventTest extends OurVibeTest {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
-		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
-		$pdoevent = event::getEventByEventId($this->getPDO(), $event->getEventId());
+		$pdoEvent = event::getEventByEventId($this->getPDO(), $event->getEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertEquals($pdoevent->getEventVenueId(), $this->VALID_VENUE);
-		$this->assertEquals($pdoevent->getEventContact(), $this->VALID_CONTACT);
-		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertEquals($pdoevent->getEventDate(), $this->VALID_EVENTDATE);
-		$this->assertEquals($pdoevent->getEventName(), $this->VALID_NAME);
+		$this->assertEquals($pdoEvent->getEventVenueId(), $this->VALID_VENUE);
+		$this->assertEquals($pdoEvent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoEvent->getEventDate(), $this->VALID_EVENTDATE);
+		$this->assertEquals($pdoEvent->getEventName(), $this->VALID_EVENTNAME);
 	}
 
 	/**
 	 * test grabbing an event that does not exist
 	 *
-	 * @expectedException \PDOException
+	 *
 	 **/
 	public function testGetInvalidEventByEventId(): void {
 		// grab an event id that exceeds the maximum allowable event id
@@ -252,23 +248,22 @@ class eventTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("event");
 
 		//create a new event and insert it into mySQL DB
-		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_NAME);
+		$event = new event(null, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->insert($this->getPDO());
 
 		// grab data from mySQL and enforce the fields match expectations
-		$pdoevent = event::getEventByEventName($this->getPDO(), $event->getEventName());
+		$pdoEvent = event::getEventByEventName($this->getPDO(), $event->getEventName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
-		$this->assertEquals($pdoevent->getEventVenueId(), $this->VALID_VENUE);
-		$this->assertEquals($pdoevent->getEventContact(), $this->VALID_CONTACT);
-		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertEquals($pdoevent->getEventDate(), $this->VALID_EVENTDATE);
-		$this->assertEquals($pdoevent->getEventName(), $this->VALID_NAME);
+		$this->assertEquals($pdoEvent->getEventVenueId(), $this->VALID_VENUE);
+		$this->assertEquals($pdoEvent->getEventContact(), $this->VALID_CONTACT);
+		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_CONTENT);
+		$this->assertEquals($pdoEvent->getEventDate(), $this->VALID_EVENTDATE);
+		$this->assertEquals($pdoEvent->getEventName(), $this->VALID_EVENTNAME);
 	}
 
 	/**
 	 * test grabbing an event by a name that does not exist
 	 *
-	 * @expectedException \PDOException
 	 **/
 	public function testGetInvalidEventByName(): void {
 		// grab an event that does not exist
