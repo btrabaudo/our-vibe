@@ -89,7 +89,7 @@ class EventTag implements \jsonSerializable {
 		$query = "INSERT INTO eventTag(eventTagEventId,eventTagTagId) VALUES(:eventTagEventId, :eventTagTagId)";
 		$statement = $pdo->prepare($query);
 		// BIND PARAMETERS HERE
-		$parameters = ["EventTagEventId" => $this->eventTagEventId, "eventTagTagId" => $this->eventTagTagId];
+		$parameters = ["eventTagEventId" => $this->eventTagEventId, "eventTagTagId" => $this->eventTagTagId];
 		$statement->execute($parameters);
 		// EXECUTE STATEMENT HERE
 	}
@@ -105,7 +105,7 @@ class EventTag implements \jsonSerializable {
 			throw(new \PDOException("unable to delete a event tag that does not exist"));
 		}
 
-		$query = "DELETE FROM eventTag WHERE (eventTagEventId = :eventTagEventId AND eventTagTagId = :evenTagTagId)";
+		$query = "DELETE FROM eventTag WHERE (eventTagEventId = :eventTagEventId AND eventTagTagId = :eventTagTagId)";
 		$statement = $pdo->prepare($query);
 		// todo: update paramenters here
 
@@ -121,24 +121,28 @@ class EventTag implements \jsonSerializable {
 	 * @return eventTag|null eventTag found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
+	 * @return \SplFixedArray splFixArray of event tags found
 	 **/
 	public static function getEventTagsByEventTagEventId(\PDO $pdo, int $eventTagEventId): \SplFixedArray {
 		if($eventTagEventId <= 0) {
 			throw(new \PDOException("eventTag id is not positive"));
 		}
-		$query = "SELECT eventTag, eventTagEventId, EventTagTagId FROM eventTag WHERE eventTagEventId =:eventTag";
+		//needs while loop
+		$query = "SELECT eventTagEventId, EventTagTagId FROM eventTag WHERE eventTagEventId =:eventTagEventId";
 		$statement = $pdo->prepare($query);
-		try {
-			$eventTag = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$eventTag = new eventTag($row["eventTagEventTagId"], $row["evenTagTagId"]);
+		$parameters = ["eventTagEventId" => $eventTagEventId];
+		$statement->execute($parameters);
+		$eventTags = new \SplFixedArray($statement->rowcount());
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$eventTag = new EventTag( $row["eventTagEventId"], $row["eventTagEventId"]);
+				$eventTags[$eventTags->key()] = $eventTag;
+				$eventTags->next();
+			} catch(\Exception $exception) {
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		} catch(\Exception $exception) {
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($eventTag);
+		return ($eventTags);
 	}
 
 	/**
@@ -153,9 +157,10 @@ class EventTag implements \jsonSerializable {
 		if($eventTagTagId <= 0) {
 			throw(new \RangeException("eventTag must be positive"));
 		}
-		$query = "SELECT eventTag.eventTagEventId, eventTagTagId FROM eventTag WHERE eventTagTagId =:eventTagTagId";
+		$query = "SELECT eventTagEventId, eventTagTagId FROM eventTag WHERE eventTagTagId =:eventTagTagId";
 		$statement = $pdo->prepare($query);
 		$parameters = ["eventTagTagId" => $eventTagTagId];
+		$statement->execute($parameters);
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
@@ -175,8 +180,8 @@ class EventTag implements \jsonSerializable {
 	 * @param int $eventTagEventId event id to search for
 	 * @param int $eventTagTagId Event Tag id to search for
 	 * @return Event|null Event found or null if not found
-	**/
-	public static function getEventTagByEventTagEventIdAndEventTagTagId(\PDO $pdo, int $eventTagEventId, int $eventTagTagId) : ?EventTag {
+	 **/
+	public static function getEventTagByEventTagEventIdAndEventTagTagId(\PDO $pdo, int $eventTagEventId, int $eventTagTagId): ?EventTag {
 		// sanitize the tweet id and profile id before searching
 		if($eventTagEventId <= 0) {
 			throw(new \PDOException("eventTagEventId is not positive"));
@@ -185,11 +190,25 @@ class EventTag implements \jsonSerializable {
 			throw(new \PDOException("eventTagTagId is not positive"));
 		}
 		// create query template
-		$query = "SELECT eventTagEventId, eventTagTagId FROM `eventTag` WHERE eventTagEventId= :EventTagEventId AND eventTagEventId = :EventTagEventId";
+		$query = "SELECT eventTagEventId, eventTagTagId FROM eventTag WHERE eventTagEventId = :eventTagEventId AND eventTagTagId = :eventTagTagId";
 		$statement = $pdo->prepare($query);
 		// bind the tweet id and profile id to the place holder in the template
-		$parameters = ["eventTagEventId" => $eventTagEventId, "eventTagTagID" => $eventTagEventId];
-		$statement->execute($parameters);}
+		$parameters = ["eventTagEventId" => $eventTagEventId, "eventTagTagId" => $eventTagTagId];
+		$statement->execute($parameters);
+		try {
+			$eventTag = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$eventTag = new EventTag($row["eventTagEventId"], $row["eventTagTagId"]);
+			}
+
+		} catch(\Exception $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($eventTag);
+	}
+
 
 	/**
 	 * gets all events tags
@@ -199,7 +218,7 @@ class EventTag implements \jsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getAllEventTags(\PDO $pdo): \SplFixedArray {
-		$query = "SELECT eventTag, eventTagEventId,EventTagTagId FROM eventTag";
+		$query = "SELECT eventTagEventId,EventTagTagId FROM eventTag";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		$eventTags = new \SplFixedArray($statement->rowcount());
@@ -221,7 +240,7 @@ class EventTag implements \jsonSerializable {
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		return($fields);
+		return ($fields);
 		// TODO: Implement jsonSerialize() method.
 	}
 
