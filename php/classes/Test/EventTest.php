@@ -138,7 +138,6 @@ class EventTest extends OurVibeTest {
 	/**
 	 * test inserting an event that already exists
 	 *
-	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidEvent(): void {
 		// create event with a non null eventId and see it fail
