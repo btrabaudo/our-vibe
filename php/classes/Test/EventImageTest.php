@@ -20,29 +20,24 @@ require_once(dirname(__DIR__) . "/autoload.php");
 class EventImageTest extends OurVibeTest {
 
 	/**
-	 * finish this docblock
+	 * finish this doc block
 	 * @var EventImage event
 	 **/
 	protected $event;
 	/**
 	 * @var Venue Venue
 	 **/
-	protected $VALID_VENUE;
-
-	/**
-	 * @var Event Event
-	 **/
-	protected $VALID_EVENT;
+	protected $venue;
 
 	/**
 	 * @var Image image
 	 **/
-	protected $VALID_IMAGE;
+	protected $image;
 
 	/**
 	 * @var Tag Tag
 	 **/
-	protected $VALID_TAG;
+	protected $tag;
 
 	/**
 	 * @var string $valid_Activation
@@ -70,20 +65,6 @@ class EventImageTest extends OurVibeTest {
 	protected $VALID_IMAGE_CLOUD_ID;
 
 	/**
-	 * valid event image id to create the event image object to own the test
-	 *
-	 * @var $VALID_EVENT_IMAGE_IMAGE_ID
-	 **/
-	protected $VALID_EVENT_IMAGE_IMAGE_ID;
-
-	/**
-	 * valid event image event id to create the event image object to own the test
-	 *
-	 * @var $VALID_EventImageEventId
-	 **/
-	protected $VALID_EVENT_IMAGE_EVENT_ID;
-
-	/**
 	 * test inserting a valid event image and verify that the actual mySQL data matches
 	 **/
 	public final function setUp(): void {
@@ -94,16 +75,16 @@ class EventImageTest extends OurVibeTest {
 		$this->VALID_PASS_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PASS_SALT, 262144);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
-		$this->VALID_TAG = new Tag(null, "validTag");
-		$this->VALID_TAG->insert($this->getPDO());
+		$this->tag = new Tag(null, "validTag");
+		$this->tag->insert($this->getPDO());
 
-		$this->VALID_IMAGE_CLOUD_ID = bin2hex(random_bytes(32));
-		$this->VALID_IMAGE = new Image(null, $this->VALID_IMAGE_CLOUD_ID);
-		$this->VALID_IMAGE->insert($this->getPDO());
+		$this->VALID_IMAGE_CLOUD_ID = bin2hex(random_bytes(16));
+		$this->image = new Image(null, $this->VALID_IMAGE_CLOUD_ID);
+		$this->image->insert($this->getPDO());
 
-		$this->VALID_VENUE = new Venue(
+		$this->venue = new Venue(
 			null,
-			$this->VALID_IMAGE->getImageId(),
+			$this->image->getImageId(),
 			$this->VALID_ACTIVATION,
 			"321 mountain St.",
 			"abq",
@@ -115,13 +96,13 @@ class EventImageTest extends OurVibeTest {
 			"87221",
 			$this->VALID_PASS_HASH,
 			$this->VALID_PASS_SALT);
-		$this->VALID_VENUE->insert($this->getPDO());
+		$this->venue->insert($this->getPDO());
 
 		$this->VALID_EVENT_DATE = new \DateTime();
 
 		$this->VALID_EVENT = new Event(
 			null,
-			$this->VALID_VENUE->getVenueId(),
+			$this->venue->getVenueId(),
 			"paul baca",
 			"Boi",
 			$this->VALID_EVENT_DATE,

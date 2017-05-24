@@ -39,7 +39,7 @@ class Image implements \JsonSerializable {
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			// determine what exception is thrown
 			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage("say what you will"), 0, $exception));
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
 

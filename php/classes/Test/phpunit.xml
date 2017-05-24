@@ -6,8 +6,8 @@
             <!--<file>VenueTest.php</file>-->
             <!--<file>EventTest.php</file>-->
             <!--<file>TagTest.php</file>-->
-            <file>EventTagTest.php</file>
-            <!--<file>EventImageTest.php</file>-->
+            <!--<file>EventTagTest.php</file>-->
+				 <file>EventImageTest.php</file>
         </testsuite>
     </testsuites>
     <filter>
