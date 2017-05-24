@@ -46,7 +46,7 @@ CREATE TABLE event (
   eventVenueId INT UNSIGNED NOT NULL,
   eventContact VARCHAR(128) NOT NULL,
   eventContent VARCHAR (768) NOT NULL,
-  eventDateTime DATETIME(6) NOT NULL,
+  eventDate DATETIME(6) NOT NULL,
   eventName VARCHAR (128) NOT NULL,
 
   INDEX (eventVenueId),

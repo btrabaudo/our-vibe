@@ -397,7 +397,7 @@ class Event implements \JsonSerializable {
         return ($event);
     }
 
-    public static function getEventsByEventName(\PDO $pdo, int $eventName): ?Event
+    public static function getEventByEventName(\PDO $pdo, int $eventName): ?Event
     {
         // sanitize the event name before searching
         if ($eventName <= 0) {

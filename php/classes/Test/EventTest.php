@@ -20,7 +20,7 @@ class EventTest extends OurVibeTest {
 
     /**
 	 * valid venue id to use
-	 * @var string $VALID_VENUE
+	 * @var Venue $VALID_VENUE
 	 **/
 	protected $VALID_VENUE;
 
@@ -137,11 +137,11 @@ class EventTest extends OurVibeTest {
 
 	/**
 	 * test inserting an event that already exists
-	 *
+	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidEvent(): void {
 		// create event with a non null eventId and see it fail
-		$venue = new Event(EventTest::INVALID_KEY, $this->VALID_VENUE, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
+		$venue = new Event(EventTest::INVALID_KEY, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$venue->insert($this->getPDO());
 	}
 
@@ -183,17 +183,17 @@ class EventTest extends OurVibeTest {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
-		$event = new event(null,$this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
+		$event = new Event(null,$this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 
 		$event->insert($this->getPDO());
 
 		//delete the event from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 
-		$this->delete($this->getPDO());
+		$event->delete($this->getPDO());
 		// grab the data from mySQL and enforce the event does not exist
 
-		$pdoEvent = event::getEventByeventId($this->getPDO(), $event->getEventId());
+		$pdoEvent = Event::getEventByEventId($this->getPDO(), $event->getEventId());
 		$this->assertNull($pdoEvent);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("event"));
 	}
@@ -216,7 +216,9 @@ class EventTest extends OurVibeTest {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
-		$event = new event(null,$this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
+
+		var_dump($this->VALID_VENUE);
+		$event = new event(null,$this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_VENUE->getVenueId());
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
 		$pdoEvent = event::getEventByEventId($this->getPDO(), $event->getEventId());
@@ -242,13 +244,20 @@ class EventTest extends OurVibeTest {
 	/**
 	 * test grabbing an event by its name
 	 **/
-	public function testGetValidEventByName(): void {
+	public function testGetValidEventByEventName(): void {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 
 		//create a new event and insert it into mySQL DB
-		$event = new event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
+		$event = new Event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->insert($this->getPDO());
+
+		$results = Event::getEventByEventName($this->getPDO(),$this->VALID_EVENTNAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertCount(1, $results);
+
+		$this->assertContainsOnlyInstancesOf
+		("Edu\\Cnm\\OurVibe\\Event", $results);
 
 		// grab data from mySQL and enforce the fields match expectations
 		$pdoEvent = event::getEventByEventName($this->getPDO(), $event->getEventName());
@@ -264,7 +273,7 @@ class EventTest extends OurVibeTest {
 	 * test grabbing an event by a name that does not exist
 	 *
 	 **/
-	public function testGetInvalidEventByName(): void {
+	public function testGetInvalidEventByEventName(): void {
 		// grab an event that does not exist
 		$event = Event::getEventByEventName($this->getPDO(), "aHappyPlace");
 		$this->assertNull($event);
