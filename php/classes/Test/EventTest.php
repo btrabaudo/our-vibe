@@ -252,6 +252,8 @@ class EventTest extends OurVibeTest {
 		$event = new Event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->insert($this->getPDO());
 
+		var_dump($this->VALID_EVENTNAME);
+
 		$results = Event::getEventByEventName($this->getPDO(),$this->VALID_EVENTNAME);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->assertCount(1, $results);
