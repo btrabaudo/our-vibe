@@ -25,15 +25,10 @@ class EventImage implements \JsonSerializable {
 	/**
 	 * constructor for eventImage
 	 *
-	 * @param int $newEventImageImageId id of the parent Image
 	 * @param int $newEventImageEventId id of the parent eventImage belongs to
-	 * @throws \InvalidArgumentException if data values are not valid
-	 * @throws \RangeException if data values are out of bounds (e.g., stringstoo long, negative integers)
-	 * @throws \TypeError if data types violate type hints
-	 * @throws \Exception if some other exception occurs
-
-	 **/
-	public function  __construct(?int $newEventImageImageId, int $newEventImageEventId) {
+	 * @param int $newEventImageImageId id of the parent Image
+	 */
+	public function  __construct(int $newEventImageEventId, int $newEventImageImageId) {
 		try {
 			$this->setEventImageImageId($newEventImageImageId);
 			$this->setEventImageEventId($newEventImageEventId);
@@ -174,7 +169,7 @@ class EventImage implements \JsonSerializable {
 							$statement->setFetchMode(\PDO::FETCH_ASSOC);
 							$row = $statement->fetch();
 							if($row !== false) {
-										$eventImage = new EventImage($row["eventImageImageId"], $row["eventImageEventID"]);
+										$eventImage = new EventImage($row["eventImageEventID"], $row["eventImageImageId"]);
 							}
 				} catch(\Exception $exception) {
 							// if the row couldn't be converted, rethrow it
@@ -213,7 +208,7 @@ class EventImage implements \JsonSerializable {
 					$statement->setFetchMode(\PDO::FETCH_ASSOC);
 					$row = $statement->fetch();
 					if($row !== false) {
-								$eventImage = new EventImage($row["eventImageImageId"], $row["eventImageEventId"]);
+								$eventImage = new EventImage($row["eventImageEventId"], $row["eventImageImageId"]);
 					}
 		} catch(\Exception $exception) {
 					// if the row couldn't be converted, rethrow it
@@ -250,7 +245,7 @@ class EventImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 					try {
-								$eventImage = new EventImage($row["eventImageImageId"], $row["eventImageEventId"]);
+								$eventImage = new EventImage($row["eventImageEventId"], $row["eventImageImageId"]);
 								$eventImages[$eventImage->key()] =$eventImage;
 								$eventImages->next();
 					} catch(\Exception $exception) {
