@@ -40,7 +40,7 @@ class EventTest extends OurVibeTest {
 	 * valid content to use
 	 * @var string $VALID_CONTENT
 	 **/
-	protected $VALID_CONTENT = "Blah blah blah blah blah ";
+	protected $VALID_CONTENT = "Blah blah blah blah blah";
 	/**
 	 * valid date to use
 	 * @var string $VALID_DATE
@@ -217,7 +217,7 @@ class EventTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
 
-		var_dump($this->VALID_VENUE);
+
 		$event = new event(null,$this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_VENUE->getVenueId());
 		$event->insert($this->getPDO());
 		//grab data from mySQL and enforce that they match our expectations
@@ -275,7 +275,7 @@ class EventTest extends OurVibeTest {
 	 * test grabbing an event by a name that does not exist
 	 *
 	 **/
-	public function testGetInvalidEventByEventName(): void {
+	public function testGetInvalidEventByEventName() : void {
 		// grab an event that does not exist
 		$event = Event::getEventByEventName($this->getPDO(), "aHappyPlace");
 		$this->assertNull($event);
