@@ -109,7 +109,7 @@ class EventTag implements \jsonSerializable {
 		$statement = $pdo->prepare($query);
 		// todo: update paramenters here
 
-		$parameters = ["eventTagEventId" => $this->eventTagEventId];
+		$parameters = ["eventTagEventId" => $this->eventTagEventId,"eventTagTagId"=>$this->getEventTagTagId()];
 		$statement->execute($parameters);
 	}
 
@@ -128,14 +128,14 @@ class EventTag implements \jsonSerializable {
 			throw(new \PDOException("eventTag id is not positive"));
 		}
 		//needs while loop
-		$query = "SELECT eventTagEventId, EventTagTagId FROM eventTag WHERE eventTagEventId =:eventTagEventId";
+		$query = "SELECT eventTagEventId, eventTagTagId FROM eventTag WHERE eventTagEventId =:eventTagEventId";
 		$statement = $pdo->prepare($query);
 		$parameters = ["eventTagEventId" => $eventTagEventId];
 		$statement->execute($parameters);
 		$eventTags = new \SplFixedArray($statement->rowcount());
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$eventTag = new EventTag( $row["eventTagEventId"], $row["eventTagEventId"]);
+				$eventTag = new EventTag( $row["eventTagEventId"], $row["eventTagTagId"]);
 				$eventTags[$eventTags->key()] = $eventTag;
 				$eventTags->next();
 			} catch(\Exception $exception) {
@@ -162,9 +162,10 @@ class EventTag implements \jsonSerializable {
 		$parameters = ["eventTagTagId" => $eventTagTagId];
 		$statement->execute($parameters);
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$eventTags = new \SplFixedArray($statement->rowCount());
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$eventTag = new eventTag($row["eventTag"], $row["eventTagTagId"], $row["eventTagEventId"]);
+				$eventTag = new EventTag($row["eventTagEventId"], $row["eventTagTagId"]);
 				$eventTags[$eventTags->key()] = $eventTag;
 				$eventTags->next();
 			} catch(\Exception $exception) {
@@ -243,5 +244,6 @@ class EventTag implements \jsonSerializable {
 		return ($fields);
 		// TODO: Implement jsonSerialize() method.
 	}
+
 
 }

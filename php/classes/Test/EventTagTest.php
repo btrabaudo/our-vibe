@@ -140,47 +140,43 @@ class EventTagTest extends OurVibeTest {
 	 * test creating a event tag and then deleting it
 	 **/
 	public function testDeleteValidEventTag(): void {
-		$numRows = $this->getConnection()->getRowCount("event tag");
+		$numRows = $this->getConnection()->getRowCount("eventTag");
 		$eventTag = new EventTag($this->VALID_EVENT->getEventId(), $this->VALID_TAG->getTagId());
 		$eventTag->insert($this->getPDO());
+		$eventTag->delete($this->getPDO());
 
-		$pdoEventTag = EventTag::getEventTagByEventTagEventId($this->getPDO(), $eventTag->getEventTagEventId());
+		$pdoEventTag = EventTag::getEventTagByEventTagEventIdAndEventTagTagId($this->getPDO(),$this->VALID_EVENT->getEventId(),$this->VALID_TAG->getTagId());
 		$this->assertNull($pdoEventTag);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("eventTag"));
+
 	}
 
-	/**
-	 * test deleting a event Tag that does not exist
-	 * @expectedException \PDOException
-	 **/
-	public function testDeleteInvalidEventTag(): void {
-		$eventTag = new EventTag($this->VALID_EVENT->getEventId(), $this->VALID_TAG->getTagId());
-		$eventTag->delete($this->getPDO());
-	}
 
 	/**
 	 * test inserting a eventTagId and regrabbing it from mySQL
 	 **/
 	public function testGetValidEventTagsByEventTagEventId(): void {
-		$numRows = $this->getConnection()->getRowCount("event tag");
+		$numRows = $this->getConnection()->getRowCount("eventTag");
 
 		//create a new profile and insert to into mySQL
 		$eventTag = new EventTag($this->VALID_EVENT->getEventId(), $this->VALID_TAG->getTagId());
 		$eventTag->insert($this->getPDO());
 
 		$pdoEventTag = EventTag::getEventTagsByEventTagEventId($this->getPDO(), $eventTag->getEventTagEventId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event tag"));
-		$this->assertEquals($pdoEventTag->getEventTagTagId(), $this->VALID_TAG->getTagId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventTag"));
+		$this->assertEquals($pdoEventTag[0]->getEventTagTagId(), $this->VALID_TAG->getTagId());
 	}
 
 
+	/**
+	 * test valid grabbing by tag id
+	 **/
 	public function testValidEventTagsByEventTagTagId() {
 		$numRows = $this->getConnection()->getRowCount("eventTag");
 
 		//create a new event event tag and insert to into mySQL
 		$eventTag = new EventTag($this->VALID_EVENT->getEventId(),$this->VALID_TAG->getTagId());
 
-		$eventTag = new EventTag(null, $this->VALID_EVENT->getEventId(), $this->VALID_TAG->getTagId());
 		$eventTag->insert($this->getPDO());
 
 		$results = EventTag::getEventTagsByEventTagTagId($this->getPDO(), $this->VALID_TAG->getTagId());
@@ -188,15 +184,39 @@ class EventTagTest extends OurVibeTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\CNM\\OurVibe\\EventTag", $results);
 
 		$pdoEventTag = $results[0];
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event Tag"));
-		$this->assertEquals($pdoEventTag->getTagTag(), $this->VALID_TAG->getTagId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventTag"));
+		$this->assertEquals($pdoEventTag->getEventTagTagId(), $this->VALID_TAG->getTagId());
 	}
 
 	/**
 	 * test grabbing a event tag by event tag tag that does not exist
 	 **/
 	public function testGetInvalidEventTagByEventTagTag(): void {
-		$eventTag = EventTag::getEventTagbyEventTagTagId($this->getPDO(), "@doesnotexist");
+		$eventTag = EventTag::getEventTagsByEventTagTagId($this->getPDO(), OurVibeTest::INVALID_KEY);
+	$this->assertEmpty($eventTag);
+	}
+	/**
+	 * gets all events tags
+	 * @param \PDO $pdo PDO connection
+	 * @return \SplFixedArray SplFixedArray of eventTags found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllEventTags(\PDO $pdo): \SplFixedArray {
+		$query = "SELECT eventTagEventId,EventTagTagId FROM eventTag";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		$eventTags = new \SplFixedArray($statement->rowcount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$eventTag = new eventTag($row["eventTag"], $row["eventTagEventId"], ["eventTagTagId"]);
+				$eventTags[$eventTags->key()] = $eventTag;
+			} catch(\Exception $exception) {
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($eventTags);
 	}
 
 }
