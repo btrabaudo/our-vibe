@@ -71,7 +71,60 @@ try {
             throw(new \InvalidArgumentException("Access Denied", 403));
         }
 
-        
+        //decode the front end response
+
+        $requestContent = file_get_contents("php://input");
+        $requestObject = json_decode($requestContent);
+
+        //retrieve the venue
+
+        $venue = Venue::getVenueByVenueId($pdo, $id);
+        if($venue === null) {
+            throw(new RuntimeException("Venue does not exist", 404));
+        }
+        if(empty($requestObject->newPassword) === true) {
+
+            //enforce the XSRF token
+            verifyXSRF();
+
+            //venue address1
+            if(empty($requestObject->venueAddress1) === true) {
+                throw(new \InvalidArgumentException("No venue address", 404));
+            }
+
+            //venue address2
+            if(empty($requestObject->venueAddress2) === true) {
+                throw(new \InvalidArgumentException("No venue address", 404));
+            }
+
+
+            //venue City
+            if(empty($requestObject->venueCity) === true) {
+                throw(new \InvalidArgumentException("No venue city", 404));
+            }
+
+            //venue Contact
+            if(empty($requestObject->venueContact) === true) {
+                throw(new \InvalidArgumentException("No venue contact", 404));
+            }
+
+            if(empty($requestObject->venueContent) === true) {
+                throw(new \InvalidArgumentException("No venue content", 404));
+            }
+
+
+            if(empty($requestObject->venueName) === true) {
+                throw(new \InvalidArgumentException("No venue name", 404));
+            }
+            if(empty($requestObject->venueState) === true) {
+                throw(new \InvalidArgumentException("No venue State", 404));
+            }
+
+            $venue->setVenueCity($requestObject->venueCity);
+            $venue->setVenueName($requestObject->venueName);
+
+        }
+
     }
 
 
