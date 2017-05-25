@@ -117,7 +117,7 @@ class TagTest extends OurVibeTest {
 
 	/**
 	 * test get all tags
-	 */
+	 **/
 	public function testAllValidTags() : void {
 		$numrows = $this->getConnection()->getRowCount("tag");
 

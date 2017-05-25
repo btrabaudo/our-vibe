@@ -219,14 +219,14 @@ class EventTag implements \jsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getAllEventTags(\PDO $pdo): \SplFixedArray {
-		$query = "SELECT eventTagEventId,EventTagTagId FROM eventTag";
+		$query = "SELECT eventTagEventId,eventTagTagId FROM eventTag";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		$eventTags = new \SplFixedArray($statement->rowcount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$eventTag = new eventTag($row["eventTag"], $row["eventTagEventId"], ["eventTagTagId"]);
+				$eventTag = new EventTag( $row["eventTagEventId"], $row["eventTagTagId"]);
 				$eventTags[$eventTags->key()] = $eventTag;
 			} catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
