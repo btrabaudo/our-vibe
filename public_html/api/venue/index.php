@@ -119,16 +119,73 @@ try {
             if(empty($requestObject->venueState) === true) {
                 throw(new \InvalidArgumentException("No venue State", 404));
             }
-
+            $venue->setVenueAddress1($requestObject->venueAddress1);
+            $venue->setVenueAddress2($requestObject->venueAddress2);
             $venue->setVenueCity($requestObject->venueCity);
+            $venue->setVenueContact($requestObject->venueContact);
+            $venue->setVenueContent($requestObject->venueContent);
             $venue->setVenueName($requestObject->venueName);
+            $venue->setVenueState($requestObject->venueState);
+            $venue->update($pdo);
 
+            //update reply
+            $reply->message = "Venue information updated";
+        }
+        /**
+         * update password if requested
+         **/
+        //enforce current password, new password, and confirm password
+        if(empty($requestObject->VenuePassword) === false && empty($requestObject->venueConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
+            //make sure it is a new password and confirm
+            if($requestObject->newVenuePassword !== $requestObject->venueConfirmPassword) {
+                throw(new \RuntimeException("New Passwords do not match", 401));
+            }
+            //hash the previous password
+            $currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentVenuePassword, $venue->getVenuePassSalt(), 262144);
+
+            //make sure the hash given by the end user matches the database
+
+            if($currentPasswordHash !== $venue->getVenuePassHash()) {
+                throw(new \RuntimeException("Old Password is incorrect", 401));
+            }
+
+            $newPasswordSalt = bin2hex(random_bytes(16));
+            $newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
+            $venue->setVenuePassHash($newPasswordHash);
+            $venue->setVenuePassSalt($newPasswordSalt);
+        }
+        //perform the update
+        $venue->update($pdo);
+        $reply->message = "venue password updated";
+
+    } elseif ($method === "DELETE") {
+        //verify the XSRF token
+        verifyXSRF();
+        $venue = Venue::getVenueByVenueId($pdo, $id);
+        if($venue === null) {
+            throw(new \RuntimeException("Venue does not exist"));
         }
 
+        //enforce sign in
+        if(empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getVenueId() !== $venue->getVenueId()) {
+            throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
+        }
+        //delete the post from the database
+        $venue->delete($pdo);
+        $reply->message = "Profile Deleted";
+
+    } else {
+        throw (new \InvalidArgumentException("Invalid HTTP request", 400));
     }
 
-
-
-
-
+} catch (\Exception | \TypeError $exception) {
+    $reply->status = $exception->getCode();
+    $reply->message = $exception->getMessage();
 }
+header("Content-type: applicataion/json");
+if($reply->data === null) {
+    unset($reply->data);
+}
+
+//encode and return to front end
+echo json_encode($reply);
