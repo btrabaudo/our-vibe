@@ -675,8 +675,8 @@ class Venue implements \JsonSerializable {
         return ($venues);
     }
 
-    public static function getVenueByVenueName(\PDO $pdo, string $venueName) : \SPLFixedArray {
-        //Sanitize city
+    public static function getVenueByVenueName(\PDO $pdo, string $venueName) : SPLFixedArray {
+        //Sanitiz\e city
         $venueName = trim($venueName);
         $venueName = filter_var($venueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
