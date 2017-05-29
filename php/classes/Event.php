@@ -319,7 +319,7 @@ class Event implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getEventsByEventVenueId(\PDO $pdo, int $eventVenueId): \SplFixedArray {
+	public static function getEventByEventVenueId(\PDO $pdo, int $eventVenueId): \SplFixedArray {
 		// sanitize the eventVenueId before searching
 		if($eventVenueId <= 0) {
 			throw(new \PDOException("event venue id is not positive"));
@@ -355,30 +355,34 @@ class Event implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getEventByEventContent(\PDO $pdo, string $eventContent): \SplFixedArray {
-		// sanitize the eventContent before searching
-		if($eventContent <= 0) {
-			throw(new \PDOException("event content is not positive"));
+	public static function getEventByEventContent(\PDO $pdo, string $eventContent) : \SplFixedArray {
+		// sanitize the description before searching
+		$eventContent = trim($eventContent);
+		$eventContent = filter_var($eventContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($eventContent) === true) {
+			throw(new \PDOException("event content is invalid"));
 		}
 		// create query template
 		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName FROM event WHERE eventContent LIKE :eventContent";
 		$statement = $pdo->prepare($query);
-		// bind the event content to the place holder in the template
+		// bind the tweet content to the place holder in the template
+		$eventContent = "%$eventContent%";
 		$parameters = ["eventContent" => $eventContent];
 		$statement->execute($parameters);
-		// grab the tweet from mySQL
-		try {
-			$events = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+		// build an array of tweets
+		$events = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+				$events[$events->key()] = $event;
+				$events->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($events);
+		return($events);
 	}
 	/**
 	 * gets an array of events based on its date
