@@ -257,6 +257,41 @@ class EventTest extends OurVibeTest {
 		$this->assertNull($event);
 	}
 	/**
+	 * test grabbing an Event by event content
+	 **/
+	public function testGetValidEventByEventContent() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("event");
+
+		// create a new event and insert to into mySQL
+		$event = new Event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
+		$event->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = event::getEventByEventContent($this->getPDO(), $event->getEventContent());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertCount(1, $results);
+
+		// enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Event", $results);
+
+		// grab the result from the array and validate it
+		$pdoevent = $results[0];
+		$this->assertEquals($pdoevent->getEventVenueId(), $this->venue->getVenueId());
+		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_EVENTCONTENT);
+		//format the date too seconds since the beginning of time to avoid round off error
+		$this->assertEquals($pdoevent->geteventDate()->getTimestamp(), $this->VALID_EVENTDATE->getTimestamp());
+	}
+	/**
+	 * test grabbing a event by content that does not exist
+	 **/
+	public function testGetInvalidEventByEventContent() : void {
+		// grab an event by content that does not exist
+		$event = Event::getEventByEventContent($this->getPDO(), "nobody ever evented this");
+		$this->assertCount(0, $event);
+	}
+	
+	/**
 	 * test grabbing a valid Event by Date
 	 */
 	public function testGetValidEventByDate() : void {
