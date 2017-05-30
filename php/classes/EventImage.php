@@ -99,21 +99,13 @@ class EventImage implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo): void {
-		// emforce the event image image id is null (i.e., dont insert a event image that already exists)
-		if($this->eventImageImageId !== null) {
-			throw(new \PDOException("not a new image"));
-		}
-
 		// create query template
-		$query = "INSERT INTO eventImage(eventImageImageId, eventImageEventId) VALUES (:eventImageImageId, :eventImageEventId)";
+		$query = "INSERT INTO eventImage(eventImageEventId, eventImageImageId) VALUES (:eventImageEventId, :eventImageImageId)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
+		$parameters = ["eventImageEventId" => $this->eventImageEventId, "eventImageImageId" => $this->eventImageImageId];
 		$statement->execute($parameters);
-
-		// update the null event image image id with what mySQL gave us
-		$this->eventImageImageId = intval($pdo->lastInsertId());
 	}
 
 	/**
@@ -124,17 +116,12 @@ class EventImage implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function delete(\PDO $pdo) : void {
-				// ensure the object exists before deleting
-				if($this->eventImageImageId === null || $this->eventImageEventId === null) {
-							throw(new \PDOException("not a valid eventImage"));
-				}
-
 				// create query template
-				$query = "DELETE FROM 'eventImage' WHERE eventImageImageId = :eventImageImageId AND eventImageEventId = :eventImageEventId";
+				$query = "DELETE FROM eventImage WHERE eventImageEventId = :eventImageEventId AND eventImageImageId = :eventImageImageId";
 				$statement = $pdo->prepare($query);
 
 				// bind the member variables to the place holders in the template
-				$parameters = ["eventImageImageId" => $this->eventImageImageId, "eventImageEventId" => $this->eventImageEventId];
+				$parameters = ["eventImageEventId" => $this->eventImageEventId, "eventImageImageId" => $this->eventImageImageId];
 				$statement->execute($parameters);
 	}
 
@@ -146,7 +133,7 @@ class EventImage implements \JsonSerializable {
 	 * @param int $eventImageEventId event id to search for
 	 * @return EventImage|null eventImage found or null if not found
 	 **/
-	public static function getEventImageByEventImageEventIdAndEventImageImageId(\PDO $pdo, int $eventImageImageId, int $eventImageEventId) : ?EventImage {
+	public static function getEventImageByEventImageEventIdAndEventImageImageId(\PDO $pdo, int $eventImageEventId, int $eventImageImageId) : ?EventImage {
 				// sanitize the event id and image id before searching
 				if($eventImageImageId<= 0) {
 							throw(new \PDOException("image id is not positive"));
@@ -169,7 +156,7 @@ class EventImage implements \JsonSerializable {
 							$statement->setFetchMode(\PDO::FETCH_ASSOC);
 							$row = $statement->fetch();
 							if($row !== false) {
-										$eventImage = new EventImage($row["eventImageEventID"], $row["eventImageImageId"]);
+										$eventImage = new EventImage($row["eventImageEventId"], $row["eventImageImageId"]);
 							}
 				} catch(\Exception $exception) {
 							// if the row couldn't be converted, rethrow it
@@ -188,7 +175,7 @@ class EventImage implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 
-	public static function getEventImageByEventImageImageId(\PDO $pdo, int $eventImageImageId):?EventImage {
+	public static function getEventImageByEventImageImageId(\PDO $pdo, int $eventImageImageId):?Like {
 		// sanitize the image id before searching
 		if($eventImageImageId <= 0) {
 					throw(new \PDOException("image id is not positive"));
@@ -246,7 +233,7 @@ class EventImage implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 					try {
 								$eventImage = new EventImage($row["eventImageEventId"], $row["eventImageImageId"]);
-								$eventImages[$eventImage->key()] =$eventImage;
+								$eventImages[$eventImages->key()] =$eventImage;
 								$eventImages->next();
 					} catch(\Exception $exception) {
 								// if the row couldn't be converted, rethrow it
