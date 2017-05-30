@@ -22,7 +22,7 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-
+try{
 $pdo = connectToEncryptedMySQL("/etc/apache2/Our-Vibe-mysql");
 
 $method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -99,6 +99,15 @@ if($method === "GET") {
 } else {
 	throw (new InvalidArgumentException("Invalid HTTP method request"));
 }
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+header("content-type:application/json");
+if($reply->data ===null){
+	unset($reply->data);
+}
+echo json_encode($reply);
 
 
 
