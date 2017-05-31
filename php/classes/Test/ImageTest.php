@@ -106,7 +106,7 @@ class ImageTest extends OurVibeTest {
 	}
 
 	/**
-	 * test inserting a Image and regrabbing it from mySQL
+	 * test inserting a Image and regrabing it from mySQL
 	 **/
 
 	public function testGetValidImageByImageId(): void {
@@ -122,9 +122,6 @@ class ImageTest extends OurVibeTest {
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $image->getImageCloudinaryId());
-
-
-
 	}
 
 	/**

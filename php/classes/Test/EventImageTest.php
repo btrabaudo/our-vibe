@@ -171,39 +171,60 @@ class EventImageTest extends OurVibeTest {
 	}
 
 	/**
+	 * test grabbing an event image by event id
+	 **/
+	public function  testGetEventImageByEventImageEventId() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("eventImage");
+
+		// create a new event image and insert to mySQL
+		$eventImage = new EventImage($this->event->getEventImageEventId());
+		$eventImage->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoEventImage = EventImage::getEventImageByEventImageEventId($this->getPDO(), $this->event->getEventId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
+		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->event->getEventId());
+	}
+
+	/**
+	 * test grabbing an event image by Image id
+	 **/
+	public function  testGetEventImageByEventImageImageId() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("eventImage");
+
+		// create a new event image and insert to mySQL
+		$eventImage = new EventImage($this->image->getEventImageImageId());
+		$eventImage->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoEventImage = EventImage::getEventImageByEventImageEventId($this->getPDO(), $this->image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
+		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->image->getImageId());
+	}
+
+
+	/**
 	 * test grabbing a EventImage that does not exist
 	 **/
 
 	public function testGetInvalidEventImageByEventImageImageId(): void {
 
 		// grab a event image id that exceeds the maximum allowable event image id
-		$eventImage = EventImage::getEventByEventImageId($this->getPDO(), ourVibeTest::INVALID_KEY);
+		$eventImage = EventImage::getEventImageByEventImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
 		$this->assertNull($eventImage);
 	}
-	// TODO add invalid valid getEventImageByEventImageEventId (expecting array), add and valid getEventImageByImageImageId (expecting array)
+
+	/**
+	 * test grabbing an event image that does not exist
+	 */
+
+	public function testGetInvalidEventImageByEventImageEventId(): void {
+		// grab a event event id that exceeds the maximum event event id
+		$eventImage = EventImage::getEventImageByEventImageEventId($this->getPDO(), OurVibeTest::INVALID_KEY);
+	}
+
+	// TODO add valid getEventImageByEventImageEventId (expecting array), and add valid getEventImageByImageImageId (expecting array)
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
