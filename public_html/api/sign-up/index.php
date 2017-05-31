@@ -82,13 +82,13 @@ try {
         $venue = new Venue(null, null, $venueActivationToken, $requestObject->venueAddress1, $requestObject->venueCity, $requestObject->venueContact, $requestObject->venueContent,$requestObject->venueName, $requestObject->venueState, $requestObject->venueZip, $requestObject->venueAddress2, $salt, $hash);
         //insert venue into database
         $venue->insert($pdo);
-        //compose email and send with activation token
+        //compose email and send with activation.php token
         $messageSubject = "Please activate your account";
 
         //build the link
         $basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
         //create path
-        $urlglue = $basePath . "/api/activation/?activation=" . $venueActivationToken;
+        $urlglue = $basePath . "/api/activation.php/?activation.php=" . $venueActivationToken;
         //create the link redirect
         $confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 

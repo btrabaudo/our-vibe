@@ -75,7 +75,7 @@ class EventTest extends OurVibeTest {
 	protected $VALID_SALT;
 
 	/**
-	 * Placeholder until account activation is created
+	 * Placeholder until account activation.php is created
 	 * @var string $VALID_ACTIVATION
 	 **/
 	protected $VALID_ACTIVATION;
