@@ -9,7 +9,7 @@ use Edu\Cnm\OurVibe\{
 	Tag
 
 };
-
+  
 /**
  * API for the EventTag class
  * @author paul baca
