@@ -1,12 +1,11 @@
 <?php
-require_once dirname(__DIR__,3)."/php/classes/autoload.php";
-require_once dirname(__DIR__,3)."/php/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\Ourvibe\Venue;
 
 
-
-if(session_status() !== PHP_SESSION_ACTIVE){
+if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 $reply = new stdClass();
@@ -26,26 +25,20 @@ try {
 	}
 	if($method === "GET") {
 		setXsrfCookie();
-		//find profile associated with the activation token
 		$venue = Venue::getVenueByVenueActivationToken($pdo, $activation);
-		//verify the profile is not null
 		if($venue !== null) {
-			//make sure the activation token matches
-			if($activation === $venue->getProfileActivationToken()) {
-				//set activation to null
-				$venue->setProfileActivationToken(null);
-				//update the profile in the database
+			if($activation === $venue->getVenueActivationToken()) {
+				$venue->setVenueActivationToken(null);
 				$venue->update($pdo);
-				//set the reply for the end user
 				$reply->data = "Thank you for activating your account, you will be auto-redirected to your venue shortly.";
 			}
 		} else throw(new RuntimeException("invalid http request"));
 	}
-  } catch(Exception $exception){
+} catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message->getMessage();
 	header("Content-type: application/json");
-	if($reply->data === null){
+	if($reply->data === null) {
 		unset($reply->data);
 	}
 	echo json_encode($reply);
