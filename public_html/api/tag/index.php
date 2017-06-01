@@ -23,7 +23,7 @@ $reply->status = 200;
 $reply->data = null;
 
 try {
-	$pdo = connectToEncryptedMySQL("/etc/apache2/Our-Vibe-mysql");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/Our-Vibe-mysql/ourvibe.ini");
 
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
