@@ -387,7 +387,7 @@ class VenueTest extends OurVibeTest {
         $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Venue", $results);
 
 
-        // grab data from mySQL and enforce the fields match expectations
+        // grab data from mySQL and enforce the fields match expectationsw
         $pdoVenue = $results[0];
 
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));

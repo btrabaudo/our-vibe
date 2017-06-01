@@ -17,7 +17,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
     //mySQL connection
-    $pdo = connectToEncryptedMySQL("INSERT PATH HERE");
+    $pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ourvibe.ini");
     //determine which HTTP method was used
     $method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
     if($method === "GET") {

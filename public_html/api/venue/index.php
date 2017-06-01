@@ -29,7 +29,7 @@ $reply->data = null;
 
 try {
     // mySQL connection
-    $pdo = connectToEncryptedMySQL("INSERT PATH HERE");
+    $pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ourvibe.ini");
 
 
     //is a an HTTP method
