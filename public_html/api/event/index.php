@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__DIR__, 3) . "/ourvibe/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
@@ -42,31 +42,43 @@ try {
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$eventVenueId = filter_input(INPUT_GET, "eventVenueId", FILTER_VALIDATE_INT);
-	$eventContent = filter_input(INPUT_GET, "eventContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventDateTime = filter_input(INPUT_GET, "eventDateTime", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventName = filter_input(INPUT_GET, "eventName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventTag = filter_input(INPUT_GET, "eventTag", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for methods that require it
-	if(($method ==="DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArguementException("id cannot be empty or negative", 405));
 	}
 
 	// handle GET request - if id is present, that event is returned, otherwise all events are returned
-	if ($method === "GET") {
+	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 
 		//get a specific event or all events and update reply
 		if(empty($id) === false) {
 			$event = Event::getEventByEventId($pdo, $id);
-			if($event !==null) {
-				reply->data = $event;
+			if($event !== null) {
+				$reply->data = $event;
 			}
 		} else if(empty($eventVenueId) === false) {
 			$event = Event::getEventByEventVenueId($pdo, $eventVenueId)->toArray();
 			if($event !== null) {
 				$reply->data = $event;
 			}
-		} else if(empty($eventContent) === false) {
-			$events = Event::getEventByEventContent($pdo, $eventContent)->toArray();
+		} else if(empty($eventDateTime) === false) {
+			$events = Event::getEventByEventDate($pdo, $eventDateTime)->toArray();
+			if($events !== null) {
+				$reply->data = $events;
+			}
+		} else if(empty($eventName) === false) {
+			$events = Event::getEventByEventName($pdo, $eventName)->toArray();
+			if($events !== null) {
+				$reply->data = $events;
+			}
+		} else if(empty($eventTag) === false) {
+			$events = Event::getEventByEventTag($pdo, $eventTag)->toArray();
 			if($events !== null) {
 				$reply->data = $events;
 			}
@@ -76,7 +88,7 @@ try {
 				$reply->data = $events;
 			}
 		}
-	} else if ($method === "PUT" || $method === "POST") {
+	} else if($method === "PUT" || $method === "POST") {
 
 		//enforce that the user has an XSRF token
 		verifyXsrf();
@@ -86,9 +98,9 @@ try {
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 
-		//make sure event content is available (required field)
-		if(empty($requestObject->eventContent) === true) {
-			throw(new \InvalidArgumentException("No content for Event.", 405));
+		//make sure event venue id is available (required field)
+		if(empty($requestObject->eventVenueId) === true) {
+			throw(new \InvalidArgumentException("No Event Venue Id.", 405));
 		}
 
 		//make sure event date is accurate (optional field)
@@ -96,9 +108,14 @@ try {
 			$requestObject->eventDate = null;
 		}
 
-		// make sure eventVenueId is available
-		if(empty($requestObject->eventVenueId) === true) {
-			throw(new \InvalidArgumentException("No Event Venue Id.", 405));
+		// make sure event name is available
+		if(empty($requestObject->eventName) === true) {
+			throw(new \InvalidArgumentException("No Event Name.", 405));
+		}
+
+		// make sure event tag is available
+		if(empty($requestObject->eventTag) === true) {
+			throw(new \InvalidArgumentException("No Event Tag.", 405));
 		}
 
 		//perform the actual put or post
@@ -114,11 +131,11 @@ try {
 			if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventVenueId() !== $event->getEventVenueId()) {
 				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
 			}
-
-
 		}//update all attributes
-		$event->setEventDate($requestObject->eventDate);
-		$event->setEventContent($requestObject->eventContent);
+		$event->setEventVenueId($requestObject->eventVenueId);
+		$event->setEventDateTime($requestObject->eventDate);
+		$event->setEventName($requestObject->eventName);
+		$event->setEventTag($requestObject->eventTag);
 		$event->update($pdo);
 
 		//update reply
@@ -132,37 +149,133 @@ try {
 		}
 
 		// create new Event and insert into the database
-		$event = new Event(null, $requestObject->eventVenueId, $requestObject->eventContent, null);
+		$event = new Event(null, $requestObject->eventVenueId);
 		$event->insert($pdo);
 
 		//update reply
 		$reply->message = "Event created OK";
 	}
 
-} else if ($method === "DELETE") {
+	//perform the actual put or post
+	if($method === "PUT") {
 
-	//enforce that the end user has a XSRF token.
-	verifyXsrf();
+		// retrieve the event to update
+		$event = Event::getEventByEventDate($pdo, $id);
+		if($event === null) {
+			throw(new RuntimeException("Event does not exist", 404));
+		}
 
-	//retrieve the Event to be deleted
-	$event = Event::getEventByEventVenueId($pdo, $id);
-	if($tweet === mull) {
-		throw(new RuntimeException("Event does not exist.", 404));
-	}
+		//enforce the user is signed in and only trying to edit their own event
+		if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventByEventDate !== $event->getEventByEventDate()) {
+			throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
+		}
 
-	//enforce the user is signed in and only trying to edit their own event
-	if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getVenueId() !== $event->getEventVenueId()) {
-		throw(new \InvalidArgumentException("You are not allowed to delete this event", 403));
-	}
 
-	//delete Event
-	$event->delete($pdo);
+	}//update all attributes
+	$event->setEventVenueId($requestObject->eventVenueId);
+	$event->setEventDateTime($requestObject->eventDate);
+	$event->setEventName($requestObject->eventName);
+	$event->setEventTag($requestObject->eventTag);
+	$event->update($pdo);
+
 	//update reply
-	$reply->message = "Event deleted OK";
+	$reply->message = "Event updated OK";
 
-} else {
-	throw (new \InvalidArgumentException("Invalid HTTP method request"));
+} else if($method === "POST") {
+
+	//enforce the user is signed in
+	if(empty($_SESSION["event"]) === true) {
+		throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
+	}
+
+	// create new Event and insert into the database
+	$event = new Event(null, $requestObject->eventDateTime);
+	$event->insert($pdo);
+
+	//update reply
+	$reply->message = "Event created OK";
 }
+
+		//perform the actual put or post
+		if($method === "PUT") {
+
+			// retrieve the event to update
+			$event = Event::getEventByEventName($pdo, $id);
+			if($event === null) {
+				throw(new RuntimeException("Event does not exist", 404));
+			}
+
+			//enforce the user is signed in and only trying to edit their own event
+			if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventName() !== $event->getEventName()) {
+				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
+			}
+
+
+		}//update all attributes
+	$event->setEventVenueId($requestObject->eventVenueId);
+	$event->setEventDateTime($requestObject->eventDate);
+	$event->setEventName($requestObject->eventName);
+	$event->setEventTag($requestObject->eventTag);
+	$event->update($pdo);
+
+		//update reply
+		$reply->message = "Event updated OK";
+
+	} else if($method === "POST") {
+
+	//enforce the user is signed in
+	if(empty($_SESSION["event"]) === true) {
+		throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
+	}
+
+	// create new Event and insert into the database
+	$event = new Event(null, $requestObject->eventName);
+	$event->insert($pdo);
+
+	//update reply
+	$reply->message = "Event created OK";
+}
+
+		//perform the actual put or post
+		if($method === "PUT") {
+
+			// retrieve the event to update
+			$event = Event::getEventByEventTag($pdo, $id);
+			if($event === null) {
+				throw(new RuntimeException("Event does not exist", 404));
+			}
+
+			//enforce the user is signed in and only trying to edit their own event
+			if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventTag() !== $event->getEventTag()) {
+				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
+			}
+
+
+		}//update all attributes
+	$event->setEventVenueId($requestObject->eventVenueId);
+	$event->setEventDateTime($requestObject->eventDate);
+	$event->setEventName($requestObject->eventName);
+	$event->setEventTag($requestObject->eventTag);
+	$event->update($pdo);
+
+		//update reply
+		$reply->message = "Event updated OK";
+
+	} else if($method === "POST") {
+
+	//enforce the user is signed in
+	if(empty($_SESSION["event"]) === true) {
+		throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
+	}
+
+	// create new Event and insert into the database
+	$event = new Event(null, $requestObject->eventTag);
+	$event->insert($pdo);
+
+	//update reply
+	$reply->message = "Event created OK";
+}
+
 //update the $reply->status $reply->message
 } catch(\Exception | TypeError $exception) {
 	$reply->status = $exception->getCode();
