@@ -36,7 +36,7 @@ class EventImageTest extends OurVibeTest {
 	protected $eventImage;
 
 	/**
-	 * @var Image image
+	 * @var Image $image
 	 **/
 	protected $image;
 
@@ -178,13 +178,19 @@ class EventImageTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("eventImage");
 
 		// create a new event image and insert to mySQL
-		$eventImage = new EventImage($this->event->getEventImageEventId());
+		$eventImage = new EventImage($this->event->getEventId(), $this->image->getImageId());
 		$eventImage->insert($this->getPDO());
+		$results = EventImage::getEventImageByEventImageEventId($this->getPDO(), $eventImage->getEventImageEventId());
+
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoEventImage = EventImage::getEventImageByEventImageEventId($this->getPDO(), $this->event->getEventId());
+		$pdoEventImage = $results[0];
+		var_dump($pdoEventImage);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
 		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->event->getEventId());
+		$this->assertEquals($pdoEventImage->geteventImageImageId(), $this->image->getImageId());
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\Cnm\OurVibe\Test", $results);
 	}
 
 	/**
@@ -195,13 +201,18 @@ class EventImageTest extends OurVibeTest {
 		$numRows = $this->getConnection()->getRowCount("eventImage");
 
 		// create a new event image and insert to mySQL
-		$eventImage = new EventImage($this->image->getEventImageImageId());
+		$eventImage = new EventImage($this->event->getEventId(), $this->image->getImageId());
 		$eventImage->insert($this->getPDO());
+		$results = EventImage::getEventImageByEventImageImageId($this->getPDO(), $eventImage->getEventImageImageId());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoEventImage = EventImage::getEventImageByEventImageEventId($this->getPDO(), $this->image->getImageId());
+		$pdoEventImage = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
-		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->image->getImageId());
+		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->event->getEventId());
+		$this->assertEquals($pdoEventImage->geteventImageImageId(), $this->image->getImageId());
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\Cnm\OurVibe\Test", $results);
+
 	}
 
 
@@ -212,19 +223,20 @@ class EventImageTest extends OurVibeTest {
 	public function testGetInvalidEventImageByEventImageImageId(): void {
 
 		// grab a event image id that exceeds the maximum allowable event image id
-		$eventImage = EventImage::getEventImageByEventImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
+		$eventImage = EventImage::getEventImageByEventImageImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
 		$this->assertNull($eventImage);
 	}
 
 	/**
-	 * test grabbing an event image that does not exist
+	 * test grabbing an eventimage that does not exist
 	 */
 
 	public function testGetInvalidEventImageByEventImageEventId(): void {
-		// grab a event event id that exceeds the maximum event event id
+
+		// grab an event id that exceeds the maximum allowable event event id
 		$eventImage = EventImage::getEventImageByEventImageEventId($this->getPDO(), OurVibeTest::INVALID_KEY);
+		$this->assertNull($eventImage);
 	}
 
-	// TODO add valid getEventImageByEventImageEventId (expecting array), and add valid getEventImageByImageImageId (expecting array)
 
 }
