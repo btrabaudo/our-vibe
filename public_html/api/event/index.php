@@ -8,7 +8,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\OurVibe\{
 	Event,
 	// we only use the event venue ID class for testing purposes
-	eventVenueId
+	EventTag, Tag
 };
 
 /**
@@ -77,6 +77,7 @@ try {
 			if($events !== null) {
 				$reply->data = $events;
 			}
+			//Json object storage for event tags
 		} else if(empty($eventTag) === false) {
 			$events = Event::getEventByEventTag($pdo, $eventTag)->toArray();
 			if($events !== null) {
@@ -143,17 +144,25 @@ try {
 
 	} else if($method === "POST") {
 
+
+		//TODO change the session to profile
 		//enforce the user is signed in
 		if(empty($_SESSION["event"]) === true) {
 			throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
 		}
 
+		//TODO clean up POST thier should only be one post if block the same with PUT
+
+
+		//TODO add all needed state variables to the event object
 		// create new Event and insert into the database
 		$event = new Event(null, $requestObject->eventVenueId);
 		$event->insert($pdo);
 
 		//update reply
 		$reply->message = "Event created OK";
+
+		// TODO check for images
 	}
 
 	//perform the actual put or post
@@ -199,6 +208,8 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 
+			//TODO get rid of the this PUT
+
 			// retrieve the event to update
 			$event = Event::getEventByEventName($pdo, $id);
 			if($event === null) {
@@ -211,7 +222,10 @@ try {
 			}
 
 
-		}//update all attributes
+		}
+
+		//TODO dead code belongs in deleted
+		//update all attributes
 	$event->setEventVenueId($requestObject->eventVenueId);
 	$event->setEventDateTime($requestObject->eventDate);
 	$event->setEventName($requestObject->eventName);
@@ -222,6 +236,8 @@ try {
 		$reply->message = "Event updated OK";
 
 	} else if($method === "POST") {
+
+	//TODO get rid of this IF block
 
 	//enforce the user is signed in
 	if(empty($_SESSION["event"]) === true) {
@@ -239,6 +255,7 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 
+			//TODO get rid of this IF block
 			// retrieve the event to update
 			$event = Event::getEventByEventTag($pdo, $id);
 			if($event === null) {
@@ -262,6 +279,8 @@ try {
 		$reply->message = "Event updated OK";
 
 	} else if($method === "POST") {
+
+	//TODO get rid of this if block
 
 	//enforce the user is signed in
 	if(empty($_SESSION["event"]) === true) {
