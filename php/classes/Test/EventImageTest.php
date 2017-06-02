@@ -190,7 +190,7 @@ class EventImageTest extends OurVibeTest {
 		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->event->getEventId());
 		$this->assertEquals($pdoEventImage->geteventImageImageId(), $this->image->getImageId());
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\Cnm\OurVibe\Test", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\EventImageTest", $results);
 	}
 
 	/**

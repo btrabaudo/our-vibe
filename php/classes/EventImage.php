@@ -169,13 +169,13 @@ class EventImage implements \JsonSerializable {
 	 * get event image by image id
 	 *
 	 * @param \PDO $pdo $pdo PDO connection object
-	 * @param int $eventImageImageId Imge id to search for
+	 * @param int $eventImageImageId Image id to search for
 	 * @return Image|null Image or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 
-	public static function getEventImageByEventImageImageId(\PDO $pdo, int $eventImageImageId):?Like {
+	public static function getEventImageByEventImageImageId(\PDO $pdo, int $eventImageImageId):?EventImage {
 		// sanitize the image id before searching
 		if($eventImageImageId <= 0) {
 					throw(new \PDOException("image id is not positive"));
