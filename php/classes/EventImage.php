@@ -170,39 +170,41 @@ class EventImage implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo $pdo PDO connection object
 	 * @param int $eventImageImageId Image id to search for
-	 * @return Image|null Image or null if not found
+	 * @return \SplFixedArray SplFixedArray of EventImages found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 
-	public static function getEventImageByEventImageImageId(\PDO $pdo, int $eventImageImageId):?EventImage {
-		// sanitize the image id before searching
-		if($eventImageImageId <= 0) {
-					throw(new \PDOException("image id is not positive"));
-		}
+	public static function getEventImageByEventImageImageId(\PDO $pdo, int $eventImageImageId): \SplFixedArray {
+				// sanitize the image id before searching
+				if($eventImageImageId <= 0) {
+							throw(new \RangeException("image id must be positive"));
+				}
 
-		// create query template
-		$query = "SELECT eventImageImageId, eventImageEventId FROM eventImage WHERE eventImageImageId = :eventImageImageId";
-		$statement = $pdo->prepare($query);
+				// create query template
+				$query = "SELECT eventImageEventId, eventImageImageId FROM eventImage WHERE eventImageImageId = :eventImageImageId";
+				$statement = $pdo->prepare($query);
 
-		// bind the event id to the place holder
-		$parameters = ["eventImageImageId" => $eventImageImageId];
-		$statement->execute($parameters);
+				// bind the event id to the place holder
+				$parameters = ["eventImageImageId" => $eventImageImageId];
+				$statement->execute($parameters);
 
-		// grab the eventImage from my SQL
-		try{
-					$eventImage = null;
-					$statement->setFetchMode(\PDO::FETCH_ASSOC);
-					$row = $statement->fetch();
-					if($row !== false) {
-								$eventImage = new EventImage($row["eventImageEventId"], $row["eventImageImageId"]);
-					}
-		} catch(\Exception $exception) {
-					// if the row couldn't be converted, rethrow it
-					throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-		return ($eventImage);
-	}
+				// build an array of event images
+				$eventImage = new \SplFixedArray($statement->rowCount());
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				while(($row = $statement->fetch()) !== false) {
+						try {
+									$eventImage = new EventImage($row["eventImageEventId"], $row["eventImageImageId"]);
+									$eventImages[$eventImages->key()] = $eventImage;
+									$eventImages->next();
+						} catch(\Exception $exception) {
+							// if the row couldnt be converted, rethrow it
+							throw(new \PDOException($exception->getMessage(), 0, $exception));
+						}
+				}
+				return($eventImages);
+						}
+
 
 	/**
 	 * get event image by event image event id

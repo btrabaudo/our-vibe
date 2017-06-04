@@ -36,11 +36,11 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// check to make sure the password and email field is not empty
-		if(empty($requestObject->venueEmail) === true) {
-			throw(new \InvalidArgumentException("Wrong email address.", 401));
+		// check to make sure the password and contact field is not empty
+		if(empty($requestObject->venueContact) === true) {
+			throw(new \InvalidArgumentException("Wrong contact address.", 401));
 		} else {
-			$venueEmail = filter_var($requestObject->venueEmail, FILTER_SANITIZE_EMAIL);
+			$venueContact = filter_var($requestObject->venueContact, FILTER_SANITIZE_Contact);
 		}
 
 		if(empty($requestObject->venuePassword) === true) {
@@ -49,10 +49,10 @@ try {
 			$venuePassword = $requestObject->venuePassword;
 		}
 
-		// grab the venue from the database by the email provided
-		$venue = Venue::getVenueByVenueEmail($pdo, $venueEmail);
+		// grab the venue from the database by the contact provided
+		$venue = Venue::getVenueByVenueContact($pdo, $venueContact);
 		if(empty($venue) === true) {
-			throw(new \InvalidArgumentException("Invalid Email", 401));
+			throw(new \InvalidArgumentException("Invalid contact", 401));
 		}
 
 		// if the venue activation is not null throw an error
@@ -65,7 +65,7 @@ try {
 
 		// verify has is correct
 		if($hash !== $venue->setVenueHash()) {
-			throw(new \InvalidArgumentException("password or email is incorrect"));
+			throw(new \InvalidArgumentException("password or contact is incorrect"));
 		}
 
 		// grab venue from database and put into a session
