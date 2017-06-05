@@ -126,7 +126,7 @@ class EventImageTest extends OurVibeTest {
 
 		//var_dump($eventImage);
 		$eventImage->insert($this->getPDO());
- var_dump($this->event);
+
  // grab the data from mySQL and enforce the fields match our expectations
 		$pdoEventImage = EventImage::getEventImageByEventImageEventIdAndEventImageImageId($this->getPDO(), $this->event->getEventId(), $this->image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
@@ -185,12 +185,11 @@ class EventImageTest extends OurVibeTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoEventImage = $results[0];
-		var_dump($pdoEventImage);
+
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("eventImage"));
 		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->event->getEventId());
 		$this->assertEquals($pdoEventImage->geteventImageImageId(), $this->image->getImageId());
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\EventImageTest", $results);
 	}
 
 	/**
@@ -211,7 +210,6 @@ class EventImageTest extends OurVibeTest {
 		$this->assertEquals($pdoEventImage->getEventImageEventId(), $this->event->getEventId());
 		$this->assertEquals($pdoEventImage->geteventImageImageId(), $this->image->getImageId());
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\Cnm\OurVibe\Test", $results);
 
 	}
 
@@ -224,7 +222,7 @@ class EventImageTest extends OurVibeTest {
 
 		// grab a event image id that exceeds the maximum allowable event image id
 		$eventImage = EventImage::getEventImageByEventImageImageId($this->getPDO(), OurVibeTest::INVALID_KEY);
-		$this->assertNull($eventImage);
+		$this->assertCount(0,$eventImage);
 	}
 
 	/**
@@ -235,7 +233,7 @@ class EventImageTest extends OurVibeTest {
 
 		// grab an event id that exceeds the maximum allowable event event id
 		$eventImage = EventImage::getEventImageByEventImageEventId($this->getPDO(), OurVibeTest::INVALID_KEY);
-		$this->assertNull($eventImage);
+		$this->assertCount(0, $eventImage);
 	}
 
 
