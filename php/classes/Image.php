@@ -196,6 +196,38 @@ class Image implements \JsonSerializable {
 		}
 			return ($image);
 	}
+	/**
+	 * gets an image by the imageCloudinaryId
+	 * @param \PDO $pdo PDO Connection Object
+	 * @param string $imageCloudinaryId image id from Cloudinary API to search for
+	 * @return Image|null Image found or doesn't exist
+	 * @throws \PDOException when mySQL errors occur
+	 * @throws \TypeError when variables are not correct type
+	 **/
+	public static function getImageByImageCloudinaryId(\PDO $pdo, string $imageCloudinaryId) {
+		//throw an exception if imageId is empty
+		if(is_string($imageCloudinaryId) !== true) {
+			throw(new \TypeError("Image Cloudinary ID is not a string"));
+		} elseif(strlen($imageCloudinaryId) > 32) {
+			throw(new \RangeException("ID is too long"));
+		}
+		$query = "SELECT imageId, imageCloudinaryId FROM image WHERE imageCloudinaryId = :imageCloudinaryId";
+		$statement = $pdo->prepare($query);
+		$parameters = ["imageCloudinaryId" => $imageCloudinaryId];
+		$statement->execute($parameters);
+		try {
+			$image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$image = new Image($row["imageId"], $row["imageCloudinaryId"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($image);
+	}
 
 	/**
 	 * formats the state variables for JSON serialization
