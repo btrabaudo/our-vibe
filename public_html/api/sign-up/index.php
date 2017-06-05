@@ -82,7 +82,7 @@ try {
 
         $venueActivationToken = bin2hex(random_bytes(16));
         // create venue and prepare the insert into the database
-        $venue = new Venue(null, null, $venueActivationToken, $requestObject->venueAddress1, $requestObject->venueCity, $requestObject->venueContact, $requestObject->venueContent,$requestObject->venueName, $requestObject->venueState, $requestObject->venueZip, $requestObject->venueAddress2, $salt, $hash);
+        $venue = new Venue(null, null, $venueActivationToken, $requestObject->venueAddress1, $requestObject->venueAddress2, $requestObject->venueCity, $requestObject->venueContact, $requestObject->venueContent,$requestObject->venueName, $requestObject->venueState, $requestObject->venueZip, $hash, $salt);
         //insert venue into database
         $venue->insert($pdo);
         //compose email and send with activation.php token
