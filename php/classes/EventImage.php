@@ -190,7 +190,7 @@ class EventImage implements \JsonSerializable {
 				$statement->execute($parameters);
 
 				// build an array of event images
-				$eventImage = new \SplFixedArray($statement->rowCount());
+				$eventImages = new \SplFixedArray($statement->rowCount());
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				while(($row = $statement->fetch()) !== false) {
 						try {
