@@ -91,7 +91,7 @@ try {
         //build the link
         $basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
         //create path
-        $urlglue = $basePath . "/api/activation.php/?activation.php=" . $venueActivationToken;
+        $urlglue = $basePath . "/api/activation/?activation=" . $venueActivationToken;
         //create the link redirect
         $confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 
@@ -106,7 +106,7 @@ EOF;
         $swiftMessage = new Swift_Message();
         // attach the sender to the message
 
-        $swiftMessage->setForm(["btrabaudo@cnm.edu" => "Our VIbe"]);
+        $swiftMessage->setFrom(["btrabaudo@cnm.edu" => "Our VIbe"]);
 
         /**
          * attach recipients to the message
