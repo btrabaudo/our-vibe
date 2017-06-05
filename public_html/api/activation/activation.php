@@ -37,9 +37,9 @@ try {
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message->getMessage();
-	header("Content-type: application/json");
-	if($reply->data === null) {
+}
+header("Content-type: application/json");
+if($reply->data === null) {
 		unset($reply->data);
 	}
 	echo json_encode($reply);
-}
