@@ -100,7 +100,7 @@ try {
 EOF;
 
         //create swift mail
-        $swiftMessage = Swift_Message::newInstance();
+        $swiftMessage = new Swift_Message();
         // attach the sender to the message
 
         $swiftMessage->setForm(["EMAIL GOES HERE" => "Our VIbe"]);
@@ -119,8 +119,10 @@ EOF;
 
         $swiftMessage->addPart(html_entity_decode($message), "text/plain");
 
-        $smtp = Swift_SmtpTransport::newInstance("localhost", 25);
-        $mailer = Swift_Mailer::newInstance($smtp);
+        $smtp = new Swift_SmtpTransport(
+            "localhost", 25);
+        $mailer = new Swift_Mailer($smtp);
+
         //send the message
         $numSent = $mailer->send($swiftMessage, $failedRecipients);
 
