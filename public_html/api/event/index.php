@@ -7,7 +7,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\OurVibe\{
 	Event,
-	// we only use the event venue ID class for testing purposes
+	// we only use the event tag class for testing purposes
 	EventTag, Tag
 };
 
@@ -34,7 +34,7 @@ try {
 
 	// mock a logged in user by mocking the session and assigning a specific user
 	// this is only for testing purposes and should not be in the live code.
-	//$_SESSION["event"] = Event::getEventByEventVenueId($pdo, 732);
+	//$_SESSION["eventVenueId"] = Event::getEventByEventVenueId($pdo, 732);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -129,7 +129,7 @@ try {
 			}
 
 			//enforce the user is signed in and only trying to edit their own event
-			if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventVenueId() !== $event->getEventVenueId()) {
+			if(empty($_SESSION["eventVenueId"]) === true || $_SESSION["eventVenueId"]->getEventVenueId() !== $event->getEventVenueId()) {
 				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
 			}
 		}//update all attributes
@@ -147,7 +147,7 @@ try {
 
 		//TODO change the session to profile
 		//enforce the user is signed in
-		if(empty($_SESSION["event"]) === true) {
+		if(empty($_SESSION["eventVenueId"]) === true) {
 			throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
 		}
 
@@ -156,7 +156,7 @@ try {
 
 		//TODO add all needed state variables to the event object
 		// create new Event and insert into the database
-		$event = new Event(null, $requestObject->eventVenueId);
+		$event = new Event(null, $requestObject->eventVenueId), $requestObject->eventName)$requestObject->eventDateTime), $requestObject->eventTagId);
 		$event->insert($pdo);
 
 		//update reply
@@ -165,135 +165,8 @@ try {
 		// TODO check for images
 	}
 
-	//perform the actual put or post
-	if($method === "PUT") {
-
-		// retrieve the event to update
-		$event = Event::getEventByEventDate($pdo, $id);
-		if($event === null) {
-			throw(new RuntimeException("Event does not exist", 404));
-		}
-
-		//enforce the user is signed in and only trying to edit their own event
-		if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventByEventDate !== $event->getEventByEventDate()) {
-			throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
-		}
-
-
-	}//update all attributes
-	$event->setEventVenueId($requestObject->eventVenueId);
-	$event->setEventDateTime($requestObject->eventDate);
-	$event->setEventName($requestObject->eventName);
-	$event->setEventTag($requestObject->eventTag);
-	$event->update($pdo);
-
-	//update reply
-	$reply->message = "Event updated OK";
-
-} else if($method === "POST") {
-
-	//enforce the user is signed in
-	if(empty($_SESSION["event"]) === true) {
-		throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
-	}
-
-	// create new Event and insert into the database
-	$event = new Event(null, $requestObject->eventDateTime);
-	$event->insert($pdo);
-
-	//update reply
-	$reply->message = "Event created OK";
-}
-
-		//perform the actual put or post
-		if($method === "PUT") {
-
-			//TODO get rid of the this PUT
-
-			// retrieve the event to update
-			$event = Event::getEventByEventName($pdo, $id);
-			if($event === null) {
-				throw(new RuntimeException("Event does not exist", 404));
-			}
-
-			//enforce the user is signed in and only trying to edit their own event
-			if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventName() !== $event->getEventName()) {
-				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
-			}
-
-
-		}
-
 		//TODO dead code belongs in deleted
-		//update all attributes
-	$event->setEventVenueId($requestObject->eventVenueId);
-	$event->setEventDateTime($requestObject->eventDate);
-	$event->setEventName($requestObject->eventName);
-	$event->setEventTag($requestObject->eventTag);
-	$event->update($pdo);
 
-		//update reply
-		$reply->message = "Event updated OK";
-
-	} else if($method === "POST") {
-
-	//TODO get rid of this IF block
-
-	//enforce the user is signed in
-	if(empty($_SESSION["event"]) === true) {
-		throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
-	}
-
-	// create new Event and insert into the database
-	$event = new Event(null, $requestObject->eventName);
-	$event->insert($pdo);
-
-	//update reply
-	$reply->message = "Event created OK";
-}
-
-		//perform the actual put or post
-		if($method === "PUT") {
-
-			//TODO get rid of this IF block
-			// retrieve the event to update
-			$event = Event::getEventByEventTag($pdo, $id);
-			if($event === null) {
-				throw(new RuntimeException("Event does not exist", 404));
-			}
-
-			//enforce the user is signed in and only trying to edit their own event
-			if(empty($_SESSION["event"]) === true || $_SESSION["event"]->getEventTag() !== $event->getEventTag()) {
-				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
-			}
-
-
-		}//update all attributes
-	$event->setEventVenueId($requestObject->eventVenueId);
-	$event->setEventDateTime($requestObject->eventDate);
-	$event->setEventName($requestObject->eventName);
-	$event->setEventTag($requestObject->eventTag);
-	$event->update($pdo);
-
-		//update reply
-		$reply->message = "Event updated OK";
-
-	} else if($method === "POST") {
-
-	//TODO get rid of this if block
-
-	//enforce the user is signed in
-	if(empty($_SESSION["event"]) === true) {
-		throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
-	}
-
-	// create new Event and insert into the database
-	$event = new Event(null, $requestObject->eventTag);
-	$event->insert($pdo);
-
-	//update reply
-	$reply->message = "Event created OK";
-}
 
 //update the $reply->status $reply->message
 } catch(\Exception | TypeError $exception) {
