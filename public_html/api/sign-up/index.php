@@ -106,7 +106,7 @@ EOF;
         $swiftMessage = new Swift_Message();
         // attach the sender to the message
 
-        $swiftMessage->setForm(["EMAIL GOES HERE" => "Our VIbe"]);
+        $swiftMessage->setForm(["btrabaudo@cnm.edu" => "Our VIbe"]);
 
         /**
          * attach recipients to the message
@@ -127,7 +127,7 @@ EOF;
         $mailer = new Swift_Mailer($smtp);
 
         //send the message
-        $numSent = $mailer->send($swiftMessage, $failedRecipients);
+        $numSent = $mailer->send($swiftMessage, $Recipients);
 
         if($numSent !== count($recipients)) {
             throw(new RuntimeException("unable to send email"));
