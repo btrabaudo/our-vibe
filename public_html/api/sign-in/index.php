@@ -40,13 +40,13 @@ try {
 		if(empty($requestObject->venueContact) === true) {
 			throw(new \InvalidArgumentException("Wrong contact address.", 401));
 		} else {
-			$venueContact = filter_var($requestObject->venueContact, FILTER_SANITIZE_Contact);
+			$venueContact = filter_var($requestObject->venueContact, FILTER_SANITIZE_STRING);
 		}
 
-		if(empty($requestObject->venuePassword) === true) {
+		if(empty($requestObject->profilePassword) === true) {
 			throw(new \InvalidArgumentException("Must enter a password", 401));
 		} else {
-			$venuePassword = $requestObject->venuePassword;
+			$profilePassword = $requestObject->profilePassword;
 		}
 
 		// grab the venue from the database by the contact provided
@@ -61,7 +61,7 @@ try {
 		}
 
 		// hash the password given to  makes sure it matches
-		$hash = hash_pbkdf2("sha512", $venuePassword, $venue->getVenueSalt(), 262144);
+		$hash = hash_pbkdf2("sha512", $profilePassword, $venue->getVenueSalt(), 262144);
 
 		// verify has is correct
 		if($hash !== $venue->setVenueHash()) {
