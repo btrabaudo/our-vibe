@@ -159,12 +159,12 @@ class Venue implements \JsonSerializable {
      * ALERT MAKE ACTIVATION TOKEN NULLABLE
      * mutator method for Venue Activation Token
      * @param string $newVenueActivationToken
-     * enforced formatting on activation.php token
-     * @throws \InvalidArgumentException if activation.php token is either empty or insecure
-     * @throws \RangeException if activation.php token does not have 32 characters
+     * enforced formatting on index.php token
+     * @throws \InvalidArgumentException if index.php token is either empty or insecure
+     * @throws \RangeException if index.php token does not have 32 characters
      **/
     public function setVenueActivationToken(string $newVenueActivationToken) : void {
-        //enforce formatting on activation.php token
+        //enforce formatting on index.php token
         $newVenueActivationToken = trim($newVenueActivationToken);
         $newVenueActivationToken = filter_var($newVenueActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -173,17 +173,17 @@ class Venue implements \JsonSerializable {
             return;
         }
 
-        //enforce content in venue activation.php Token
+        //enforce content in venue index.php Token
         if(empty($newVenueActivationToken) === true) {
-            throw(new \InvalidArgumentException("venue activation.php token is either empty or insecure"));
+            throw(new \InvalidArgumentException("venue index.php token is either empty or insecure"));
         }
-        //enforce hex in venue activation.php token
+        //enforce hex in venue index.php token
         if(!ctype_xdigit($newVenueActivationToken)) {
-            throw(new \InvalidArgumentException("venue activation.php token is either empty or insecure"));
+            throw(new \InvalidArgumentException("venue index.php token is either empty or insecure"));
         }
-        //enforce length on venue activation.php token
+        //enforce length on venue index.php token
         if(strlen($newVenueActivationToken) !== 32) {
-            throw(new \RangeException("venue activation.php token must be 32 characters"));
+            throw(new \RangeException("venue index.php token must be 32 characters"));
         }
         //store new venue authentication token in venue authentication token
         $this->venueActivationToken = $newVenueActivationToken;
@@ -711,11 +711,11 @@ class Venue implements \JsonSerializable {
 
     public static function getVenueByVenueActivationToken(\PDO $pdo, ?string $venueActivationToken) : ?Venue
     {
-        //make sure that the activation.php token is formatted
+        //make sure that the index.php token is formatted
 
         $venueActivationToken = trim($venueActivationToken);
         if (ctype_xdigit($venueActivationToken) === false) {
-            throw(new \InvalidArgumentException("profile activation.php token is empty or insecure"));
+            throw(new \InvalidArgumentException("profile index.php token is empty or insecure"));
 
         }
 
@@ -723,7 +723,7 @@ class Venue implements \JsonSerializable {
 
         $statement = $pdo->prepare($query);
 
-        //bind the profile activation.php token to the placeholder
+        //bind the profile index.php token to the placeholder
 
         $parameters = ["venueActivationToken" => $venueActivationToken];
         $statement->execute($parameters);

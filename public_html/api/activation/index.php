@@ -37,7 +37,10 @@ try {
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message->getMessage();
-}
+}catch(TypeError $typeError){
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+} 
 header("Content-type: application/json");
 if($reply->data === null) {
 		unset($reply->data);

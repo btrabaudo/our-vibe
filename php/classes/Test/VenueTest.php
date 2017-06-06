@@ -25,7 +25,7 @@ class VenueTest extends OurVibeTest {
 
 
     /**
-     * Placeholder until account activation.php is created
+     * Placeholder until account index.php is created
      * @var string $VALID_ACTIVATION
      **/
 
@@ -420,7 +420,7 @@ class VenueTest extends OurVibeTest {
     }
 
     /**
-     * test grabbing a venue by its activation.php
+     * test grabbing a venue by its index.php
      **/
     public function testGetValidVenueByActivationToken() : void {
         // count the number of rows
@@ -450,12 +450,12 @@ class VenueTest extends OurVibeTest {
 
 
     /**
-     * test grabbing a venue by an activation.php Token that does not exist
+     * test grabbing a venue by an index.php Token that does not exist
      *
      **/
 
     public function testGetInvalidProfileActivation() : void {
-        // grab an activation.php token does not exist
+        // grab an index.php token does not exist
         $venue = Venue::getVenueByVenueActivationToken($this->getPDO(), "5ebc7867885cb8dd25af05b991dd5609");
         $this->assertNull($venue);
     }
