@@ -25,25 +25,29 @@ try {
 	}
 	if($method === "GET") {
 		setXsrfCookie();
-		$venue = Edu\Cnm\OurVibe\Venue::getVenueByVenueActivationToken($pdo,$activation);
+		$venue = Edu\Cnm\OurVibe\Venue::getVenueByVenueActivationToken($pdo, $activation);
 		if($venue !== null) {
 			if($activation === $venue->getVenueActivationToken()) {
 				$venue->setVenueActivationToken(null);
 				$venue->update($pdo);
 				$reply->data = "Thank you for activating your account, you will be auto-redirected to your venue shortly.";
 			}
-		} else throw (new RuntimeException("venue with this activation code does not exist",404));
+		} else {
+			throw (new RuntimeException("venue with this activation code does not exist", 404));
+		}
 
-	}else throw(new RuntimeException("invalid http request"));
+	} else {
+		throw(new RuntimeException("invalid http request"));
+	}
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
-	$reply->message =$exception->getMessage();
-}catch(TypeError $typeError){
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
 header("Content-type: application/json");
 if($reply->data === null) {
-		unset($reply->data);
-	}
-	echo json_encode($reply);
+	unset($reply->data);
+}
+echo json_encode($reply);
