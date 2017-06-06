@@ -675,7 +675,8 @@ class Venue implements \JsonSerializable {
         return ($venues);
     }
 
-    public static function getVenueByVenueName(\PDO $pdo, string $venueName) : SPLFixedArray {
+    public static function getVenueByVenueName(\PDO $pdo, string $venueName) : \SplFixedArray
+    {
         //Sanitiz\e city
         $venueName = trim($venueName);
         $venueName = filter_var($venueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -739,6 +740,42 @@ class Venue implements \JsonSerializable {
             throw(new \PDOException($exception->getMessage(), 0, $exception));
         }
         return ($venue);
+
+    }
+
+    /**
+     * @param \PDO $pdo
+     * @param null|string $venueContact
+     * @return Venue|null
+     **/
+
+    public static function getVenueByVenueContact(\PDO $pdo, ?string $venueContact) : ?Venue {
+        if (empty($venueContact) === true) {
+            throw(new \PDOException("this is not a valid contact"));
+        }
+        //query for venue
+        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueContent = :venueContact";
+
+        $statement = $pdo->prepare($query);
+        $parameters = ["venueContact" => $venueContact];
+        $statement->execute($parameters);
+
+
+        //fetch venue from mySQL
+        try {
+            $venue = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if($row !== false) {
+                $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
+
+            }
+        } catch (\Exception $exception) {
+            // if the row can not convert re-throw
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+        return($venue);
+
 
     }
 
