@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-require "cloudinary.php" ;
+require "cloudinary.php";
 require 'uploader.php';
 require "api.php";
 
@@ -35,7 +35,7 @@ try {
 				 *
 				 **/
 				$config = readConfig("/etc/apache2/capstone-mysql/ourvibe.ini");
-				$cloudinary = json_decode($config["cloudinary"]);
+				$cloudinary = json_decode($config["Cloudinary"]);
 				\Cloudinary::config(["cloud_name" => $cloudinary->cloudname, "apiKey" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
 
 				// determine which HTTP method was used

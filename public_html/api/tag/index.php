@@ -5,7 +5,7 @@ require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm;
 
 /**
- * api fo rhandlng sign in
+ * api for handlng sign in
  *
  * @author marcus lester
  **/
