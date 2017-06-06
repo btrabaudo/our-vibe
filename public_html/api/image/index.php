@@ -70,7 +70,7 @@ try {
 			}
 			$reply->data = $images;
 		}
-	} elseif($method === "Event") {
+	} elseif($method === "POST") {
 
 		verifyXsrf();
 
