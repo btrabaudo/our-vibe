@@ -183,8 +183,6 @@ try {
             //Datetime
             $formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
 
-			var_dump($requestObject->eventDateTime / 1000);
-
 
 			// create new Event and insert into the database
 			$event = new Event(null, $requestObject->eventVenueId, $requestObject->eventContact, $requestObject->eventContent, $formattedEventDate, $requestObject->eventName);
@@ -193,15 +191,15 @@ try {
 			//update reply
 			$reply->message = "Event created OK";
 
-			if (empty($requestObject->Images === false)) {
-				$images = $requestObject->Images;
+			if (empty($requestObject->images) === false) {
+				$images = $requestObject->images;
 
 				foreach($images as $image){
 					$eventImage = new EventTag($event->getEventId(),$image->getEventImageImageId);
 					$eventImage->insert($pdo);
 					$reply->messageImage = "event Images created okay";
 				}
-			} elseif(empty($requestObject->tags === false)) {
+			} elseif(empty($requestObject->tags) === false) {
 				$tags = $requestObject->tags;
 
 				foreach($tags as $tag) {
