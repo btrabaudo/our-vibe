@@ -748,7 +748,7 @@ class Venue implements \JsonSerializable {
      * @return Venue|null
      **/
 
-    public static function getVenueByVenueContact(\PDO $pdo, string $venueContact) : \SplFixedArray
+    public static function getVenueByVenueContact(\PDO $pdo, string $venueContact) : ?Venue
     {
         //Sanitize contact
         $venueContact = trim($venueContact);
@@ -758,29 +758,28 @@ class Venue implements \JsonSerializable {
             throw(new \PDOException("not a valid contact"));
         }
         //query for venue using venueCity
-        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueContact LIKE :venueContact";
+        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueContact = :venueContact";
         $statement = $pdo->prepare($query);
 
         // bind the venue city to the placeholder
-        $venueContact = "%$venueContact%";
         $parameters = ["venueContact" => $venueContact];
         $statement->execute($parameters);
 
-        //build array
+        //fetch venue from mySQL
 
-        $venues = new \SplFixedArray($statement->rowCount());
-        $statement->setFetchMode(\PDO::FETCH_ASSOC);
-        while (($row = $statement->fetch()) !== false) {
-
-            try {
+        try {
+            $venue = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if ($row !== false) {
                 $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
-                $venues[$venues->key()] = $venue;
-                $venues->next();
-            } catch (\Exception $exception) {
-                throw(new \PDOException($exception->getMessage(), 0, $exception));
             }
+        } catch (\Exception $exception) {
+            //if row can not convert re-throw
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+
         }
-        return ($venues);
+        return ($venue);
 
     }
 
