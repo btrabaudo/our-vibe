@@ -1,7 +1,5 @@
 <?php
 namespace Edu\Cnm\OurVibe;
-
-
 /**
  *
  * Class Venue

@@ -34,18 +34,18 @@ try {
 	 *
 	 **/
 	$config = readConfig("/etc/apache2/capstone-mysql/ourvibe.ini");
-	$cloudinary = json_decode($config["Cloudinary"]);
-	\Cloudinary::config(["cloud_name" => $cloudinary->cloudname, "apiKey" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
+	$cloudinary = json_decode($config["cloudinary"]);
+	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
 
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	// sanitize input
-	$imageId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$imageCloudinaryId = filter_input(INPUT_GET, "imageCloudinaryId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	// make sure the id is valid for methods that require it
-	if(($method === "DELETE") && (empty($imageId) === true || $imageId < 0)) {
+	if(($method === "DELETE") && (empty($id) === true || $id < 0)) {
 		throw (new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
@@ -55,8 +55,8 @@ try {
 		setXsrfCookie();
 
 		// get a specific image or all images and update reply
-		if(empty($imageId) === false) {
-			$image = Image::getImageByImageId($pdo, $imageId);
+		if(empty($id) === false) {
+			$image = Image::getImageByImageId($pdo, $id);
 			if($image !== null) {
 				$reply->data = $image;
 			}
@@ -65,7 +65,7 @@ try {
 			if($image !== null) {
 				$reply->data = $image;
 			}
-			$reply->data = $images;
+			$reply->data = $image;
 		}
 	} elseif($method === "POST") {
 
@@ -73,15 +73,14 @@ try {
 
 		// verifying the user is logged in before creating an image
 		if(empty($_SESSION["venue"]) === true) {
-			throw(new \InvalidArgumentException(" You are nt allowed to upload images unless you are logged in", 401));
+			throw(new \InvalidArgumentException(" You are not allowed to upload images unless you are logged in", 401));
 		}
 		// assigning variables to the user image name, and image extension
-		$tempUserFileName = $_FILES["file"]["tmp_name"];
-		$userFileType = $_FILES["file"]["type"];
-		$userFileExtension = strtolower(strrchr($_FILES["file"]["name"], "."));
+		$tempUserFileName = $_FILES["image"]["tmp_name"];
+
 
 		// upload image to cloudinary and get public id
-		$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"] ["tmp_name"], array("width" => 500, "crop" => "scale"));
+		$cloudinaryResult = \Cloudinary\Uploader::upload( $tempUserFileName, array("width" => 500, "crop" => "scale"));
 
 		// after sending the image to Cloudinary, grab the public id and create a new image
 		$image = new Image(null, $cloudinaryResult["public_id"]);
@@ -94,18 +93,18 @@ try {
 		verifyXsrf();
 
 		// verifying the user that posted these images is logged in before deleting
-		if(empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getVenueId() !== $id) {
+		if(empty($_SESSION["venue"]) === true || $_SESSION["image"]->getVenueId() !== $id) {
 			throw(new \InvalidArgumentException("Must be logged in to delete image"));
 		}
 
 		// retrieve the image to be deleted
-		$image = Image::getImageByImageId($pdo, $imageId);
+		$image = Image::getImageByImageId($pdo, $id);
 		if($image === null) {
 			throw(new RuntimeException("Image does not exist", 404));
 		}
 		$image->delete($pdo);
 
-		$reply->message = "Image succesfully deleted";
+		$reply->message = "Image successfully deleted";
 
 	} else {
 		throw(new InvalidArgumentException("Invalid HTTP method request"));

@@ -157,7 +157,7 @@ try {
         $venue->update($pdo);
         $reply->message = "venue password updated";
         }
-    } elseif ($method === "DELETE") {
+    } else if ($method === "DELETE") {
         //verify the XSRF token
         verifyXSRF();
         $venue = Venue::getVenueByVenueId($pdo, $id);
