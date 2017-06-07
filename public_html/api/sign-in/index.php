@@ -32,7 +32,7 @@ try {
 		// make sure the XSRF token is valid
 		verifyXsrf();
 
-		// process the request content aand decode the json object into a php object
+		// process the request content and decode the json object into a php object
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 

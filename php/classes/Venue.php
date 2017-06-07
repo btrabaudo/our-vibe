@@ -163,20 +163,19 @@ class Venue implements \JsonSerializable {
      * @throws \InvalidArgumentException if index.php token is either empty or insecure
      * @throws \RangeException if index.php token does not have 32 characters
      **/
+
+
     public function setVenueActivationToken(?string $newVenueActivationToken) : void {
         //enforce formatting on index.php token
-        $newVenueActivationToken = trim($newVenueActivationToken);
-        $newVenueActivationToken = filter_var($newVenueActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
         if ($newVenueActivationToken === null) {
             $this->venueActivationToken = null;
             return;
         }
+        $newVenueActivationToken = trim($newVenueActivationToken);
+        $newVenueActivationToken = filter_var($newVenueActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-        //enforce content in venue index.php Token
-        if(empty($newVenueActivationToken) === true) {
-            throw(new \InvalidArgumentException("venue index.php token is either empty or insecure"));
-        }
+
         //enforce hex in venue index.php token
         if(!ctype_xdigit($newVenueActivationToken)) {
             throw(new \InvalidArgumentException("venue index.php token is either empty or insecure"));
@@ -677,7 +676,7 @@ class Venue implements \JsonSerializable {
 
     public static function getVenueByVenueName(\PDO $pdo, string $venueName) : \SplFixedArray
     {
-        //Sanitiz\e city
+        //Sanitiz\e name
         $venueName = trim($venueName);
         $venueName = filter_var($venueName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -749,33 +748,39 @@ class Venue implements \JsonSerializable {
      * @return Venue|null
      **/
 
-    public static function getVenueByVenueContact(\PDO $pdo, ?string $venueContact) : ?Venue {
-        if (empty($venueContact) === true) {
-            throw(new \PDOException("this is not a valid contact"));
-        }
-        //query for venue
-        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueContent = :venueContact";
+    public static function getVenueByVenueContact(\PDO $pdo, string $venueContact) : \SplFixedArray
+    {
+        //Sanitize contact
+        $venueContact = trim($venueContact);
+        $venueContact = filter_var($venueContact, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
+        if (empty ($venueContact) === true) {
+            throw(new \PDOException("not a valid contact"));
+        }
+        //query for venue using venueCity
+        $query = "SELECT venueId, venueImageId, venueActivationToken, venueAddress1, venueAddress2, venueCity, venueContact, venueContent, venueName, venueState, venueZip, venuePassHash, venuePassSalt FROM venue WHERE venueContact LIKE :venueContact";
         $statement = $pdo->prepare($query);
+
+        // bind the venue city to the placeholder
+        $venueContact = "%$venueContact%";
         $parameters = ["venueContact" => $venueContact];
         $statement->execute($parameters);
 
+        //build array
 
-        //fetch venue from mySQL
-        try {
-            $venue = null;
-            $statement->setFetchMode(\PDO::FETCH_ASSOC);
-            $row = $statement->fetch();
-            if($row !== false) {
+        $venues = new \SplFixedArray($statement->rowCount());
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        while (($row = $statement->fetch()) !== false) {
+
+            try {
                 $venue = new Venue($row ["venueId"], $row ["venueImageId"], $row ["venueActivationToken"], $row ["venueAddress1"], $row ["venueAddress2"], $row ["venueCity"], $row ["venueContact"], $row ["venueContent"], $row ["venueName"], $row ["venueState"], $row ["venueZip"], $row ["venuePassHash"], $row ["venuePassSalt"]);
-
+                $venues[$venues->key()] = $venue;
+                $venues->next();
+            } catch (\Exception $exception) {
+                throw(new \PDOException($exception->getMessage(), 0, $exception));
             }
-        } catch (\Exception $exception) {
-            // if the row can not convert re-throw
-            throw(new \PDOException($exception->getMessage(), 0, $exception));
         }
-        return($venue);
-
+        return ($venues);
 
     }
 

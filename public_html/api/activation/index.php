@@ -12,12 +12,11 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 try {
-
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ourvibe.ini");
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	$activation = filter_input(INPUT_GET, "activation", FILTER_SANITIZE_STRING);
-	if(strlen($activation) !== 32) {
-		throw(new InvalidArgumentException("activation has an incorrect length", 405));
+    if(strlen($activation) !==32) {
+        throw (new \InvalidArgumentException("Activation token is invalid length", 405));
 	}
 
 	if(ctype_xdigit($activation) === false) {

@@ -156,7 +156,7 @@ try {
 
 		//TODO add all needed state variables to the event object
 		// create new Event and insert into the database
-		$event = new Event(null, $requestObject->eventVenueId), $requestObject->eventName)$requestObject->eventDateTime), $requestObject->eventTagId);
+		$event = new Event(null, $requestObject->eventVenueId), $requestObject->eventName),$requestObject->eventDateTime), $requestObject->eventTagId);
 		$event->insert($pdo);
 
 		//update reply

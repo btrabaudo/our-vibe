@@ -57,7 +57,7 @@ class VenueTest extends OurVibeTest {
      * @var string $VALID_CONTACT
      **/
 
-    protected $VALID_CONTACT = " Vegan meggings pop-up green juice, VHS pickled lumber. lumber@lumber.com";
+    protected $VALID_CONTACT = "hahahahahaha lumber@lumber.com";
 
     /**
      * valid content to use
@@ -387,7 +387,7 @@ class VenueTest extends OurVibeTest {
         $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Venue", $results);
 
 
-        // grab data from mySQL and enforce the fields match expectationsw
+        // grab data from mySQL and enforce the fields match expectations
         $pdoVenue = $results[0];
 
         $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
@@ -446,6 +446,59 @@ class VenueTest extends OurVibeTest {
         $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
         $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
         $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+    }
+
+
+    /**
+     * test grabbing a venue by contact
+     **/
+
+    public function testGetValidVenueByContact() : void {
+        // count the number of rows
+        $numRows = $this->getConnection()->getRowCount("venue");
+
+        //create a new venue and insert it into mySQL DB
+        $venue = new Venue(null, $this->VALID_IMAGE->getImageId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_NAME, $this->VALID_STATE, $this->VALID_ZIP, $this->VALID_HASH, $this->VALID_SALT);
+
+        $venue->insert($this->getPDO());
+
+        $results = Venue::getVenueByVenueContact($this->getPDO(), $this->VALID_CONTACT);
+        $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("venue"));
+        $this->assertCount(1, $results);
+
+        $this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Venue", $results);
+
+
+        // grab data from mySQL and enforce the fields match expectations
+        $pdoVenue = $results[0];
+
+        $this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("venue"));
+        $this->assertEquals($pdoVenue->getVenueImageId(), $venue->getVenueImageId());
+        $this->assertEquals($pdoVenue->getVenueActivationToken(), $this->VALID_ACTIVATION);
+        $this->assertEquals($pdoVenue->getVenueAddress1(), $this->VALID_ADDRESS1);
+        $this->assertEquals($pdoVenue->getVenueAddress2(), $this->VALID_ADDRESS2);
+        $this->assertEquals($pdoVenue->getVenueCity(), $this->VALID_CITY);
+        $this->assertEquals($pdoVenue->getVenueContact(), $this->VALID_CONTACT);
+        $this->assertEquals($pdoVenue->getVenueContent(), $this->VALID_CONTENT);
+        $this->assertEquals($pdoVenue->getVenueName(), $this->VALID_NAME);
+        $this->assertEquals($pdoVenue->getVenueState(), $this->VALID_STATE);
+        $this->assertEquals($pdoVenue->getVenueZip(), $this->VALID_ZIP);
+        $this->assertEquals($pdoVenue->getVenuePassHash(), $this->VALID_HASH);
+        $this->assertEquals($pdoVenue->getVenuePassSalt(), $this->VALID_SALT);
+
+
+    }
+
+    /**
+     * test grabbing a venue by a contact that does not exist
+     *
+     **/
+
+    public function testGetInvalidVenueByContact() : void {
+        // grab a venue that does not exist
+        $venue = Venue::getVenueByVenueContact($this->getPDO(), "doesnotexist");
+
+        $this->assertCount(0, $venue);
     }
 
 
