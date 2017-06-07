@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once ("/etc/apache2/our-vibe/encrypted-config.php");
+require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
 /**
  * signing out
  *
@@ -34,6 +34,7 @@ try {
     $reply->status = $exception->getCode();
     $reply->message = $exception->getMessage();
 }
+
 header("Content-type: application/json");
 if($reply->data === null) {
     unset($reply->data);

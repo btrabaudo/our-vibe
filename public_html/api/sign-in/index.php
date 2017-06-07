@@ -61,10 +61,10 @@ try {
 		}
 
 		// hash the password given to  makes sure it matches
-		$hash = hash_pbkdf2("sha512", $profilePassword, $venue->getVenueSalt(), 262144);
+		$hash = hash_pbkdf2("sha512", $profilePassword, $venue->getVenuePassSalt(), 262144);
 
 		// verify has is correct
-		if($hash !== $venue->setVenueHash()) {
+		if($hash !== $venue->getVenuePassHash()) {
 			throw(new \InvalidArgumentException("password or contact is incorrect"));
 		}
 
