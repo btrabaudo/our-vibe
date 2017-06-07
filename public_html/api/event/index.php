@@ -30,7 +30,7 @@ $reply->data = null;
 
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncyptedMySQL("/etc/apache2/capstone-mysql/ourvibe.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ourvibe.ini");
 
 	// mock a logged in user by mocking the session and assigning a specific user
 	// this is only for testing purposes and should not be in the live code.
@@ -42,13 +42,15 @@ try {
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$eventVenueId = filter_input(INPUT_GET, "eventVenueId", FILTER_VALIDATE_INT);
-	$eventDateTime = filter_input(INPUT_GET, "eventDateTime", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventSunriseDate = filter_input(INPUT_GET, "eventSunriseDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventSunsetDate = filter_input(INPUT_GET, "eventSunsetDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$eventName = filter_input(INPUT_GET, "eventName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$eventTag = filter_input(INPUT_GET, "eventTag", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventTagEventId = filter_input(INPUT_GET, "eventTagEventId", FILTER_VALIDATE_INT);
+	$eventTagTagId = filter_input(INPUT_GET, "eventTagTagId", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArguementException("id cannot be empty or negative", 405));
+		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
 	// handle GET request - if id is present, that event is returned, otherwise all events are returned
@@ -61,14 +63,17 @@ try {
 			$event = Event::getEventByEventId($pdo, $id);
 			if($event !== null) {
 				$reply->data = $event;
+				$eventTags = EventTag::getEventTagsByEventTagEventId($pdo, $id);
+				$storage = new Edu\Cnm\OurVibe\JsonObjectStorage();
+				$storage->attach($event, $eventTags);
 			}
 		} else if(empty($eventVenueId) === false) {
 			$event = Event::getEventByEventVenueId($pdo, $eventVenueId)->toArray();
 			if($event !== null) {
 				$reply->data = $event;
 			}
-		} else if(empty($eventDateTime) === false) {
-			$events = Event::getEventByEventDate($pdo, $eventDateTime)->toArray();
+		} else if((empty($eventSunriseDate) === false)&& empty($eventSunsetDate) === false ){
+			$events = Event::getEventByEventDate($pdo, $eventSunriseDate, $eventSunsetDate)->toArray();
 			if($events !== null) {
 				$reply->data = $events;
 			}
@@ -77,11 +82,16 @@ try {
 			if($events !== null) {
 				$reply->data = $events;
 			}
-			//Json object storage for event tags
-		} else if(empty($eventTag) === false) {
-			$events = Event::getEventByEventTag($pdo, $eventTag)->toArray();
-			if($events !== null) {
-				$reply->data = $events;
+			//TODO double check when testing
+		} else if(empty($eventTagTagId) === false) {
+			$eventTags = EventTag::getEventTagsByEventTagTagId($pdo, $eventTagTagId);
+			if($eventTags !== null) {
+				$storage = new Edu\Cnm\OurVibe\JsonObjectStorage();
+				foreach($eventTags as $eventTag){
+					$event = Event::getEventByEventId($pdo, $eventTag->getEventTagEventId());
+					$storage->attach($eventTag, $event);
+				}
+				$reply->data = $storage;
 			}
 		} else {
 			$events = Event::getAllEvents($pdo)->toArray();
@@ -111,12 +121,30 @@ try {
 
 		// make sure event name is available
 		if(empty($requestObject->eventName) === true) {
-			throw(new \InvalidArgumentException("No Event Name.", 405));
+			throw(new \InvalidArgumentException("No Event Name Available", 405));
 		}
 
-		// make sure event tag is available
-		if(empty($requestObject->eventTag) === true) {
-			throw(new \InvalidArgumentException("No Event Tag.", 405));
+		// make sure event contact is available
+		if(empty($requestObject->eventContact) === true) {
+			throw(new \InvalidArgumentException("No Event Contact Available", 405));
+		}
+
+		// make sure event content is available
+		if(empty($requestObject->eventContent) === true) {
+			throw(new \InvalidArgumentException("No Content Available", 405));
+		}
+
+		// make sure event venue id is available
+		if(empty($requestObject->eventVenueId) === true) {
+			throw(new \InvalidArgumentException("No Event Venue Id Available", 405));
+		}
+
+		if(empty($requestObject->tags === true)) {
+			$requestObject->tags = null;
+		}
+
+		if(empty($requestObject->Images === true)) {
+			$requestObject->Images = null;
 		}
 
 		//perform the actual put or post
@@ -129,44 +157,55 @@ try {
 			}
 
 			//enforce the user is signed in and only trying to edit their own event
-			if(empty($_SESSION["eventVenueId"]) === true || $_SESSION["eventVenueId"]->getEventVenueId() !== $event->getEventVenueId()) {
+			if(empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getEventVenueId() !== $event->getEventVenueId()) {
 				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
 			}
-		}//update all attributes
-		$event->setEventVenueId($requestObject->eventVenueId);
-		$event->setEventDateTime($requestObject->eventDate);
-		$event->setEventName($requestObject->eventName);
-		$event->setEventTag($requestObject->eventTag);
-		$event->update($pdo);
+			//update all attributes
+			$event->setEventDateTime($requestObject->eventDate);
+			$event->setEventName($requestObject->eventName);
 
-		//update reply
-		$reply->message = "Event updated OK";
+			$event->update($pdo);
 
-	} else if($method === "POST") {
+			//update reply
+			$reply->message = "Event updated OK";
 
 
-		//TODO change the session to profile
-		//enforce the user is signed in
-		if(empty($_SESSION["eventVenueId"]) === true) {
-			throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
+		} else if($method === "POST") {
+
+
+			//TODO change the session to profile
+			//enforce the user is signed in
+			if(empty($_SESSION["venue"]) === true) {
+				throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
+			}
+
+
+			// create new Event and insert into the database
+			$event = new Event(null, $requestObject->eventVenueId, $requestObject->eventContact, $requestObject->eventContent, $requestObject->eventDateTime, $requestObject->eventName);
+			$event->insert($pdo);
+
+			//update reply
+			$reply->message = "Event created OK";
+
+			if (empty($requestObject->Images === false)) {
+				$images = $requestObject->Images;
+
+				foreach($images as $image){
+					$eventImage = new EventTag($event->getEventId(),$image->getEventImageImageId);
+					$eventImage->insert($pdo);
+					$reply->messageImage = "event Images created okay";
+				}
+			} elseif(empty($requestObject->tags === false)) {
+				$tags = $requestObject->tags;
+
+				foreach($tags as $tag) {
+					$eventTag = new EventTag($event->getEventId(),$tag->getEventTagTagId);
+					$eventTag->insert($pdo);
+					$reply->messageTag = "eventTags created okay";
+				}
+			}
 		}
-
-		//TODO clean up POST thier should only be one post if block the same with PUT
-
-
-		//TODO add all needed state variables to the event object
-		// create new Event and insert into the database
-		$event = new Event(null, $requestObject->eventVenueId), $requestObject->eventName),$requestObject->eventDateTime), $requestObject->eventTagId);
-		$event->insert($pdo);
-
-		//update reply
-		$reply->message = "Event created OK";
-
-		// TODO check for images
 	}
-
-		//TODO dead code belongs in deleted
-
 
 //update the $reply->status $reply->message
 } catch(\Exception | TypeError $exception) {
@@ -180,6 +219,6 @@ if($reply->data === null) {
 }
 
 //encode and return reply to front end caller
-echo jason_encode($reply);
+echo json_encode($reply);
 
 //finally - JSON encodes the $reply object and sends it back to the front end.
