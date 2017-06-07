@@ -73,7 +73,9 @@ try {
 				$reply->data = $event;
 			}
 		} else if((empty($eventSunriseDate) === false)&& empty($eventSunsetDate) === false ){
-			$events = Event::getEventByEventDate($pdo, $eventSunriseDate, $eventSunsetDate)->toArray();
+		    $formattedSunrise = \DateTime::createFromFormat("U.u", $eventSunriseDate / 1000);
+            $formattedSunset = \DateTime::createFromFormat("U.u", $eventSunsetDate / 1000);
+			$events = Event::getEventByEventDate($pdo, $formattedSunrise, $formattedSunset)->toArray();
 			if($events !== null) {
 				$reply->data = $events;
 			}
