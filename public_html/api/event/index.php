@@ -159,11 +159,12 @@ try {
 			}
 
 			//enforce the user is signed in and only trying to edit their own event
-			if(empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getEventVenueId() !== $event->getEventVenueId()) {
+			if(empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getVenueId() !== $event->getEventVenueId()) {
 				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
 			}
+            $formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
 			//update all attributes
-			$event->setEventDateTime($requestObject->eventDate);
+			$event->setEventDateTime($formattedEventDate);
 			$event->setEventName($requestObject->eventName);
 
 			$event->update($pdo);

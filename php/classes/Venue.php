@@ -793,6 +793,8 @@ class Venue implements \JsonSerializable {
 
     public function jsonSerialize() {
         $fields = get_object_vars($this);
+        unset($fields ["venuePassHash"]);
+        unset($fields ["venuePassSalt"]);
         return ($fields);
     }
 

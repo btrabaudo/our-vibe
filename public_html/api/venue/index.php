@@ -53,13 +53,13 @@ try {
             }
 
         } else if(empty($venueCity) === false) {
-            $venue = Venue::getVenueByVenueCity($pdo, $venueCity);
+            $venue = Venue::getVenueByVenueCity($pdo, $venueCity)->toArray();
                 if($venue !== null) {
                     $reply->data = $venue;
                 }
 
         } else if(empty($venueName) === false) {
-            $venue = Venue::getVenueByVenueName($pdo, $venueName);
+            $venue = Venue::getVenueByVenueName($pdo, $venueName)->toArray();
             if($venue !== null) {
                 $reply->data = $venue;
             }
@@ -89,12 +89,12 @@ try {
 
             //venue address1
             if(empty($requestObject->venueAddress1) === true) {
-                throw(new \InvalidArgumentException("No venue address", 404));
+                throw(new \InvalidArgumentException("No venue address1", 404));
             }
 
             //venue address2
             if(empty($requestObject->venueAddress2) === true) {
-                throw(new \InvalidArgumentException("No venue address", 404));
+                $requestObject->venueAddress2 = null;
             }
 
 
@@ -111,7 +111,6 @@ try {
             if(empty($requestObject->venueContent) === true) {
                 throw(new \InvalidArgumentException("No venue content", 404));
             }
-
 
             if(empty($requestObject->venueName) === true) {
                 throw(new \InvalidArgumentException("No venue name", 404));
@@ -135,13 +134,13 @@ try {
          * update password if requested
          **/
         //enforce current password, new password, and confirm password
-        if(empty($requestObject->VenuePassword) === false && empty($requestObject->venueConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
+        if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
             //make sure it is a new password and confirm
-            if($requestObject->newVenuePassword !== $requestObject->venueConfirmPassword) {
+            if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
                 throw(new \RuntimeException("New Passwords do not match", 401));
             }
             //hash the previous password
-            $currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentVenuePassword, $venue->getVenuePassSalt(), 262144);
+            $currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentProfilePassword, $venue->getVenuePassSalt(), 262144);
 
             //make sure the hash given by the end user matches the database
 
@@ -153,11 +152,11 @@ try {
             $newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
             $venue->setVenuePassHash($newPasswordHash);
             $venue->setVenuePassSalt($newPasswordSalt);
-        }
+
         //perform the update
         $venue->update($pdo);
         $reply->message = "venue password updated";
-
+        }
     } elseif ($method === "DELETE") {
         //verify the XSRF token
         verifyXSRF();
