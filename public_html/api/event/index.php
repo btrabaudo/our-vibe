@@ -73,8 +73,8 @@ try {
 				$reply->data = $event;
 			}
 		} else if((empty($eventSunriseDate) === false)&& empty($eventSunsetDate) === false ){
-		    $formattedSunrise = \DateTime::createFromFormat("U.u", $eventSunriseDate / 1000);
-            $formattedSunset = \DateTime::createFromFormat("U.u", $eventSunsetDate / 1000);
+		    $formattedSunrise = \DateTime::createFromFormat( "U.u", sprintf("%.6f", $eventSunriseDate / 1000));
+            $formattedSunset = \DateTime::createFromFormat( "U.u", sprintf("%.6f", $eventSunsetDate / 1000));
 			$events = Event::getEventByEventDate($pdo, $formattedSunrise, $formattedSunset)->toArray();
 			if($events !== null) {
 				$reply->data = $events;
@@ -141,12 +141,12 @@ try {
 			throw(new \InvalidArgumentException("No Event Venue Id Available", 405));
 		}
 
-		if(empty($requestObject->tags === true)) {
-			$requestObject->tags = null;
+		if(empty($requestObject->tags) === true) {
+			$requestObject->tags = [];
 		}
 
-		if(empty($requestObject->Images === true)) {
-			$requestObject->Images = null;
+		if(empty($requestObject->images) === true) {
+			$requestObject->images = [];
 		}
 
 		//perform the actual put or post
@@ -180,10 +180,14 @@ try {
 			if(empty($_SESSION["venue"]) === true) {
 				throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
 			}
+            //Datetime
+            $formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
+
+			var_dump($requestObject->eventDateTime / 1000);
 
 
 			// create new Event and insert into the database
-			$event = new Event(null, $requestObject->eventVenueId, $requestObject->eventContact, $requestObject->eventContent, $requestObject->eventDateTime, $requestObject->eventName);
+			$event = new Event(null, $requestObject->eventVenueId, $requestObject->eventContact, $requestObject->eventContent, $formattedEventDate, $requestObject->eventName);
 			$event->insert($pdo);
 
 			//update reply
