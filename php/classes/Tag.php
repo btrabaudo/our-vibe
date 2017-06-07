@@ -175,8 +175,9 @@ class Tag implements \JsonSerializable {
 		}
 		$query = "SELECT tagId, tagName FROM tag WHERE tagName LIKE :tagName";
 		$statement = $pdo->prepare($query);
-		$parameters = ["tagName" => $tagName];
-		$statement->execute($parameters);
+        $tagName = "%$tagName%";
+        $parameters = ["tagName" => $tagName];
+        $statement->execute($parameters);
 
 
 		$tags = new \SplFixedArray($statement->rowCount());
