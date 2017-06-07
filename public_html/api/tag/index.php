@@ -1,88 +1,110 @@
 <?php
+require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
-use Edu\Cnm;
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
+
+use Edu\Cnm\OurVibe\{
+	Tag
+
+};
+  
 /**
- * api for handlng sign in
- *
- * @author marcus lester
+ * API for the EventTag class
+ * @author paul baca
  **/
-// prepare an empty reply
+
+if(session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+
 try {
+	$pdo = connectToEncryptedMySQL("/etc/apache2/Our-Vibe-mysql/ourvibe.ini");
 
-	// start session
-	if(session_status() !== PHP_SESSION_ACTIVE) {
-		session_start();
-	}
-	// grab mySQL statement
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ddcbadesty.ini");
-
-	// determine which HTTP method is being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
+	$tagId = filter_input(INPUT_GET, "tagId", FILTER_VALIDATE_INT);
+	$tagName = filter_input(INPUT_GET, "tagName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-	// if method is post handle the sign in logic
-	if($method === "POST") {
+	if(($method === "DELETE" || $method === "PUT") && (empty($tagId) < 0)) {
+		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+	}
+	if($method === "GET") {
+		setXsrfCookie();
 
-		// make sure the XSRF token is valid
+		if(empty($tagId) === false) {
+			$tag = Tag::getTagByTagId($pdo, $tagId);
+			if($tag !== null) {
+				$reply->data = $tag;
+			}
+		} elseif(empty($tagName) === false) {
+			$tags = Tag::getTagByTagName($pdo, $tagName)->toArray();
+			if($tags !== null) {
+				$reply->data = $tags;
+			}
+		} else {
+			$tags = Tag::getAllTags($pdo)->toArray();
+			if($tags !== null) {
+				$reply->data = $tags;
+			}
+		}
+	} elseif($method === "PUT" || $method === "POST") {
 		verifyXsrf();
-
-		// process the request content aand decode the json object into a php object
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// check to make sure the password and email field is not empty
-		if(empty($requestObject->profileEmeila) === true) {
-			throw(new \InvalidArgumentException("Wrong email address.", 401));
-		} else {
-			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
+
+		if(empty($requestObject->tagName) === true) {
+			throw(new \InvalidArgumentException("no content for tag", 405));
 		}
-
-		if(empty($requestObject->profilePassword) === true) {
-			throw(new \InvalidArgumentException("Must enter a password", 401));
-		} else {
-			$profilePassword = $requestObject->profilePassword;
+		if(empty($requestObject->tagId) === true) {
+			throw (new \InvalidArgumentException("no tag id", 405));
 		}
-
-		// grab the profile from the database by the email provided
-		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
-		if(empty($profile) === true) {
-			throw(new \InvalidArgumentException("Invalid Email", 401));
+		if($method === "PUT") {
+			$tag = Tag::getTagByTagId($pdo, $tagId);
+			if($tag === null) {
+				throw (new \RangeException("tag does not exist", 404));
+			}
+			if(empty($_SESSION["tag"]) === true || $_SESSION["tag"]->getTagId() !== $tag->getTagName()) {
+				throw (new \InvalidArgumentException("you are not allowed to edit this tag", 403));
+			}
+			$tag->setTagName($requestObject->tagName);
+			$tag->update($pdo);
+			$reply->message = "tag updated ok";
+		} elseif($method === "POST") {
+			if(empty($_SESSION["tag"]) === true) {
+				throw(new \InvalidArgumentException("you must be signed in to post tags", 403));
+			}
+			$tag = new Tag(null, $requestObject->tagId, $requestObject->tagName);
+			$tag->insert($pdo);
+			$reply->message = "tag created ok";
 		}
-
-		// if the profile activation is not null throw an error
-		if($profile->getProfileActivationToken() !== null) {
-			throw(new \InvalidArgumentException("you are not allowed to sign in unless you have activated your account", 403));
+	} elseif($method === "DELETE") {
+		verifyXsrf();
+		$tag = Tag::getTagByTagId($pdo, $tagId);
+		if($tag === null) {
+			throw(new \RuntimeException("tag does not exist", 404));
 		}
-
-		// hash the password given to  makes sure it matches
-		$hash = hash_pbkdf2("sha512", $profilePassword, $profile->getProfileSalt(), 262144);
-
-		// verify has is correct
-		if($hash !== $profile->setProfileHash()) {
-			throw(new \InvalidArgumentException("password or email is incorrect"));
+		if(empty($_SESSION["tag"]) === true || $_SESSION["tag"]->getTagId() !== $tag->getTagId()) {
+			throw(new \InvalidArgumentException("you are not allowed to delete this tag", 403));
 		}
-
-		// grab profile from database and put into a session
-		$profile = Profile::getProfileByProfileId($pdo, $profile->getProfileId());
-		$_SESSION["profile"] = $profile;
-		$reply->message = "Sign in was successful.";
+		// delete tweet
+		$tag->delete($pdo);
+		// update reply
+		$reply->message = "Tweet deleted OK";
 	} else {
-		throw(new \InvalidArgumentException("Invalid HTTP method request"));
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
-
-	// if an exception is thrown update the
-} catch(Exception $exception) {
+} catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
-} catch(TypeError $typeError) {
-	$reply->status = $typeError->getCode();
-	$reply->message = $typeError->getMessage();
 }
-header("Content-type: application/json");
+header("content-type:application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
 echo json_encode($reply);
