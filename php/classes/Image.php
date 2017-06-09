@@ -229,6 +229,7 @@ class Image implements \JsonSerializable {
 		return ($image);
 	}
 
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *

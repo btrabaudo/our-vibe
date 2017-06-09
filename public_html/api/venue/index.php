@@ -65,7 +65,7 @@ try {
             }
         }
 
-    } elseif ($method === "PUT") {
+    } else if ($method === "PUT") {
         //Enforce the sign in
         if(empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getVenueId() !==$id) {
             throw(new \InvalidArgumentException("Access Denied", 403));
@@ -82,7 +82,7 @@ try {
         if($venue === null) {
             throw(new RuntimeException("Venue does not exist", 404));
         }
-        if(empty($requestObject->newPassword) === true) {
+        if(empty($requestObject->newProfilePassword) === true) {
 
             //enforce the XSRF token
             verifyXSRF();
@@ -134,7 +134,7 @@ try {
          * update password if requested
          **/
         //enforce current password, new password, and confirm password
-        if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
+        if(empty($requestObject->currentProfilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestObject->newProfilePassword) === false) {
             //make sure it is a new password and confirm
             if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
                 throw(new \RuntimeException("New Passwords do not match", 401));
@@ -142,20 +142,22 @@ try {
             //hash the previous password
             $currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentProfilePassword, $venue->getVenuePassSalt(), 262144);
 
+
+
             //make sure the hash given by the end user matches the database
 
             if($currentPasswordHash !== $venue->getVenuePassHash()) {
                 throw(new \RuntimeException("Old Password is incorrect", 401));
             }
 
-            $newPasswordSalt = bin2hex(random_bytes(16));
+            $newPasswordSalt = bin2hex(random_bytes(32));
             $newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
             $venue->setVenuePassHash($newPasswordHash);
             $venue->setVenuePassSalt($newPasswordSalt);
 
-        //perform the update
-        $venue->update($pdo);
-        $reply->message = "venue password updated";
+            //perform the update
+            $venue->update($pdo);
+            $reply->message = "venue password updated";
         }
     } else if ($method === "DELETE") {
         //verify the XSRF token
