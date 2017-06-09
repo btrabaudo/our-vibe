@@ -2,15 +2,14 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {BaseService} from "./base-service";
 import {Status} from "../classes/status";
-import {Like} from "../classes/sign-in";
+import {SignIn} from "../classes/sign-in";
 import {Observable} from "rxjs/Observable";
 
 @Injectable ()
 export class SignInService extends BaseService {
 	constructor(protected http:Http ) {
-		super(http);
+			super(http);
 	}
-
 
 	private signInUrl = "api/sign-in/";
 	public  isSignedIn = false;
@@ -23,4 +22,3 @@ export class SignInService extends BaseService {
 				.catch(BaseService.handleError));
 	}
 }
-
