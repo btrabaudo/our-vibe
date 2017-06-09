@@ -322,7 +322,7 @@ class Event implements \JsonSerializable {
 	public static function getEventByEventVenueId(\PDO $pdo, int $eventVenueId): \SplFixedArray {
 		// sanitize the eventVenueId before searching
 		if($eventVenueId <= 0) {
-			throw(new \PDOException("event venue id is not positive"));
+			throw(new \RangeException("event venue id is not positive"));
 		}
 		// create query template
 		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName FROM event WHERE eventVenueId = :eventVenueId";

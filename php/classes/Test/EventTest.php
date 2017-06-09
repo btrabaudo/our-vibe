@@ -228,22 +228,26 @@ class EventTest extends OurVibeTest {
 	/**
 	 * test inserting event and re-grab it from mySQL
 	 */
-	public function testGetValidEventByEventId(): void {
+	public function testGetValidEventByEventVenueId(): void {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("event");
 		//create a new event and insert it into mySQL DB
 
 
-		$event = new event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
+		$event = new Event(null, $this->VALID_VENUE->getVenueId(), $this->VALID_CONTACT, $this->VALID_CONTENT, $this->VALID_EVENTDATE, $this->VALID_EVENTNAME);
 		$event->insert($this->getPDO());
-		//grab data from mySQL and enforce that they match our expectations
-		$pdoEvent = event::getEventByEventId($this->getPDO(), $event->getEventId());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Event::getEventByEventVenueId($this->getPDO(), $event->getEventVenueId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\OurVibe\\Event", $results);
+
+		// grab the result from the array and validate it
+		$pdoEvent = $results[0];
 		$this->assertEquals($pdoEvent->getEventVenueId(), $this->VALID_VENUE->getVenueId());
-		$this->assertEquals($pdoEvent->getEventContact(), $this->VALID_CONTACT);
 		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_CONTENT);
-		$this->assertEquals($pdoEvent->getEventDateTime(), $this->VALID_EVENTDATE);
-		$this->assertEquals($pdoEvent->getEventName(), $this->VALID_EVENTNAME);
+		//format the date too seconds since the beginning of time to avoid round off error
+		$this->assertEquals($pdoEvent->getEventDateTime()->getTimestamp(), $this->VALID_EVENTDATE->getTimestamp());
 	}
 
 	/**
@@ -251,10 +255,10 @@ class EventTest extends OurVibeTest {
 	 *
 	 *
 	 **/
-	public function testGetInvalidEventByEventId(): void {
+	public function testGetInvalidEventByEventVenueId(): void {
 		// grab an event id that exceeds the maximum allowable event id
-		$event = Event::getEventByEventId($this->getPDO(), EventTest::INVALID_KEY);
-		$this->assertNull($event);
+		$event = Event::getEventByEventVenueId($this->getPDO(), EventTest::INVALID_KEY);
+		$this->assertCount(0, $event);
 	}
 	/**
 	 * test grabbing an Event by event content
@@ -277,10 +281,10 @@ class EventTest extends OurVibeTest {
 
 		// grab the result from the array and validate it
 		$pdoevent = $results[0];
-		$this->assertEquals($pdoevent->getEventVenueId(), $this->venue->getVenueId());
-		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_EVENTCONTENT);
+		$this->assertEquals($pdoevent->getEventVenueId(), $this->VALID_VENUE->getVenueId());
+		$this->assertEquals($pdoevent->getEventContent(), $this->VALID_CONTENT);
 		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoevent->geteventDate()->getTimestamp(), $this->VALID_EVENTDATE->getTimestamp());
+		$this->assertEquals($pdoevent->geteventDateTime()->getTimestamp(), $this->VALID_EVENTDATE->getTimestamp());
 	}
 	/**
 	 * test grabbing a event by content that does not exist

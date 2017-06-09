@@ -8,13 +8,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\OurVibe\{
 	Event,
 	// we only use the event tag class for testing purposes
-	EventTag,
-
-    Tag,
-
-    Venue
-
-
+	EventTag, Tag
 };
 
 /**
@@ -53,7 +47,6 @@ try {
 	$eventName = filter_input(INPUT_GET, "eventName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$eventTagEventId = filter_input(INPUT_GET, "eventTagEventId", FILTER_VALIDATE_INT);
 	$eventTagTagId = filter_input(INPUT_GET, "eventTagTagId", FILTER_VALIDATE_INT);
-	$venueId = filter_input(INPUT_GET, "venueId", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -79,9 +72,9 @@ try {
 			if($event !== null) {
 				$reply->data = $event;
 			}
-		} else if((empty($eventSunriseDate) === false)&& empty($eventSunsetDate) === false ){
-		    $formattedSunrise = \DateTime::createFromFormat( "U.u", sprintf("%.6f", $eventSunriseDate / 1000));
-            $formattedSunset = \DateTime::createFromFormat( "U.u", sprintf("%.6f", $eventSunsetDate / 1000));
+		} else if((empty($eventSunriseDate) === false) && empty($eventSunsetDate) === false) {
+			$formattedSunrise = \DateTime::createFromFormat("U.u", sprintf("%.6f", $eventSunriseDate / 1000));
+			$formattedSunset = \DateTime::createFromFormat("U.u", sprintf("%.6f", $eventSunsetDate / 1000));
 			$events = Event::getEventByEventDate($pdo, $formattedSunrise, $formattedSunset)->toArray();
 			if($events !== null) {
 				$reply->data = $events;
@@ -96,23 +89,18 @@ try {
 			$eventTags = EventTag::getEventTagsByEventTagTagId($pdo, $eventTagTagId);
 			if($eventTags !== null) {
 				$storage = new Edu\Cnm\OurVibe\JsonObjectStorage();
-				foreach($eventTags as $eventTag){
+				foreach($eventTags as $eventTag) {
 					$event = Event::getEventByEventId($pdo, $eventTag->getEventTagEventId());
 					$storage->attach($eventTag, $event);
 				}
 				$reply->data = $storage;
-			} elseif (empty($venueId) === false) {
-			    $images = Venue::getAllEventImagesByVenueId($pdo, $venueId)->toArray();
-			    if($images !== null) {
-                    $reply->data = $images;
-			    }
-            } else {
+			}
+		} else {
 			$events = Event::getAllEvents($pdo)->toArray();
 			if($events !== null) {
 				$reply->data = $events;
 			}
 		}
-	}
 	} else if($method === "PUT" || $method === "POST") {
 
 		//enforce that the user has an XSRF token
@@ -164,25 +152,25 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 
-            // retrieve the event to update
-            $event = Event::getEventByEventId($pdo, $id);
-            if ($event === null) {
-                throw(new RuntimeException("Event does not exist", 404));
-            }
+			// retrieve the event to update
+			$event = Event::getEventByEventId($pdo, $id);
+			if($event === null) {
+				throw(new RuntimeException("Event does not exist", 404));
+			}
 
-            //enforce the user is signed in and only trying to edit their own event
-            if (empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getVenueId() !== $event->getEventVenueId()) {
-                throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
-            }
-            $formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
-            //update all attributes
-            $event->setEventDateTime($formattedEventDate);
-            $event->setEventName($requestObject->eventName);
+			//enforce the user is signed in and only trying to edit their own event
+			if(empty($_SESSION["venue"]) === true || $_SESSION["venue"]->getVenueId() !== $event->getEventVenueId()) {
+				throw(new \InvalidArgumentException("You are not allowed to edit this event.", 403));
+			}
+			$formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
+			//update all attributes
+			$event->setEventDateTime($formattedEventDate);
+			$event->setEventName($requestObject->eventName);
 
-            $event->update($pdo);
+			$event->update($pdo);
 
-            //update reply
-            $reply->message = "Event updated OK";
+			//update reply
+			$reply->message = "Event updated OK";
 
 
 		} else if($method === "POST") {
@@ -193,8 +181,8 @@ try {
 			if(empty($_SESSION["venue"]) === true) {
 				throw(new \InvalidArgumentException("You must be logged in to post events.", 403));
 			}
-            //Datetime
-            $formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
+			//Datetime
+			$formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
 
 
 			// create new Event and insert into the database
@@ -204,11 +192,11 @@ try {
 			//update reply
 			$reply->message = "Event created OK";
 
-			if (empty($requestObject->images) === false) {
+			if(empty($requestObject->images) === false) {
 				$images = $requestObject->images;
 
-				foreach($images as $image){
-					$eventImage = new EventTag($event->getEventId(),$image->getEventImageImageId);
+				foreach($images as $image) {
+					$eventImage = new EventTag($event->getEventId(), $image->getEventImageImageId);
 					$eventImage->insert($pdo);
 					$reply->messageImage = "event Images created okay";
 				}
@@ -216,7 +204,7 @@ try {
 				$tags = $requestObject->tags;
 
 				foreach($tags as $tag) {
-					$eventTag = new EventTag($event->getEventId(),$tag->getEventTagTagId);
+					$eventTag = new EventTag($event->getEventId(), $tag->getEventTagTagId);
 					$eventTag->insert($pdo);
 					$reply->messageTag = "eventTags created okay";
 				}
