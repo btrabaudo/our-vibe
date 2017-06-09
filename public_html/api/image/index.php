@@ -67,6 +67,7 @@ try {
 			}
 			$reply->data = $image;
 		}
+
 	} elseif($method === "POST") {
 
 		verifyXsrf();

@@ -782,6 +782,40 @@ class Venue implements \JsonSerializable {
     }
 
 
+    public static function getAllEventImagesByVenueId(\PDO $pdo, int $venueId) : \SplFixedArray
+    {
+
+
+        if (empty ($venueId) === true) {
+            throw(new \PDOException("not a valid venue"));
+        }
+        //query for venue using venueCity
+        $query = "SELECT imageId, imageCloudinaryId FROM image INNER JOIN eventImage ON eventImage.eventImageImageId = image.imageId INNER JOIN event ON eventImage.eventImageEventId = event.eventId WHERE eventVenueId = :venueId UNION SELECT imageId, imageCloudinaryId FROM image WHERE imageId IN(SELECT venueImageId FROM venue WHERE venueId = :venueId) ORDER BY imageId";
+        $statement = $pdo->prepare($query);
+
+        // bind the venue city to the placeholder
+        $venueId = "venueId";
+        $parameters = ["venueId" => $venueId];
+        $statement->execute($parameters);
+
+        //build array
+
+        $images = new \SplFixedArray($statement->rowCount());
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        while(($row = $statement->fetch()) !== false) {
+
+            try {
+                $image = new Image($row["imageId"], $row["imageCloudinaryId"]);
+                $images[$images->key()] = $image;
+                $images->next();
+            } catch (\Exception $exception) {
+                throw(new \PDOException($exception->getMessage(), 0, $exception));
+            }
+        }
+        return ($images);
+    }
+
+
 
     /**
      * formats the state variables for JSON serialization

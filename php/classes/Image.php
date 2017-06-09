@@ -230,7 +230,8 @@ class Image implements \JsonSerializable {
 	}
 
 
-	/**
+
+    /**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables for JSON serialization

@@ -496,6 +496,8 @@ class Event implements \JsonSerializable {
 		return ($events);
 	}
 
+
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *
