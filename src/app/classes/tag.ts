@@ -1,6 +1,5 @@
-export class tag {
+export class Tag {
 	constructor(
-		public tagId:number,
-		public tagName:string,
+		public tagId:number, public tagName:string,
 	){}
 }

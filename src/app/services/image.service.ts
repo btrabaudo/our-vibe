@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {BaseService} from "./base-service";
-import {Image} from "../class/image";
-import {Status} from "../class/status";
+import {BaseService} from "./base.service";
+import {Image} from "../classes/image";
+import {Status} from "../classes/status";
 import {map} from "rxjs/operator/map";
 
 @Injectable()
