@@ -56,7 +56,7 @@
 			<li>
 				<div class="divider"></div>
 			</li>
-			<li><a class="subheader">Something Cool lol</a></li>
+			<li><a class="subheader">Some Cool Subheader lol</a></li>
 			<li><a class="waves-effect" href="#!">Events</a></li>
 			<li><a class="waves-effect" href="#!">Venues</a></li>
 			<li><a class="waves-effect" href="#!">About</a></li>
