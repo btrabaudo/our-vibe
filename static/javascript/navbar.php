@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 		<!-- Custom CSS -->
-		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/navbar-style.css">
 
 
 		<!-- jQuery -->
@@ -34,28 +34,26 @@
 		<script src="js/form-validate.js"></script>
 	</head>
 	<body>
-		<ul id="slide-out" class="side-nav">
+		<ul id="slide-out" class="side-nav fixed">
 			<li><div class="userView">
 					<div class="background">
-						<img src="images/office.jpg">
+						<img src="MAYBE PUT IMAGE HERE">
 					</div>
-					<a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+					<a href="#!user"><img class="circle" src="MAYBE PUT IMAGE HERE"></a>
 					<a href="#!name"><span class="white-text name">John Doe</span></a>
 					<a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-				</div></li>
-			<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-			<li><a href="#!">Second Link</a></li>
+				</div>
+
+			<li><a class="waves-effect" href="#!">Our Vibe</a></li>
 			<li><div class="divider"></div></li>
-			<li><a class="subheader">Subheader</a></li>
-			<li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+			<li><a class="subheader">Something Cool lol</a></li>
+			<li><a class="waves-effect" href="#!">Events</a></li>
+			<li><a class="waves-effect" href="#!">Venues</a></li>
+			<li><a class="waves-effect" href="#!">About</a></li>
+			<li><a class="waves-effect" href="#!">Sign Up/Sign In</a></li>
 		</ul>
 		<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
 
-		<ul id="slide-out" class="side-nav">
-			<li><a href="#!">First Sidebar Link</a></li>
-			<li><a href="#!">Second Sidebar Link</a></li>
-		</ul>
-		<a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
 
 	</body>
 </html>
