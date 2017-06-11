@@ -36,102 +36,135 @@
             </div>
 
             <div class="form-group" [ngClass]="{ 'has-error': venueAddress2.touched && venueAddress2.invalid}">
-                <label class="sr-only" for="venueAddress2">Venue Address 2 <span
+                <label class="sr-only" for="venueAddress">Venue Address 2 <span
                             class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueAddress2" name="venueAddress2"
-                           placeholder="Venue Address 2">
-                </div>
-            </div>
+                    <input type="text" class="form-control" id="venueAddress" name="venueAddress" class="form-control" maxlength="128" [(ngModel)]="signUp.venueAddress2" #venueAddress2="ngModel"
+                           placeholder="Venue Address"/>
 
-            <div class="form-group">
-                <label class="sr-only" for="venueCity"> Venue City<span class="text-danger">*</span></label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <div [hidden]="venueAddress2.valid || venueAddress2.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="venueAddress2.errors?.maxlength"> Address cannot be more than 128 characters.</p>
                     </div>
-                    <input type="text" class="form-control" id="venueCity" name="venueCity"
-                           placeholder="Venue City">
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="sr-only" for="venueEmail">Venue Email <span
+            <div class="form-group" [ngClass]="{ 'has-error': venueCity.touched && venueCity.invalid}">
+                <label class="sr-only" for="venueCity">Venue City <span
                             class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueEmail" name="venueEmail"
-                           placeholder="Venue Email">
+                    <input type="text" class="form-control" id="venueCity" name="venueCity" class="form-control" maxlength="32" [(ngModel)]="signUp.venueCity" #venueCity="ngModel"
+                           placeholder="Venue City"/>
+
+                    <div [hidden]="venueCity.valid || venueCity.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="venueCity.errors?.maxlength"> City cannot be more than 32 characters.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="sr-only" for="venueState">Venue State <span
+            <div class="form-group" [ngClass]="{ 'has-error': venueContact.touched && venueContact.invalid}">
+                <label class="sr-only" for="venueContact">Venue Contact<span
                             class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueState"
-                           name="venueState" placeholder="Venue State">
-                </div>
-            </div>
+                    <input type="text" class="form-control" id="venueContact" name="venueContact" class="form-control" maxlength="128" [(ngModel)]="signUp.venueContact" #venueContact="ngModel"
+                           placeholder="Venue Email"/>
 
-            <div class="form-group">
-                <label class="sr-only" for="venueZip">Venue Zip <span
-                            class="text-danger">*</span></label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <div [hidden]="venueContact.valid || venueContact.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="venueContact.errors?.maxlength"> Contact cannot be more than 128 characters.</p>
                     </div>
-                    <input type="text" class="form-control" id="venueZip"
-                           name="venueZip" placeholder="Venue Zip">
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error': venueContent.touched && venueContent.invalid}">
                 <label class="sr-only" for="venueContent">Venue Content <span
                             class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueContent"
-                           name="venueContent" placeholder="venueContent">
+                    <input type="text" class="form-control" id="venueContent" name="venueContent" class="form-control" maxlength="768" [(ngModel)]="signUp.venueContent" #venueContent="ngModel"
+                           placeholder="Venue Contend"/>
+
+                    <div [hidden]="venueContent.valid || venueContent.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="venueContent.errors?.maxlength"> Content cannot be more than 768 characters.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="sr-only" for="profilePassword">Venue Password
-                    <span
+            <div class="form-group" [ngClass]="{ 'has-error': venueState.touched && venueState.invalid}">
+                <label class="sr-only" for="venueState">Venue State <span
                             class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="profilePassword"
-                           name="profilePassword" placeholder="venue password">
+                    <input type="text" class="form-control" id="venueState" name="venueState" class="form-control" maxlength="128" [(ngModel)]="signUp.venueState" #venueState="ngModel"
+                           placeholder="Venue State"/>
+
+                    <div [hidden]="venueState.valid || venueState.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="venueState.errors?.maxlength"> State cannot be more than 2 characters.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="sr-only" for="profileConfirmPassword">Confirm
-                    Password <span class="text-danger">*</span></label>
+            <div class="form-group" [ngClass]="{ 'has-error': venueZip.touched && venueZip.invalid}">
+                <label class="sr-only" for="venueZip">Venue Zip <span
+                            class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control"
-                           id="profileConfirmPassword"
-                           name="profileConfirmPassword"
-                           placeholder="re-type password">
+                    <input type="text" class="form-control" id="venueZip" name="venueZip" class="form-control" maxlength="128" [(ngModel)]="signUp.venueZip" #venueZip="ngModel"
+                           placeholder="Venue Zip Code"/>
+
+                    <div [hidden]="venueZip.valid || venueZip.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="venueZip.errors?.maxlength"> Zip cannot be more than 10 characters.</p>
+                    </div>
                 </div>
             </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': profilePassword.touched && profilePassword.invalid}">
+                <label class="sr-only" for="profilePassword">Profile Password <span
+                            class="text-danger">*</span></label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </div>
+                    <input type="text" class="form-control" id="profilePassword" name="profilePassword" class="form-control" maxlength="128" [(ngModel)]="signUp.profilePassword" #profilePassword="ngModel"
+                           placeholder="Profile Password"/>
+
+                    <div [hidden]="profilePassword.valid || [profilePassword.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="profilePassword.errors?.maxlength"> Profile password cannot be more than 128 characters.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': profilePasswordConfirm.touched && profilePasswordConfirm.invalid}">
+                <label class="sr-only" for="profilePassword">Profile Password Confirm <span
+                            class="text-danger">*</span></label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </div>
+                    <input type="text" class="form-control" id="profilePasswordConfirm" name="profilePasswordConfirm" class="form-control" maxlength="128" [(ngModel)]="signUp.profilePasswordConfirm" #profilePasswordConfirm="ngModel"
+                           placeholder="Confirm Password"/>
+
+                    <div [hidden]="profilePasswordConfirm.valid || profilePasswordConfirm.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="profilePasswordConfirm.errors?.maxlength"> Profile password cannot be more than 128 characters.</p>
+                    </div>
+                </div>
+            </div>
+
+
+
 
             <button class="btn btn-success" type="submit"><i
                         class="fa fa-paper-plane"></i> Submit
