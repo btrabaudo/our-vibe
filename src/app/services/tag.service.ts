@@ -13,29 +13,29 @@ export class TagService extends BaseService{
 	private tagUrl = "api/tag/";
 	createTag(tag : Tag) : Observable<Status>{
 		return(this.http.post(this.tagUrl,tag))
-			.map(BaseService.extractMessage)
-			.catch(BaseService.handleError);
+			.map(this.extractMessage)
+			.catch(this.handleError);
 	}
 	editTag(tag : Tag) :Observable<Status>{
 		return(this.http.put(this.tagUrl,tag))
-			.map(BaseService.extractMessage)
-			.catch(BaseService.handleError);
+			.map(this.extractMessage)
+			.catch(this.handleError);
 	}
 	getTag(tagId : number) : Observable <Tag> {
 		return (this.http.get(this.tagUrl + tagId)
-			.map(BaseService.extractData)
-			.catch(BaseService.handleError));
+			.map(this.extractData)
+			.catch(this.handleError));
 	}
 
 	getTagByTagId(tagId: number): Observable <Tag[]> {
 		return (this.http.get(this.tagUrl + tagId)
-			.map(BaseService.extractData)
-			.catch(BaseService.handleError));
+			.map(this.extractData)
+			.catch(this.handleError));
 	}
 	getTagByTagName(tagName: string): Observable <Tag []> {
 		return(this.http.get(this.tagUrl + tagName)
-			.map(BaseService.extractData)
-			.catch(BaseService.handleError));
+			.map(this.extractData)
+			.catch(this.handleError));
 	}
 }
 

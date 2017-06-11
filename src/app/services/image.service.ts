@@ -19,21 +19,21 @@ export class ImageService extends BaseService {
 	// call to the image api and create a new image
 	createImage(image: Image): Observable<Status> {
 				return (this.http.post(this.imageUrl, image)
-					.map(BaseService.extractData)
-					.catch(BaseService.handleError));
+					.map(this.extractData)
+					.catch(this.handleError));
 	}
 
 	// all to the image api and gets an image by image id
 	getImageByImageId(imageId : number) : Observable<Image[]> {
 				return (this.http.get(this.imageUrl + imageId)
-					.map(BaseService.extractData)
-					.catch(BaseService.handleError));
+					.map(this.extractData)
+					.catch(this.handleError));
 	}
 
 	// all to the image api and gets an image by cloudinary id
 	getImageByCloudinaryId(imageCloudinaryId: string): Observable<Image> {
 				return (this.http.get(this.imageUrl + "?imageCloudinaryId=" + imageCloudinaryId)
-						.map(BaseService.extractData)
-						.catch(BaseService.handleError));
+						.map(this.extractData)
+						.catch(this.handleError));
 	}
 }
