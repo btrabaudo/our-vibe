@@ -49,8 +49,8 @@ module.exports = {
 
 		new HtmlWebpackPlugin({
 			inject: "head",
-			filename: helpers.root("public_html") + "/home.php",
-			template: helpers.root("webpack") + "/home.php"
+			filename: helpers.root("public_html") + "/index.php",
+			template: helpers.root("webpack") + "/index.php"
 		})
 	]
 };
