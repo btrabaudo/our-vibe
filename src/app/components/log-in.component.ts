@@ -5,7 +5,7 @@ import {LogInService} from "../services/log-in.service";
 })
 export class LogInComponent{
 
-	log-in
+//	log-in
 
 
 
