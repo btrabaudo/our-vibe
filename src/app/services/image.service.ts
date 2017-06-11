@@ -4,7 +4,6 @@ import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Image} from "../classes/image";
 import {Status} from "../classes/status";
-import {map} from "rxjs/operator/map";
 
 @Injectable()
 export class ImageService extends BaseService {
@@ -24,7 +23,7 @@ export class ImageService extends BaseService {
 	}
 
 	// all to the image api and gets an image by image id
-	getImageByImageId(imageId : number) : Observable<Image[]> {
+	getImageByImageId(imageId : number) : Observable<Image> {
 				return (this.http.get(this.imageUrl + imageId)
 					.map(this.extractData)
 					.catch(this.handleError));

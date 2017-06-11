@@ -24,7 +24,7 @@
 										<i class="fa fa-pencil" aria-hidden="true"></i>
 									</div>
 									<input type="text" class="form-control" id="eventName" name="eventName"
-											 placeholder="Event Name">
+											 placeholder="Name of Event">
 								</div>
 							</div>
 
@@ -36,7 +36,7 @@
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
 										<input type="text" class="form-control" id="eventVenue" name="eventVenue"
-												 placeholder="Event Venue">
+												 placeholder="Venue Where Event Is Held">
 									</div>
 								</div>
 
@@ -49,7 +49,7 @@
 												<i class="fa fa-pencil" aria-hidden="true"></i>
 											</div>
 											<input type="text" class="form-control" id="eventDateTime" name="eventDateTime"
-													 placeholder="Event Date Time">
+													 placeholder="Date and Time of Event ">
 										</div>
 									</div>
 
