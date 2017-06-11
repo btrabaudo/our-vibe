@@ -20,7 +20,7 @@
 			</div>
 			<button class="btn btn-success" type="submit"> Log-In</button>
 		</form>
-
+		<button class="btn btn-Register Venue" type="submit"> Register Venue</button>
 		<div id="output-area"></div>
 
 
