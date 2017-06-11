@@ -14,6 +14,6 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 		<title>our-vibe</title>
 	</head>
 	<body>
-		<our-vibe>Loading&hellip;</our-vibe>
+		<our-vibe>mason is a shit</our-vibe>
 	</body>
 </html>
