@@ -3,10 +3,10 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Status} from "../classes/status";
-import {SignIn} from "../classes/sign-in";
+import {SignIn} from "../classes/log-in";
 
 @Injectable()
-export class SignInService extends BaseService {
+export class LogInService extends BaseService {
 	constructor(protected http:Http) {
 		super(http);
 	}
