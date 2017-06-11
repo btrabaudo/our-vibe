@@ -6,8 +6,9 @@ import {LogInComponent} from "./components/log-in.component";
 export const allAppComponents = [HomeComponent,AboutComponent,LogInComponent];
 
 export const routes: Routes = [
-	{path: "", component: HomeComponent},
-	{ path: "about", component: AboutComponent}
+	{path: "about", component: AboutComponent},
+	{path: "log-in", component: LogInComponent},
+	{path: "", component: HomeComponent}
 ];
 
 export const appRoutingProviders: any[] = [];

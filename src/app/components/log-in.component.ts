@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
 @Component({
-	templateUrl: "./templates/log-in.php.php"
+	templateUrl: "./templates/log-in.php"
 })
 export class LogInComponent{ }
