@@ -1,0 +1,44 @@
+/** css stylesheet **/
+/****************************************
+* navbar
+*****************************************/
+
+
+header, main, footer {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}
+
+
+/****************************************
+* Footer
+*****************************************/
+footer {
+    background-color: #111;
+    color: gold;
+    padding: 2rem 0;
+}
+
+/***
+* Flexbox Sticky Footer
+* http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/
+***/
+
+/*corrects IE min-height bug*/
+html { display: flex;}
+body { width: 100%;}
+
+.sfooter {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sfooter-content {
+    flex: 1 0 auto;
+}
