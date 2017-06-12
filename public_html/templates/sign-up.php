@@ -11,7 +11,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueName" name="venueName" class="form-control" maxlength="32" [(ngModel)]="signUp.venueName" #venueName="ngModel"
+                    <input type="text" class="form-control" id="venueName" name="venueName" class="form-control" maxlength="32" [(ngModel)]="venue.venueName" #venueName="ngModel"
                            placeholder="Venue Name"/>
                 </div>
                 <div [hidden]="venueName.valid || venueName.pristine" class="alert alert-danger" role="alert">
@@ -141,7 +141,7 @@
                     <input type="text" class="form-control" id="profilePassword" name="profilePassword" class="form-control" maxlength="128" [(ngModel)]="signUp.profilePassword" #profilePassword="ngModel"
                            placeholder="Profile Password"/>
 
-                    <div [hidden]="profilePassword.valid || [profilePassword.pristine" class="alert alert-danger" role="alert">
+                    <div [hidden]="profilePassword.valid || profilePassword.pristine" class="alert alert-danger" role="alert">
                         <p *ngIf="profilePassword.errors?.maxlength"> Profile password cannot be more than 128 characters.</p>
                     </div>
                 </div>

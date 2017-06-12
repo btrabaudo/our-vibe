@@ -21,9 +21,9 @@
         <div class="divider"></div>
     </li>
     <li><a class="subheader">Some Cool Subheader lol</a></li>
-    <li><a class="waves-effect" routerLink="events">Events</a></li>
-    <li><a class="waves-effect" routerLink="venues">Venues</a></li>
-    <li><a class="waves-effect" routerLink="about">About</a></li>
-    <li><a class="waves-effect" routerLink="sign-up">Sign Up</a> / <a class="waves-effect" routerLink="log-in">Sign In</a></li>
+    <li><a class="waves-effect" routerLink="">Events</a></li>
+    <li><a class="waves-effect" routerLink="/venues">Venues</a></li>
+    <li><a class="waves-effect" routerLink="/about">About</a></li>
+    <li><a class="waves-effect" routerLink="/sign-up">Sign Up</a> / <a class="waves-effect" routerLink="/log-in">Sign In</a></li>
 </ul>
 <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>

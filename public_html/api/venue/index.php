@@ -82,6 +82,7 @@ try {
         if($venue === null) {
             throw(new RuntimeException("Venue does not exist", 404));
         }
+
         if(empty($requestObject->newProfilePassword) === true) {
 
             //enforce the XSRF token
