@@ -1,5 +1,6 @@
 
 		<div class="sfooter-content">
+            <navbar></navbar>
 
 			<main class="bg p-t-nav">
 				<div class="container">
