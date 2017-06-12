@@ -26,7 +26,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueAddress" name="venueAddress" class="form-control" maxlength="128" [(ngModel)]="signUp.venueAddress1" #venueAddress1="ngModel"
+                    <input type="text" class="form-control" id="venueAddress" name="venueAddress" class="form-control" maxlength="128" [(ngModel)]="venue.venueAddress1" #venueAddress1="ngModel"
                            placeholder="Venue Address"/>
 
                     <div [hidden]="venueAddress1.valid || venueAddress1.pristine" class="alert alert-danger" role="alert">
@@ -42,7 +42,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueAddress" name="venueAddress" class="form-control" maxlength="128" [(ngModel)]="signUp.venueAddress2" #venueAddress2="ngModel"
+                    <input type="text" class="form-control" id="venueAddress" name="venueAddress" class="form-control" maxlength="128" [(ngModel)]="venue.venueAddress2" #venueAddress2="ngModel"
                            placeholder="Venue Address"/>
 
                     <div [hidden]="venueAddress2.valid || venueAddress2.pristine" class="alert alert-danger" role="alert">
@@ -58,7 +58,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueCity" name="venueCity" class="form-control" maxlength="32" [(ngModel)]="signUp.venueCity" #venueCity="ngModel"
+                    <input type="text" class="form-control" id="venueCity" name="venueCity" class="form-control" maxlength="32" [(ngModel)]="venue.venueCity" #venueCity="ngModel"
                            placeholder="Venue City"/>
 
                     <div [hidden]="venueCity.valid || venueCity.pristine" class="alert alert-danger" role="alert">
@@ -74,7 +74,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueContact" name="venueContact" class="form-control" maxlength="128" [(ngModel)]="signUp.venueContact" #venueContact="ngModel"
+                    <input type="text" class="form-control" id="venueContact" name="venueContact" class="form-control" maxlength="128" [(ngModel)]="venue.venueContact" #venueContact="ngModel"
                            placeholder="Venue Email"/>
 
                     <div [hidden]="venueContact.valid || venueContact.pristine" class="alert alert-danger" role="alert">
@@ -90,7 +90,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueContent" name="venueContent" class="form-control" maxlength="768" [(ngModel)]="signUp.venueContent" #venueContent="ngModel"
+                    <input type="text" class="form-control" id="venueContent" name="venueContent" class="form-control" maxlength="768" [(ngModel)]="venue.venueContent" #venueContent="ngModel"
                            placeholder="Venue Contend"/>
 
                     <div [hidden]="venueContent.valid || venueContent.pristine" class="alert alert-danger" role="alert">
@@ -106,7 +106,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueState" name="venueState" class="form-control" maxlength="128" [(ngModel)]="signUp.venueState" #venueState="ngModel"
+                    <input type="text" class="form-control" id="venueState" name="venueState" class="form-control" maxlength="128" [(ngModel)]="venue.venueState" #venueState="ngModel"
                            placeholder="Venue State"/>
 
                     <div [hidden]="venueState.valid || venueState.pristine" class="alert alert-danger" role="alert">
@@ -122,7 +122,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueZip" name="venueZip" class="form-control" maxlength="128" [(ngModel)]="signUp.venueZip" #venueZip="ngModel"
+                    <input type="text" class="form-control" id="venueZip" name="venueZip" class="form-control" maxlength="128" [(ngModel)]="venue.venueZip" #venueZip="ngModel"
                            placeholder="Venue Zip Code"/>
 
                     <div [hidden]="venueZip.valid || venueZip.pristine" class="alert alert-danger" role="alert">
@@ -138,7 +138,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="profilePassword" name="profilePassword" class="form-control" maxlength="128" [(ngModel)]="signUp.profilePassword" #profilePassword="ngModel"
+                    <input type="text" class="form-control" id="profilePassword" name="profilePassword" class="form-control" maxlength="128" [(ngModel)]="venue.profilePassword" #profilePassword="ngModel"
                            placeholder="Profile Password"/>
 
                     <div [hidden]="profilePassword.valid || profilePassword.pristine" class="alert alert-danger" role="alert">
@@ -154,7 +154,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="profilePasswordConfirm" name="profilePasswordConfirm" class="form-control" maxlength="128" [(ngModel)]="signUp.profilePasswordConfirm" #profilePasswordConfirm="ngModel"
+                    <input type="text" class="form-control" id="profilePasswordConfirm" name="profilePasswordConfirm" class="form-control" maxlength="128" [(ngModel)]="venue.profilePasswordConfirm" #profilePasswordConfirm="ngModel"
                            placeholder="Confirm Password"/>
 
                     <div [hidden]="profilePasswordConfirm.valid || profilePasswordConfirm.pristine" class="alert alert-danger" role="alert">
