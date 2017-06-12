@@ -7,12 +7,12 @@
 
 		<form #loginForm="ngForm" name="loginForm" (ngSubmit)="postLogin();"
 				class="form-horizontal well" >
-			<div class="form-group">
+			<div class="form-group" >
 				<label for="venue">Venue Email</label>
 				<div class="input-group">
 					<div class="input-group-addon">
 					</div>
-					<input type="text" class="form-control" id="venueContact" name="venueContact" required [([(ngModel)]="login.venueContact" #venueContact = "ngModel"  placeholder="email">
+					<input type="text" class="form-control" id="venueContact" name="venueContact" placeholder="email" required [(ngModel)]="login.venueContact" #venueContact = "ngModel"  >
 				</div>
 			</div>
 			<div class="form-group">
@@ -20,7 +20,7 @@
 				<div class="input-group">
 					<div class="input-group-addon">
 					</div>
-					<input type="password" class="form-control" id="profilePassword" name="profilePassword" required [([([(ngModel)]="login.profilePassword" #profilePassword = "ngModel" placeholder="Password">
+					<input type="password" class="form-control" id="profilePassword" name="profilePassword" required [(ngModel)]="login.profilePassword" #profilePassword = "ngModel" placeholder="Password">
 				</div>
 			</div>
 			<button class="btn btn-success" type="submit"> Log-In</button>
