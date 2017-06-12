@@ -22,7 +22,7 @@
 			<div class="row">
 				<div class="col-md-7">
 					<a href="#">
-						<img class="img-responsive" src="http://placehold.it/700x300" alt="">
+						<img class="img-responsive" src="https://placehold.it/700x300" alt="">
 					</a>
 				</div>
 				<div class="col-md-5">
@@ -40,7 +40,7 @@
 			<div class="row">
 				<div class="col-md-7">
 					<a href="#">
-						<img class="img-responsive" src="http://placehold.it/700x300" alt="">
+						<img class="img-responsive" src="https://placehold.it/700x300" alt="">
 					</a>
 				</div>
 				<div class="col-md-5">
@@ -58,7 +58,7 @@
 			<div class="row">
 				<div class="col-md-7">
 					<a href="#">
-						<img class="img-responsive" src="http://placehold.it/700x300" alt="">
+						<img class="img-responsive" src="https://placehold.it/700x300" alt="">
 					</a>
 				</div>
 				<div class="col-md-5">
