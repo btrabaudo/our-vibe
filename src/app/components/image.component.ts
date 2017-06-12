@@ -10,7 +10,7 @@ import "rxjs/add/observable/from";
 
 export class ImageComponent implements OnInit {
 	public uploader: FileUploader = new FileUploader({
-		itemAlias: "event",
+		itemAlias: "image",
 		url: "./api/image/",
 		headers: [{name: "X-XSRF-TOKEN", value: Cookie.get("XSRF-TOKEN")}],
 		additionalParameter: {}
