@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 		<!-- Custom CSS -->
-		<link rel="stylesheet" href="css/navbar-style.css">
+		<link rel="stylesheet" href="app/app.css">
 
 
 		<!-- jQuery -->
@@ -38,7 +38,6 @@
 			<li>
 				<div class="userView">
 					<div class="background">
-						<img src="MAYBE PUT IMAGE HERE">
 					</div>
 
 			<li class="search">

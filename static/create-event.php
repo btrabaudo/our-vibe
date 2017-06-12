@@ -80,7 +80,7 @@
 													</div>
 												</div>
 
-												<!-- upload image to event -->
+												<!-- upload image to event i think -->
 
 												<div *ngIf="modes.length > 0">
 													<div class="row main" *ngFor="let post of posts">
@@ -101,6 +101,16 @@
 														</div>
 													</div>
 												</div>
+
+												<!-- image upload form -->
+												<h1>Image Component</h1>
+												<form class="form-horizontal" name="imageUpload" (submit)="uploadImage();">
+													<div class="form-group">
+														<label for="postImage" class="modal-labels">Upload an image</label>
+														<input type="file" name="dog" id="dog" ng2FileSelect [uploader]="uploader" />
+													</div>
+													<button type="submit" class="btn btn-info btn-lg"><i class="fa fa-file-image-o" aria-hidden="true"></i> Upload Image</button>
+												</form>
 
 
 												<form id="create-event">
