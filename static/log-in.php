@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-3"></div>
 	<div class="col-md-6 center-block">
-		<form id="contact-form" class="form-horizontal well" >
+		<form id="login" class="form-horizontal well" >
 			<div class="form-group">
 				<label for="venue">Venue Email</label>
 				<div class="input-group">

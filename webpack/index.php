@@ -1,7 +1,5 @@
 <?php
-if(session_status() !== PHP_SESSION_ACTIVE) {
-	session_start();
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

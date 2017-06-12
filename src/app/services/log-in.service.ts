@@ -3,7 +3,7 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Status} from "../classes/status";
-import {SignIn} from "../classes/log-in";
+import {Login} from "../classes/log-in";
 
 @Injectable()
 export class LogInService extends BaseService {
@@ -16,8 +16,8 @@ export class LogInService extends BaseService {
 
 
 	//preform the post to initiate sign in
-	postSignIn(signIn:SignIn) : Observable<Status> {
-		return(this.http.post(this.signInUrl, signIn)
+	postSignIn(login : Login) : Observable<Status> {
+		return(this.http.post(this.signInUrl, login)
             .map(this.extractMessage)
             .catch(this.handleError));
 	}
