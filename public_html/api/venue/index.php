@@ -141,20 +141,20 @@ try {
                 throw(new \RuntimeException("New Passwords do not match", 401));
             }
             //hash the previous password
-            $currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentProfilePassword, $venue->getVenuePassSalt(), 262144);
+            $currentVenueHash = hash_pbkdf2("sha512", $requestObject->currentProfilePassword, $venue->getVenuePassSalt(), 262144);
 
 
 
             //make sure the hash given by the end user matches the database
 
-            if($currentPasswordHash !== $venue->getVenuePassHash()) {
+            if($currentVenueHash !== $venue->getVenuePassHash()) {
                 throw(new \RuntimeException("Old Password is incorrect", 401));
             }
 
-            $newPasswordSalt = bin2hex(random_bytes(32));
-            $newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
-            $venue->setVenuePassHash($newPasswordHash);
-            $venue->setVenuePassSalt($newPasswordSalt);
+            $newVenueSalt = bin2hex(random_bytes(32));
+            $newVenueHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newVenueSalt, 262144);
+            $venue->setVenuePassHash($newVenueHash);
+            $venue->setVenuePassSalt($newVenueSalt);
 
             //perform the update
             $venue->update($pdo);
