@@ -78,8 +78,6 @@ try {
 		}
 		// assigning variables to the user image name, and image extension
 		$tempUserFileName = $_FILES["image"]["tmp_name"];
-		$userFileType = $_FILES["file"]["type"];
-		$userFileExtension = strtolower(strrchr($_FILES["file"]["name"], "."));
 
 
 		// upload image to cloudinary and get public id
