@@ -28,7 +28,7 @@
 				<div class="col-md-5">
 					<h3>Event Name</h3>
 					<h4>Event Venue Info/Contact</h4>
-					<p>This will be like a 2 sentence blurb about the event.</p>
+					<p>This will be like a 2 sentence blurb about the event. This will be like a 2 sentence blurb about the event.</p>
 					<a class="btn btn-primary" href="#">View This Event <span class="glyphicon glyphicon-chevron-right"></span></a>
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 				<div class="col-md-5">
 					<h3>Event Name</h3>
 					<h4>Event Venue Info/Contact</h4>
-					<p>This will be like a 2 sentence blurb about the event.</p>
+					<p>This will be like a 2 sentence blurb about the event. This will be like a 2 sentence blurb about the event.</p>
 					<a class="btn btn-primary" href="#">View This Event <span class="glyphicon glyphicon-chevron-right"></span></a>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 				<div class="col-md-5">
 					<h3>Event Name</h3>
 					<h4>Event Venue Info/Contact</h4>
-					<p>This will be like a 2 sentence blurb about the event.</p>
+					<p>This will be like a 2 sentence blurb about the event. This will be like a 2 sentence blurb about the event.</p>
 					<a class="btn btn-primary" href="#">View This Event <span class="glyphicon glyphicon-chevron-right"></span></a>
 				</div>
 			</div>

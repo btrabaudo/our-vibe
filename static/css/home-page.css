@@ -1,3 +1,9 @@
+main-header {
+	margin: 50px 0;
+	background-color: #801F18;
+	color: #1a1a1a;
+}
+
 body {
 	padding-top: 70px;
 }
