@@ -70,12 +70,12 @@ try {
 
 	} elseif($method === "POST") {
 
-		//verifyXsrf();
+		verifyXsrf();
 
 		// verifying the user is logged in before creating an image
-		//if(empty($_SESSION["venue"]) === true) {
-			//throw(new \InvalidArgumentException(" You are not allowed to upload images unless you are logged in", 401));
-		//}
+		if(empty($_SESSION["venue"]) === true) {
+			throw(new \InvalidArgumentException(" You are not allowed to upload images unless you are logged in", 401));
+		}
 		// assigning variables to the user image name, and image extension
 		$tempUserFileName = $_FILES["image"]["tmp_name"];
 
@@ -87,7 +87,7 @@ try {
 		$image = new Image(null, $cloudinaryResult["public_id"]);
 		$image->insert($pdo);
 
-		$reply->data = $image->getImageId();
+		$reply->data = $image->getImageCloudinaryId();
 		$reply->message = "Image upload Ok";
 
 	} elseif($method === "DELETE") {
