@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 
 @Component({
-	templateUrl: "./templates/index.php"
+	templateUrl: "./templates/home.php"
 })
 
 export class HomeComponent {}
