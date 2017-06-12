@@ -6,6 +6,7 @@
 
 header, main, footer {
     padding-left: 300px;
+    color: #801F18;
 }
 
 @media only screen and (max-width : 992px) {

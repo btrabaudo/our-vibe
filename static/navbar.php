@@ -40,9 +40,7 @@
 					<div class="background">
 						<img src="MAYBE PUT IMAGE HERE">
 					</div>
-					<a href="#!user"><img class="circle" src="MAYBE PUT IMAGE HERE"></a>
-					<a href="#!name"><span class="white-text name">John Doe</span></a>
-					<a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+
 			<li class="search">
 				<div class="search-wrapper card">
 					<input id="search">
