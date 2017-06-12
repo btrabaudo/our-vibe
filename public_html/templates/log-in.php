@@ -5,7 +5,7 @@
 
 
 
-		<form #loginForm="ngForm" name="loginForm" (ngSubmit)="createLogin();"
+		<form #loginForm="ngForm" name="loginForm" (ngSubmit)="postLogin();"
 				class="form-horizontal well" >
 			<div class="form-group">
 				<label for="venue">Venue Email</label>
@@ -22,7 +22,7 @@
 					</div>
 					<input type="password" class="form-control" id="profilePassword" name="profilePassword" required [([([(ngModel)]="login.profilePassword" #profilePassword = "ngModel" placeholder="Password">
 				</div>
-			</div>uh
+			</div>
 			<button class="btn btn-success" type="submit"> Log-In</button>
 		</form>
 

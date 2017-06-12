@@ -6,6 +6,7 @@ import {AppComponent} from "./app.component";
 
 import {SignUpService} from "./services/sign-up.service";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
+import {LogInService} from "./services/log-in.service";
 
 const moduleDeclarations = [AppComponent];
 
@@ -13,6 +14,6 @@ const moduleDeclarations = [AppComponent];
 	imports:      [BrowserModule, FormsModule, HttpModule, routing],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
-	providers:    [appRoutingProviders, SignUpService]
+	providers:    [appRoutingProviders, SignUpService,LogInService]
 })
 export class AppModule {}
