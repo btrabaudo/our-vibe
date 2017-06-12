@@ -1,23 +1,26 @@
 <main class="bg">
     <div class="row">
+
         <form #signUpForm="ngForm" class="form-horizontal" id="signUpForm" name="signUpForm"
-              (ngSubmit)="createSignUp();" novalidate>
+              (submit)="createSignUp();" novalidate>
+
             <h1>Create Venue</h1>
 
             <!-- Create New Sign Up Form -->
-            <div class="form-group" [ngClass]="{ 'has-error': venueName.touched && venueName.invalid}">
+            <div class="form-group">
                 <label class="sr-only" for="venueName">Venue Name <span class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueName" name="venueName" class="form-control" maxlength="32" [(ngModel)]="venue.venueName" #venueName="ngModel"
-                           placeholder="Venue Name"/>
+                    <input type="text" class="form-control" id="venueName" name="venueName" maxlength="32" required [(ngModel)]="venue.venueName" placeholder="Venue Name" #venueName="ngModel" />
                 </div>
-                <div [hidden]="venueName.valid || venueName.pristine" class="alert alert-danger" role="alert">
-                    <p *ngIf="venueName.errors?.maxlength"> Name cannot be more than 32 characters.</p>
-                </div>
+                <div [hidden]="venueName.valid || venueName.pristine" class="alert alert-danger" role="alert">Name is invalid.</div>
             </div>
+
+
+
+
 
             <div class="form-group" [ngClass]="{ 'has-error': venueAddress1.touched && venueAddress1.invalid}">
                 <label class="sr-only" for="venueAddress">Venue Address 1 <span
@@ -35,6 +38,10 @@
                 </div>
             </div>
 
+
+
+
+
             <div class="form-group" [ngClass]="{ 'has-error': venueAddress2.touched && venueAddress2.invalid}">
                 <label class="sr-only" for="venueAddress">Venue Address 2 <span
                             class="text-danger">*</span></label>
@@ -50,6 +57,10 @@
                     </div>
                 </div>
             </div>
+
+
+
+
 
             <div class="form-group" [ngClass]="{ 'has-error': venueCity.touched && venueCity.invalid}">
                 <label class="sr-only" for="venueCity">Venue City <span
@@ -67,6 +78,10 @@
                 </div>
             </div>
 
+
+
+
+
             <div class="form-group" [ngClass]="{ 'has-error': venueContact.touched && venueContact.invalid}">
                 <label class="sr-only" for="venueContact">Venue Contact<span
                             class="text-danger">*</span></label>
@@ -83,6 +98,11 @@
                 </div>
             </div>
 
+
+
+
+
+
             <div class="form-group" [ngClass]="{ 'has-error': venueContent.touched && venueContent.invalid}">
                 <label class="sr-only" for="venueContent">Venue Content <span
                             class="text-danger">*</span></label>
@@ -90,7 +110,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueContent" name="venueContent" class="form-control" maxlength="768" [(ngModel)]="venue.venueContent" #venueContent="ngModel"
+                    <input type="text" class="form-control" id="venueContent" name="venueContent" class="form-control" maxlength="768" required [(ngModel)]="venue.venueContent" #venueContent="ngModel"
                            placeholder="Venue Contend"/>
 
                     <div [hidden]="venueContent.valid || venueContent.pristine" class="alert alert-danger" role="alert">
@@ -99,6 +119,12 @@
                 </div>
             </div>
 
+
+
+
+
+
+
             <div class="form-group" [ngClass]="{ 'has-error': venueState.touched && venueState.invalid}">
                 <label class="sr-only" for="venueState">Venue State <span
                             class="text-danger">*</span></label>
@@ -106,7 +132,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="venueState" name="venueState" class="form-control" maxlength="128" [(ngModel)]="venue.venueState" #venueState="ngModel"
+                    <input type="text" class="form-control" id="venueState" name="venueState" class="form-control" maxlength="128" required [(ngModel)]="venue.venueState" #venueState="ngModel"
                            placeholder="Venue State"/>
 
                     <div [hidden]="venueState.valid || venueState.pristine" class="alert alert-danger" role="alert">
@@ -114,6 +140,11 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+
 
             <div class="form-group" [ngClass]="{ 'has-error': venueZip.touched && venueZip.invalid}">
                 <label class="sr-only" for="venueZip">Venue Zip <span
@@ -131,6 +162,12 @@
                 </div>
             </div>
 
+
+
+
+
+
+
             <div class="form-group" [ngClass]="{ 'has-error': profilePassword.touched && profilePassword.invalid}">
                 <label class="sr-only" for="profilePassword">Profile Password <span
                             class="text-danger">*</span></label>
@@ -146,6 +183,11 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+
 
             <div class="form-group" [ngClass]="{ 'has-error': profilePasswordConfirm.touched && profilePasswordConfirm.invalid}">
                 <label class="sr-only" for="profilePassword">Profile Password Confirm <span
@@ -166,12 +208,8 @@
 
 
 
-            <button class="btn btn-success" type="submit"><i
-                        class="fa fa-paper-plane"></i> Submit
-            </button>
-            <button class="btn btn-warning" type="reset"><i
-                        class="fa fa-ban"></i> Reset
-            </button>
+            <button class="btn btn-success" type="submit" [disabled]="signUpForm.invalid"><i class="fa fa-paper-plane"></i> Submit</button>
+            <button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
         </form>
     </div>
 </main>

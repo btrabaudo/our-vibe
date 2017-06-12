@@ -67,7 +67,7 @@ try {
 
         //check password and confirm match
         if ($requestObject->profilePassword !== $requestObject->profilePasswordConfirmed) {
-            throw(new \InvalidArgumentException("passwords do not match"));
+            throw(new \InvalidArgumentException("passwords do not match",418));
         }
 
         if(empty($requestObject->venueAddress2) === true) {

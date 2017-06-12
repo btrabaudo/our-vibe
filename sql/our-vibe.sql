@@ -23,7 +23,7 @@ CREATE TABLE venue (
   venueAddress1 VARCHAR(128) NOT NULL,
   venueAddress2 VARCHAR(128),
   venueCity VARCHAR (32) NOT NULL,
-  venueContact VARCHAR(128) NOT NULL,
+  venueContact VARCHAR(128) UNIQUE NOT NULL,
   venueContent VARCHAR (768) NOT NULL,
   venueName VARCHAR (32) NOT NULL,
   venueState VARCHAR (32) NOT NULL,

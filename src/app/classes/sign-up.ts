@@ -12,6 +12,6 @@ export class SignUp {
         public venueState: string,
         public venueZip: string,
         public profilePassword: string,
-        public profilePasswordConfirm: string
+        public profilePasswordConfirmed: string
     ) {}
 }
