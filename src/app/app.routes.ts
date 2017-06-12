@@ -5,12 +5,15 @@ import {LogInComponent} from "./components/log-in.component";
 import {NavbarComponent} from "./components/navbar.component";
 import {VenueComponent} from "./components/venue.component";
 import {SignUpComponent} from "./components/sign-up.component";
+import {ImageComponent} from "./components/image.component";
+import {FileSelectDirective} from "ng2-file-upload";
 
 
-export const allAppComponents = [HomeComponent,AboutComponent,LogInComponent, NavbarComponent, VenueComponent, SignUpComponent];
+export const allAppComponents = [HomeComponent,AboutComponent,LogInComponent, NavbarComponent, VenueComponent, SignUpComponent, FileSelectDirective, ImageComponent];
 
 export const routes: Routes = [
 	{path: "venue/:id", component: VenueComponent},
+	{path: "image-test", component: ImageComponent},
 	{path: "sign-up", component: SignUpComponent},
 	{path: "about", component: AboutComponent},
 	{path: "log-in", component: LogInComponent},
