@@ -110,44 +110,45 @@ try {
 		// retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
+        var_dump($_SESSION['venue']->getVenueid());
 
-		//make sure event venue id is available (required field)
-		if(empty($requestObject->eventVenueId) === true) {
-			throw(new \InvalidArgumentException("No Event Venue Id.", 405));
-		}
+            //make sure event venue id is available (required field)
+            if (empty($_SESSION['venue']->getVenueId()) === true) {
+                throw(new \InvalidArgumentException("No Event Venue Id.", 405));
+            }
 
-		//make sure event date is accurate (optional field)
-		if(empty($requestObject->eventDate) === true) {
-			$requestObject->eventDate = null;
-		}
+            //make sure event date is accurate (optional field)
+            if (empty($requestObject->eventDate) === true) {
+                $requestObject->eventDate = null;
+            }
 
-		// make sure event name is available
-		if(empty($requestObject->eventName) === true) {
-			throw(new \InvalidArgumentException("No Event Name Available", 405));
-		}
+            // make sure event name is available
+            if (empty($requestObject->eventName) === true) {
+                throw(new \InvalidArgumentException("No Event Name Available", 405));
+            }
 
-		// make sure event contact is available
-		if(empty($requestObject->eventContact) === true) {
-			throw(new \InvalidArgumentException("No Event Contact Available", 405));
-		}
+            // make sure event contact is available
+            if (empty($requestObject->eventContact) === true) {
+                throw(new \InvalidArgumentException("No Event Contact Available", 405));
+            }
 
-		// make sure event content is available
-		if(empty($requestObject->eventContent) === true) {
-			throw(new \InvalidArgumentException("No Content Available", 405));
-		}
+            // make sure event content is available
+            if (empty($requestObject->eventContent) === true) {
+                throw(new \InvalidArgumentException("No Content Available", 405));
+            }
 
-		// make sure event venue id is available
-		if(empty($requestObject->eventVenueId) === true) {
-			throw(new \InvalidArgumentException("No Event Venue Id Available", 405));
-		}
+          /*  // make sure event venue id is available
+            if (empty($requestObject->eventVenueId) === true) {
+                throw(new \InvalidArgumentException("No Event Venue Id Available", 405));
+            }*/
 
-		if(empty($requestObject->tags) === true) {
-			$requestObject->tags = [];
-		}
+            if (empty($requestObject->tags) === true) {
+                $requestObject->tags = [];
+            }
 
-		if(empty($requestObject->images) === true) {
-			$requestObject->images = [];
-		}
+            if (empty($requestObject->images) === true) {
+                $requestObject->images = [];
+            }
 
 		//perform the actual put or post
 		if($method === "PUT") {
@@ -186,7 +187,7 @@ try {
 
 
 			// create new Event and insert into the database
-			$event = new Event(null, $requestObject->eventVenueId, $requestObject->eventContact, $requestObject->eventContent, $formattedEventDate, $requestObject->eventName);
+			$event = new Event(null, $_SESSION['venue']->getVenueId(), $requestObject->eventContact, $requestObject->eventContent, $formattedEventDate, $requestObject->eventName);
 			$event->insert($pdo);
 
 			//update reply

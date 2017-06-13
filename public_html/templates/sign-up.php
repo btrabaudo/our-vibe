@@ -1,4 +1,4 @@
-<main class="bg">
+
     <div class="row">
 
         <form #signUpForm="ngForm" class="form-horizontal" id="signUpForm" name="signUpForm"
@@ -219,4 +219,3 @@
         </form>
 
     </div>
-</main>

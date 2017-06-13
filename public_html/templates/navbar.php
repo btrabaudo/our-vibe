@@ -1,7 +1,5 @@
-<body class="index" data-spy="scroll" data-target=".navbar-inverse">
 
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
 			<!-- logo #is place holder for a link -->
 			<div class="navbar-header page-scroll">
 				<!-- Navbar button -->
@@ -36,8 +34,7 @@
 
 				<!-- right align Sign Up Sign In tab -->
 				<ul class="nav navbar-nav navbar-right">
-					<li><a routerLink="/sign">Sign Up/Sign In</a></li>
+					<li><a routerLink="/log-in">Sign Up/Sign In</a></li>
 				</ul>
 			</div>
 	</nav>
-</body>

@@ -6,6 +6,7 @@
 
 body {
     padding-bottom: 3cm;
+    background-color: #1a1a1a;
 }
 
 h1 {
@@ -27,6 +28,8 @@ h2, h3 {
 .bg {
     width: 100%;
     z-index: 0;
+    background-color: #1a1a1a;
+    padding-left: 10em;
 }
 
 p {
@@ -88,11 +91,7 @@ footer {
 /****************************************
 * Sign-up
 *****************************************/
-.bg {
-    background-color: #1a1a1a;
-    padding-left: 10em;
 
-}
 #signUpForm {
     width: 75%;
 }
