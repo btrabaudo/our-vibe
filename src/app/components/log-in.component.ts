@@ -25,7 +25,6 @@ export class LogInComponent implements OnInit{
 				this.status =status;
 				console.log(this.status);
 				if (status.status ===200){
-					alert("tell paul he is a crunk ass juice box punk");
 					this.router.navigate(['']);
 				}
 			})

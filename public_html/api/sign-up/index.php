@@ -139,6 +139,11 @@ EOF;
         throw (new \InvalidArgumentException("invalid http request"));
 
     }
+    $_SESSION[‘venue’] = $venue;
+    $venue_id = $_SESSION[‘venue’]->getVenueId();
+    // User is logged in with a long-lived access token.
+    // You can redirect them to a members-only page.
+    header( 'Location: https://bootcamp-coders.cnm.edu/~btrabaudo/our-vibe/public_html/venue/'.$venue_id );
 } catch(\Exception $exception) {
     $reply->status = $exception->getCode();
     $reply->message = $exception->getMessage();

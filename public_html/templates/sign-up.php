@@ -111,7 +111,7 @@
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
                     <input type="text" class="form-control" id="venueContent" name="venueContent" class="form-control" maxlength="768" required [(ngModel)]="venue.venueContent" #venueContent="ngModel"
-                           placeholder="Venue Contend"/>
+                           placeholder="Venue Content"/>
 
                     <div [hidden]="venueContent.valid || venueContent.pristine" class="alert alert-danger" role="alert">
                         <p *ngIf="venueContent.errors?.maxlength"> Content cannot be more than 768 characters.</p>
