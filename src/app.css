@@ -7,6 +7,10 @@ body {
     overflow-x: hidden;
 }
 
+/* search bar  */
+
+
+
 /* Toggle Styles */
 
 #wrapper {
@@ -126,7 +130,6 @@ body {
         margin-right: 0;
     }
 }
-
 /****************************************
 * main Header
 *****************************************/
