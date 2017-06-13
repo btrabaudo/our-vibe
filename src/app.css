@@ -79,9 +79,9 @@ main-body {
 * Footer
 *****************************************/
 footer {
-	margin: 50px 0;
-	background-color: #0e0e0e;
-	color: #FFFFFF;
+	padding: 2rem 0;
+	background-color: #111;
+	color: white;
 }
 
 

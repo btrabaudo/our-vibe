@@ -2,10 +2,10 @@
 <footer>
 	<div class="container">
 		<div class="row">
-		<div class="col-lg-12">
-			<p>Copyright &copy; Our Vibe 2017</p>
+			<div class="col-sm-6">
+				Copyright &copy; Our Vibe 2017
+			</div>
 		</div>
-	</div>
 	</div>
 	<!-- /.row -->
 </footer>
