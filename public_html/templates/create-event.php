@@ -28,7 +28,7 @@
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 								</div>
 								<input type="text" class="form-control" id="eventVenue" name="eventVenue"
-										 placeholder="Venue Where Event Is Held">
+										 placeholder="Event Venue">
 							</div>
 						</div>
 
@@ -72,27 +72,6 @@
 										</div>
 									</div>
 
-									<!-- upload image to event i think -->
-
-									<div *ngIf="modes.length > 0">
-										<div class="row main" *ngFor="let post of posts">
-											<div class="col-xs-12 col-md-6 col-md-offset-3 display">
-												<div class="row post">
-													<div class="col-md-3">
-														<img src="URL Of IMAGE" id="eventImage"/>
-														<p id="handle">Event</p>
-													</div>
-													<div class="col-md-9">
-														<img [src]="imageMap[post.postId]?.imageCloudinaryId" alt="post image" id="post-img"/>
-														<p class="post-rundown">{{ post.postOffer }}</p>
-														<p class="post-rundown">{{ getModeNameFromArray(post.postModeId) }}</p>
-														<p class="post-rundown">{{ post.postRequest }}</p>
-														<p class="post-rundown">{{ post.postContent}}</p>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
 
 									<!-- image upload form -->
 									<h1>Image Component</h1>
@@ -105,33 +84,23 @@
 									</form>
 
 
-									<form id="create-event">
-										<div class="form-group">
-											<label class="sr-only" for="eventImage">Event Image <span
-													class="text-danger">*</span></label>
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-pencil" aria-hidden="true"></i>
-												</div>
-												<input type="text" class="form-control" id="EventImage" name="eventImage"
-														 placeholder="Event Image">
-											</div>
-										</div>
 
-										<form id="create-venue">
+
+										<form id="create-event">
 											<div class="form-group">
-												<label class="sr-only" for="profilePassword">Venue Password <span
+												<label class="sr-only" for="profilePassword">
+													Password <span
 														class="text-danger">*</span></label>
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="fa fa-pencil" aria-hidden="true"></i>
 													</div>
 													<input type="text" class="form-control" id="profilePassword"
-															 name="profilePassword" placeholder="venue password">
+															 name="profilePassword" placeholder=" password">
 												</div>
 											</div>
 
-											<form id="create-venue">
+											<form id="create-event" >
 												<div class="form-group">
 													<label class="sr-only" for="profileConfirmPassword">Confirm Password <span class="text-danger">*</span></label>
 													<div class="input-group">
