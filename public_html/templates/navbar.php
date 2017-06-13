@@ -1,54 +1,43 @@
-<nav>
-<div id="wrapper">
+<body class="index" data-spy="scroll" data-target=".navbar-inverse">
 
-
-	<!-- Sidebar -->
-	<div id="sidebar-wrapper">
-		<ul class="sidebar-nav">
-			<li class="sidebar-brand">
-				<a href="#">
-					OurVibe
-				</a>
-			</li>
-
-			<!-- search bar goes here -->
-			<li>
-				<div class="box">
-					<div class="container-1">
-						<span class="icon"><i class="fa fa-search"></i></span>
-						<input type="search" id="search" placeholder="Search..." />
-					</div>
-				</div>
-			</li>
-			<li>
-				<a class="waves-effect" routerLink="">Events</a>
-			</li>
-			<li>
-				<a class="waves-effect" routerLink="/venues">Venues</a>
-			</li>
-			<li>
-				<a class="waves-effect" routerLink="/about">About</a>
-			</li>
-			<li>
-				<a class="waves-effect" routerLink="/sign">Sign Up/Sign In</a>
-			</li>
-		</ul>
-	</div>
-	<!-- /#sidebar-wrapper -->
-
-
-	<!-- Page Content -->
-	<div id="page-content-wrapper">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12">
-					<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-				</div>
+			<!-- logo #is place holder for a link -->
+			<div class="navbar-header page-scroll">
+				<!-- Navbar button -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
+
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><span>Our</span>Vibe</a>
 			</div>
-		</div>
-	</div>
-	<!-- /#page-content-wrapper -->
+
+			<!-- menu items -->
+			<div class="collapse navbar-collapse" id="mainNavBar">
+				<ul class="nav navbar-nav">
 
 
-</div>
-</nav>
+					<!-- Services tab dropdown -->
+					<li class="dropdown">
+						<a routerLink="/events" class="waves-effect" data-toggle="dropdown">Events<span></span></a>
+					</li>
+
+					<!-- Our Artist tab dropdown-->
+					<li class="dropdown">
+						<a routerLink="/venues" class="waves-effect" data-toggle="dropdown">Venues<span></span></a>
+
+						<!-- About Us tab dropdown-->
+					<li class="dropdown">
+						<a routerLink="/about" class="waves-effect" data-toggle="dropdown">About Us<span></span></a>
+					</li>
+				</ul>
+
+				<!-- right align Sign Up Sign In tab -->
+				<ul class="nav navbar-nav navbar-right">
+					<li><a routerLink="/sign">Sign Up/Sign In</a></li>
+				</ul>
+			</div>
+	</nav>
+</body>
