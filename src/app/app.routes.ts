@@ -15,6 +15,7 @@ export const routes: Routes = [
 	{path: "", component: HomeComponent},
 	{path: "venue", component:VenueComponent},
 	{path: "venue/:id", component: VenueComponent},
+	{path: "create-event", component: }
 	{path: "image-test", component: ImageComponent},
 	{path: "sign-up", component: SignUpComponent},
 	{path: "about", component: AboutComponent},

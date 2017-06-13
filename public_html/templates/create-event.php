@@ -7,7 +7,8 @@
 				<h1>Create Event</h1>
 
 				<!-- Create New Post Form -->
-				<form id="create-event">
+				<form id="create-event" #createEventForm="ngForm" class="form-horizontal" name="create-event"
+						(submit)="createEvent();" novalidate>
 					<div class="form-group">
 						<label class="sr-only" for="eventName">Event Name <span class="text-danger">*</span></label>
 						<div class="input-group">
