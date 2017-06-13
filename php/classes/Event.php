@@ -16,7 +16,7 @@ class Event implements \JsonSerializable {
 	private $eventVenueId;
 	private $eventContact;
 	private $eventContent;
-	private $eventDateTime;
+	private $eventDate;
 	private $eventName;
 
 	/**
@@ -25,20 +25,20 @@ class Event implements \JsonSerializable {
 	 * @param int $newEventVenueId id of the Event Venue that sent this Event
 	 * @param string $newEventContact string containing contact information
 	 * @param string $newEventContent string containing actual content
-	 * @param \DateTime|string $newEventDateTime date and time of event
+	 * @param \DateTime|string $newEventDate date and time of event
 	 * @param string $newEventName string containing name of event
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds
 	 * @throws \Exception if some other exception occurs
 	 * @throws \RangeException if data values are out of bounds
 	 **/
-	public function __construct(?int $newEventId, int $newEventVenueId, string $newEventContact, string $newEventContent, $newEventDateTime, string $newEventName) {
+	public function __construct(?int $newEventId, int $newEventVenueId, string $newEventContact, string $newEventContent, $newEventDate, string $newEventName) {
 		try {
 			$this->setEventId($newEventId);
 			$this->setEventVenueId($newEventVenueId);
 			$this->setEventContact($newEventContact);
 			$this->setEventContent($newEventContent);
-			$this->setEventDateTime($newEventDateTime);
+			$this->setEventDate($newEventDate);
 			$this->setEventName($newEventName);
 		} //determine the type of exception
 		catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
@@ -160,32 +160,32 @@ class Event implements \JsonSerializable {
 	 * accessor method for event date
 	 * @return $eventDate value of event date
 	 **/
-	public function getEventDateTime(): \DateTime {
-		return ($this->eventDateTime);
+	public function getEventDate(): \DateTime {
+		return ($this->eventDate);
 	}
 	/**
 	 * mutator method for tweet date
 	 *
-	 * @param \DateTime|string|null $newEventDateTime event date as a DateTime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newEventDateTime is not a valid object or string
-	 * @throws \RangeException if $newEventDateTime is a date that does not exist
+	 * @param \DateTime|string|null $newEventDate event date as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newEventDate is not a valid object or string
+	 * @throws \RangeException if $newEventDate is a date that does not exist
 	 **/
 
 
-	public function setEventDateTime($newEventDateTime): void {
+	public function setEventDate($newEventDate): void {
 		// base case: if the date is null, use the current date and time
-		if($newEventDateTime === null) {
+		if($newEventDate === null) {
 			// throw exception
 		}
 
 		// store the event date using the ValidateDate trait
 		try {
-			$newEventDateTime = self::validateDateTime($newEventDateTime);
+			$newEventDate = self::validateDateTime($newEventDate);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-		$this->eventDateTime = $newEventDateTime;
+		$this->eventDate = $newEventDate;
 	}
 
 	/**
@@ -230,16 +230,16 @@ class Event implements \JsonSerializable {
 		}
 
 		//create query
-		$query = "INSERT INTO event(eventVenueId, eventContact, eventContent, eventDateTime, eventName) VALUES (:eventVenueId, :eventContact, :eventContent, :eventDateTime, :eventName)";
+		$query = "INSERT INTO event(eventVenueId, eventContact, eventContent, eventDate, eventName) VALUES (:eventVenueId, :eventContact, :eventContent, :eventDate, :eventName)";
 		$statement = $pdo->prepare($query);
 
 		// bind members to their place holders
-		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s.u");
+		$formattedDate = $this->eventDate->format("Y-m-d H:i:s.u");
 		$parameters = [
 			"eventVenueId" => $this->eventVenueId,
 			"eventContact" => $this->eventContact,
 			"eventContent" => $this->eventContent,
-			"eventDateTime" => $formattedDate,
+			"eventDate" => $formattedDate,
 			"eventName" => $this->eventName
 		];
 		$statement->execute($parameters);
@@ -276,11 +276,11 @@ class Event implements \JsonSerializable {
 		if($this->eventId === null) {
 			throw(new \PDOException("not a new event"));
 		}
-		$query = "UPDATE event SET eventVenueId = :eventVenueId, eventContact = :eventContact, eventContent = :eventContent, eventDateTime = :eventDateTime, eventName = :eventName WHERE eventId = :eventId";
+		$query = "UPDATE event SET eventVenueId = :eventVenueId, eventContact = :eventContact, eventContent = :eventContent, eventDate = :eventDate, eventName = :eventName WHERE eventId = :eventId";
 		$statement = $pdo->prepare($query);
 		//binds members to their place holder
-		$formattedDate = $this->eventDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["eventVenueId" => $this->eventVenueId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDateTime" => $formattedDate, "eventName" => $this->eventName, "eventId" => $this->eventId];
+		$formattedDate = $this->eventDate->format("Y-m-d H:i:s.u");
+		$parameters = ["eventVenueId" => $this->eventVenueId, "eventContact" => $this->eventContact, "eventContent" => $this->eventContent, "eventDate" => $formattedDate, "eventName" => $this->eventName, "eventId" => $this->eventId];
 		$statement->execute($parameters);
 	}
 
@@ -291,7 +291,7 @@ class Event implements \JsonSerializable {
 			throw(new \PDOException("event id is not positive"));
 		}
 		// create query template
-		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName FROM event WHERE eventId = :eventId";
+		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName FROM event WHERE eventId = :eventId";
 		$statement = $pdo->prepare($query);
 		// bind the event id to the place holder in the template
 		$parameters = ["eventId" => $eventId];
@@ -302,7 +302,7 @@ class Event implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+				$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -325,7 +325,7 @@ class Event implements \JsonSerializable {
 			throw(new \RangeException("event venue id is not positive"));
 		}
 		// create query template
-		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName FROM event WHERE eventVenueId = :eventVenueId";
+		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName FROM event WHERE eventVenueId = :eventVenueId";
 		$statement = $pdo->prepare($query);
 		// bind the event venue id to the place holder in the template
 		$parameters = ["eventVenueId" => $eventVenueId];
@@ -335,7 +335,7 @@ class Event implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+				$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {
@@ -363,7 +363,7 @@ class Event implements \JsonSerializable {
 			throw(new \PDOException("event content is invalid"));
 		}
 		// create query template
-		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName FROM event WHERE eventContent LIKE :eventContent";
+		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName FROM event WHERE eventContent LIKE :eventContent";
 		$statement = $pdo->prepare($query);
 		// bind the tweet content to the place holder in the template
 		$eventContent = "%$eventContent%";
@@ -374,7 +374,7 @@ class Event implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+				$event = new Event($row["eventId"], $row["eventVenueId"], $row["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {
@@ -410,7 +410,7 @@ class Event implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		//create query template
-		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName from event WHERE eventDateTime >= :sunriseEventDate AND eventDateTime <= :sunsetEventDate";
+		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName from event WHERE eventDate >= :sunriseEventDate AND eventDate <= :sunsetEventDate";
 		$statement = $pdo->prepare($query);
 		//format the dates so that mySQL can use them
 		$formattedSunriseDate = $sunriseEventDate->format("Y-m-d H:i:s");
@@ -422,7 +422,7 @@ class Event implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch())  !== false) {
 			try {
-				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {
@@ -445,7 +445,7 @@ class Event implements \JsonSerializable {
 			throw(new \PDOException("event name is either empty or insecure"));
 		}
 		// create query template
-		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName FROM event WHERE eventName LIKE :eventName";
+		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName FROM event WHERE eventName LIKE :eventName";
 		$statement = $pdo->prepare($query);
 		// bind the event name to the place holder in the template
 		$eventName = "%$eventName%";
@@ -457,7 +457,7 @@ class Event implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {
@@ -477,7 +477,7 @@ class Event implements \JsonSerializable {
 	 **/
 	public static function getAllEvents(\PDO $pdo) : \SplFixedArray {
 		// create query template
-		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDateTime, eventName FROM event";
+		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName FROM event";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		// build an array of events
@@ -485,7 +485,7 @@ class Event implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDateTime"], $row["eventName"]);
+				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {
@@ -506,7 +506,7 @@ class Event implements \JsonSerializable {
 	public function JsonSerialize() {
 		$fields = get_object_vars($this);
 		//format the sate so that the front end can consume it
-		$fields["eventDateTime"] = round(floatval($this->eventDateTime->format("U.u")) * 1000);
+		$fields["eventDate"] = round(floatval($this->eventDate->format("U.u")) * 1000);
 		return ($fields);
 
 

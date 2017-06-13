@@ -75,7 +75,7 @@ export class EventService extends BaseService {
 	getAllEvents() : Observable<Event[]> {
 		return(this.http.get(this.eventUrl)
 			.map(this.extractData)
-			.catch(this.extractData));
+			.catch(this.handleError));
 	}
 
 }
