@@ -68,9 +68,9 @@ main-header {
 }
 
 /****************************************
-* Body
+* Main Body
 *****************************************/
-body {
+main-body {
     padding-top: 70px;
     background-color: #1a1a1a;
 }
@@ -80,6 +80,8 @@ body {
 *****************************************/
 footer {
 	margin: 50px 0;
+	background-color: #0e0e0e;
+	color: #FFFFFF;
 }
 
 
