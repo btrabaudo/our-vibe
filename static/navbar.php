@@ -48,7 +48,12 @@
 				</li>
 
 				<!-- searchbar goes here -->
-
+				<li class="search">
+					<div class="search-wrapper card">
+						<input id="search">
+						<i class="material-icons">search</i>
+						<div class="search-results"></div>
+					</div>
 
 
 
