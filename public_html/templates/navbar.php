@@ -14,7 +14,6 @@
             <div class="search-results"></div>
         </div>
     </li>
-    </div>
 
     <li><a class="waves-effect" routerLink="">Our Vibe</a></li>
     <li>

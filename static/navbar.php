@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 		<!-- Custom CSS -->
-		<link rel="stylesheet" href="app/app.css">
+		<link rel="stylesheet" href="src/app.css">
 
 
 		<!-- jQuery -->
@@ -31,35 +31,79 @@
 				  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js"></script>
 
 		<!-- Your JavaScript Form Validator -->
-		<script src="js/form-validate.js"></script>
+		<script src="javascript/navbar-style.js"></script>
 	</head>
 	<body>
-		<ul id="slide-out" class="side-nav fixed">
-			<li>
-				<div class="userView">
-					<div class="background">
-					</div>
+		<div id="wrapper">
 
-			<li class="search">
-				<div class="search-wrapper card">
-					<input id="search">
-					<i class="material-icons">search</i>
-					<div class="search-results"></div>
-				</div>
-			</li>
+
+			<!-- Sidebar -->
+			<div id="sidebar-wrapper">
+				<ul class="sidebar-nav">
+					<li class="sidebar-brand">
+						<a href="#">
+							Start Bootstrap
+						</a>
+					<li class="search">
+						<div class="search-wrapper card">
+							<input id="search">
+							<i class="material-icons">search</i>
+							<div class="search-results"></div>
+						</div>
+					<li>
+						<a href="#">Dashboard</a>
+					</li>
+
+					<li>
+						<a class="waves-effect" routerLink="">Events</a>
+					</li>
+					<li>
+						<a class="waves-effect" routerLink="/venues">Venues</a>
+					</li>
+					<li>
+						<a class="waves-effect" routerLink="/about">About</a>
+					</li>
+					<li>
+						<a class="waves-effect" routerLink="/sign-up">Sign Up</a> / <a class="waves-effect" routerLink="/log-in">Sign In</a>
+					</li>
+				</ul>
 			</div>
+			<!-- /#sidebar-wrapper -->
 
-			<li><a class="waves-effect" href="#!">Our Vibe</a></li>
-			<li>
-				<div class="divider"></div>
-			</li>
-			<li><a class="subheader">Some Cool Subheader lol</a></li>
-			<li><a class="waves-effect" href="#!">Events</a></li>
-			<li><a class="waves-effect" href="#!">Venues</a></li>
-			<li><a class="waves-effect" href="#!">About</a></li>
-			<li><a class="waves-effect" href="#!">Sign Up/Sign In</a></li>
-		</ul>
-		<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-12">
+							<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /#page-content-wrapper -->
+
+
+		</div>
+		<!-- /#wrapper -->
+
+
+		<!-- jQuery -->
+		<script src="js/jquery.js"></script>
+
+
+		<!-- Bootstrap Core JavaScript -->
+		<script src="js/bootstrap.min.js"></script>
+
+
+		<!-- Menu Toggle Script -->
+		<script>
+			$("#menu-toggle").click(function(e) {
+				e.preventDefault();
+				$("#wrapper").toggleClass("toggled");
+			});
+		</script>
+
 
 
 	</body>

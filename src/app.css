@@ -3,82 +3,134 @@
 * navbar
 *****************************************/
 
+/*!
+ * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
 
-header, main, footer {
-    padding-left: 300px;
-    color: #801F18;
+body {
+    overflow-x: hidden;
 }
 
-@media only screen and (max-width : 992px) {
-    header, main, footer {
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
         padding-left: 0;
     }
-}
 
-#nav-mobile {
-    transform: translateX(0%);
-}
-
-@media screen, projection {
-    ul.side-nav.fixed {
-        overflow:hidden;
+    #wrapper.toggled {
+        padding-left: 250px;
     }
-}
 
-@media screen, projection {
-    .side-nav.fixed {
-        left:0;
-        -webkit-transform:translateX(0);
-        transform:translateX(0);
-        position:fixed;
+    #sidebar-wrapper {
+        width: 0;
     }
-}
 
-@media screen, projection {
-    ul:not(.browser-default) {
-        padding-left:0;
-        list-style-type:none;
+    #wrapper.toggled #sidebar-wrapper {
+        width: 250px;
     }
-}
 
-@media screen, projection {
-    .side-nav {
-        position:fixed;
-        width:300px;
-        left:0;
-        top:0;
-        margin:0;
-        -webkit-transform:translateX(-100%);
-        transform:translateX(-100%);
-        height:100%;
-        height:calc(100% + 60px);
-        height:-moz-calc(100%);
-        padding-bottom:60px;
-        background-color:#fff;
-        z-index:999;
-        overflow-y:auto;
-        will-change:transform;
-        -webkit-backface-visibility:hidden;
-        backface-visibility:hidden;
-        -webkit-transform:translateX(-105%);
-        transform:translateX(-105%);
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
     }
-}
 
-@media screen, projection {
-    .z-depth-1, nav, .card-panel, .card, .toast, .btn, .btn-large, .btn-floating, .dropdown-content, .collapsible, .side-nav {
-        box-shadow:0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
     }
-}
-
-ul, menu, dir {
-    display: block;
-    list-style-type: disc;
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    -webkit-padding-start: 40px;
 }
 
 /****************************************
