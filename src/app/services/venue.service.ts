@@ -49,4 +49,5 @@ export class VenueService extends BaseService {
             .map(this.extractData)
             .catch(this.handleError));
     }
+
 }

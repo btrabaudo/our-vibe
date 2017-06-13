@@ -12,6 +12,7 @@ import {FileSelectDirective} from "ng2-file-upload";
 export const allAppComponents = [HomeComponent,AboutComponent,LogInComponent, NavbarComponent, VenueComponent, SignUpComponent, FileSelectDirective, ImageComponent];
 
 export const routes: Routes = [
+	{path: "venue", component:VenueComponent},
 	{path: "venue/:id", component: VenueComponent},
 	{path: "image-test", component: ImageComponent},
 	{path: "sign-up", component: SignUpComponent},

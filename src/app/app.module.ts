@@ -7,6 +7,7 @@ import {AppComponent} from "./app.component";
 import {SignUpService} from "./services/sign-up.service";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
 import {LogInService} from "./services/log-in.service";
+import {EventService} from "./services/event.service";
 
 const moduleDeclarations = [AppComponent];
 
