@@ -37,14 +37,14 @@ export class EventService extends BaseService {
 	}
 
 	// call to the event API and get a event object based on its Id
-	getEvent(eventId : number) : Observable<Event> {
+	getEventByEventId(eventId : number) : Observable<Event> {
 		return(this.http.get(this.eventUrl + eventId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
 	// call to the API and get an array of events based off the venueId
-	getEventbyVenueId(eventVenueId : number) : Observable<Event[]> {
+	getEventByVenueId(eventVenueId : number) : Observable<Event[]> {
 		return(this.http.get(this.eventUrl + eventVenueId)
 			.map(this.extractData)
 			.catch(this.handleError));

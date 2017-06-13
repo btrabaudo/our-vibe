@@ -56,7 +56,7 @@
 					<h3>{{event.eventName}}</h3>
 					<h4>{{venue.venueName}}</h4>
 					<p>{{event.eventContent}}</p>
-					<a class="btn btn-primary" [routerLink]="/venue/event.eventVenueId">View This Event <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<a class="btn btn-primary" routerLink="['/venue',{{event.eventVenueId}}]">View This Event <span class="glyphicon glyphicon-chevron-right"></span></a>
 				</div>
 			</div>
 			<!-- /.row -->

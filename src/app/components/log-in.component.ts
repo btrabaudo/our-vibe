@@ -6,7 +6,7 @@ import {Login} from "../classes/log-in";
 @Component({
 	templateUrl: "./templates/log-in.php"
 })
-export class LogInComponent {
+export class LogInComponent implements OnInit{
 
 	login: Login = new Login(null, null);
 	status: Status = null;
@@ -15,7 +15,7 @@ export class LogInComponent {
 
 	}
 
-	ngOnit(): void {
+	ngOnInit(): void {
 
 	}
 
