@@ -1,4 +1,4 @@
-
+<nav>
 <div id="wrapper">
 
 
@@ -12,15 +12,14 @@
 			</li>
 
 			<!-- search bar goes here -->
-			<li class="search">
-				<div class="search-wrapper card">
-					<input id="search">
-					<i class="material-icons">search</i>
-					<div class="search-results"></div>
+			<li>
+				<div class="box">
+					<div class="container-1">
+						<span class="icon"><i class="fa fa-search"></i></span>
+						<input type="search" id="search" placeholder="Search..." />
+					</div>
 				</div>
-
-
-
+			</li>
 			<li>
 				<a class="waves-effect" routerLink="">Events</a>
 			</li>
@@ -52,3 +51,4 @@
 
 
 </div>
+</nav>

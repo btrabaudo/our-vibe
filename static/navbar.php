@@ -46,15 +46,6 @@
 						OurVibe
 					</a>
 				</li>
-
-				<!-- searchbar goes here -->
-				<li>
-					<div class="box">
-						<div class="container-1">
-							<input type="search" id="search" placeholder="Search..." />
-							<span class="icon"><i class="fa fa-search"></i></span>
-						</div>
-					</div>
 				<li>
 					<a class="waves-effect" routerLink="">Events</a>
 				</li>
@@ -86,6 +77,7 @@
 
 
 	</div>
+	</nav>
 	<!-- /#wrapper -->
 
 
@@ -98,5 +90,4 @@
 			$("#wrapper").toggleClass("toggled");
 		});
 	</script>
-		</nav>
 </html>
