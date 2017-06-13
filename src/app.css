@@ -202,6 +202,7 @@ main-header {
 *****************************************/
 body {
     padding-top: 70px;
+    background-color: #1a1a1a;
 }
 
 /****************************************
@@ -210,3 +211,17 @@ body {
 footer {
 	margin: 50px 0;
 }
+
+
+/****************************************
+* Sign-up
+*****************************************/
+.bg {
+    background-color: #1a1a1a;
+    padding-left: 10em;
+
+}
+#signUpForm {
+    width: 75%;
+}
+

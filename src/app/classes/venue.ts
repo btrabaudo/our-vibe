@@ -12,6 +12,6 @@ export class Venue {
         public venueState: string,
         public venueZip: string,
         public profilePassword: string,
-        public profilePasswordConfirmed: string
+        public pprofilePasswordConfirmed: string
     ) {}
 }

@@ -189,27 +189,34 @@
 
 
 
-            <div class="form-group" [ngClass]="{ 'has-error': profilePasswordConfirm.touched && profilePasswordConfirm.invalid}">
+            <div class="form-group" [ngClass]="{ 'has-error': profilePasswordConfirmed.touched && profilePasswordConfirmed.invalid}">
                 <label class="sr-only" for="profilePassword">Profile Password Confirm <span
                             class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </div>
-                    <input type="text" class="form-control" id="profilePasswordConfirm" name="profilePasswordConfirm" class="form-control" maxlength="128" [(ngModel)]="venue.profilePasswordConfirm" #profilePasswordConfirm="ngModel"
+                    <input type="text" class="form-control" id="profilePasswordConfirmed" name="profilePasswordConfirmed" class="form-control" maxlength="128" [(ngModel)]="venue.profilePasswordConfirmed" #profilePasswordConfirmed="ngModel"
                            placeholder="Confirm Password"/>
 
-                    <div [hidden]="profilePasswordConfirm.valid || profilePasswordConfirm.pristine" class="alert alert-danger" role="alert">
-                        <p *ngIf="profilePasswordConfirm.errors?.maxlength"> Profile password cannot be more than 128 characters.</p>
+                    <div [hidden]="profilePasswordConfirmed.valid || profilePasswordConfirmed.pristine" class="alert alert-danger" role="alert">
+                        <p *ngIf="profilePasswordConfirmed.errors?.maxlength"> Profile password cannot be more than 128 characters.</p>
                     </div>
                 </div>
             </div>
 
-
+            <form class="form-horizontal" name="imageUpload" (submit)="uploadImage();">
+                <div class="form-group">
+                    <label for="postImage" class="modal-labels">Upload an image</label>
+                    <input type="file" name="dog" id="dog" ng2FileSelect [uploader]="uploader" />
+                </div>
+                <button type="submit" class="btn btn-info btn-lg"><i class="fa fa-file-image-o" aria-hidden="true"></i> Upload Image</button>
+            </form>
 
 
             <button class="btn btn-success" type="submit" [disabled]="signUpForm.invalid"><i class="fa fa-paper-plane"></i> Submit</button>
             <button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
         </form>
+
     </div>
 </main>
