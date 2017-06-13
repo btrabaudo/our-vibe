@@ -7,15 +7,16 @@ import {VenueComponent} from "./components/venue.component";
 import {SignUpComponent} from "./components/sign-up.component";
 import {ImageComponent} from "./components/image.component";
 import {FileSelectDirective} from "ng2-file-upload";
+import {EventComponent} from "./components/event.component";
 
 
-export const allAppComponents = [HomeComponent,AboutComponent,LogInComponent, NavbarComponent, VenueComponent, SignUpComponent, FileSelectDirective, ImageComponent];
+export const allAppComponents = [HomeComponent,AboutComponent,LogInComponent, NavbarComponent, VenueComponent, SignUpComponent, FileSelectDirective, ImageComponent, EventComponent];
 
 export const routes: Routes = [
 	{path: "", component: HomeComponent},
 	{path: "venue", component:VenueComponent},
 	{path: "venue/:id", component: VenueComponent},
-	{path: "create-event", component: }
+	{path: "create-event", component: EventComponent},
 	{path: "image-test", component: ImageComponent},
 	{path: "sign-up", component: SignUpComponent},
 	{path: "about", component: AboutComponent},

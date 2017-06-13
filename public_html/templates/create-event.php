@@ -15,24 +15,22 @@
 							<div class="input-group-addon">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</div>
-							<input type="text" class="form-control" id="eventName" name="eventName"
-									 placeholder="Name of Event">
+							<input type="text" class="form-control" id="eventName" name="eventName" maxlength="32" required [(ngModel)]="event.eventName"
+									 placeholder="Name of Event" #eventName="ngModel"/>
 						</div>
 					</div>
 
-					<form id="create-event">
 						<div class="form-group">
 							<label class="sr-only" for="venueAddress">Event Venue <span class="text-danger">*</span></label>
 							<div class="input-group">
 								<div class="input-group-addon">
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 								</div>
-								<input type="text" class="form-control" id="eventVenue" name="eventVenue"
-										 placeholder="Event Venue">
+                                <input type="text" class="form-control" id="eventVenue" name="eventVenue" maxlength="32" required [(ngModel)]="event.eventVenue"
+                                       placeholder="Venue" #eventVenue="ngModel"/>
 							</div>
 						</div>
 
-						<form id="create-event">
 							<div class="form-group">
 								<label class="sr-only" for="eventDateTime">Event DateTime<span
 										class="text-danger">*</span></label>
@@ -46,7 +44,6 @@
 							</div>
 
 
-							<form id="create-event">
 								<div class="form-group">
 									<label class="sr-only" for="eventContact">Event Contact<span
 											class="text-danger">*</span></label>
@@ -54,12 +51,11 @@
 										<div class="input-group-addon">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
-										<input type="text" class="form-control" id="eventContact" name="eventContact"
-												 placeholder="Event Contact">
+                                        <input type="text" class="form-control" id="eventContact" name="eventContact" maxlength="32" required [(ngModel)]="event.eventContact"
+                                               placeholder="Contact for event" #eventContact="ngModel"/>
 									</div>
 								</div>
 
-								<form id="create-event">
 									<div class="form-group">
 										<label class="sr-only" for="eventContent">Event Content <span
 												class="text-danger">*</span></label>
@@ -67,9 +63,8 @@
 											<div class="input-group-addon">
 												<i class="fa fa-pencil" aria-hidden="true"></i>
 											</div>
-											<input type="text" class="form-control" id="eventContent"
-													 name="eventContent" placeholder="Info About This Event">
-										</div>
+                                            <input type="text" class="form-control" id="eventContent" name="eventContent" maxlength="32" required [(ngModel)]="event.eventContent"
+                                                   placeholder="Event Info" #eventContent="ngModel"/>
 									</div>
 
 
@@ -100,7 +95,6 @@
 												</div>
 											</div>
 
-											<form id="create-event" >
 												<div class="form-group">
 													<label class="sr-only" for="profileConfirmPassword">Confirm Password <span class="text-danger">*</span></label>
 													<div class="input-group">
