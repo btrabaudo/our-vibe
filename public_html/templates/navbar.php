@@ -24,7 +24,7 @@
 
 					<!-- Our Artist tab dropdown-->
 					<li class="dropdown">
-						<a routerLink="/venues" class="waves-effect" data-toggle="dropdown">Venues<span></span></a>
+						<a routerLink="/venue" class="waves-effect" data-toggle="dropdown">Venues<span></span></a>
 
 						<!-- About Us tab dropdown-->
 					<li class="dropdown">
