@@ -18,6 +18,7 @@
 				</div>
 				<div class="col-md-5">
 					<h3>{{event.eventName}}</h3>
+					<h4>venue Name</h4>
 					<p>{{event.eventContent}}</p>
 					<a class="btn btn-primary" [routerLink]="['venue/',(event.eventVenueId)]">View This Event <span class="glyphicon glyphicon-chevron-right"></span></a>
 				</div>
