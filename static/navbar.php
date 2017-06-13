@@ -42,7 +42,7 @@
 				<ul class="sidebar-nav">
 					<li class="sidebar-brand">
 						<a href="#">
-							Start Bootstrap
+							Our Vibe
 						</a>
 					<li class="search">
 						<div class="search-wrapper card">
@@ -50,9 +50,7 @@
 							<i class="material-icons">search</i>
 							<div class="search-results"></div>
 						</div>
-					<li>
-						<a href="#">Dashboard</a>
-					</li>
+
 
 					<li>
 						<a class="waves-effect" routerLink="">Events</a>
