@@ -10,7 +10,7 @@ import "rxjs/add/operator/switchMap";
 })
 
 export class VenueComponent  implements  OnInit{
-    venue:Venue = new Venue(null,null,null,null,null,null,null,null,null,null,null,null,null);
+    venue:Venue = new Venue(null, null, null,null,null,null,null,null,null,null,null,null,null,null);
     status: Status = null;
     //
     constructor(private venueService:VenueService, private route:ActivatedRoute, private router: Router){

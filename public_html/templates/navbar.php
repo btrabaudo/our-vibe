@@ -21,9 +21,9 @@
 						<a routerLink="/events" class="waves-effect" data-toggle="dropdown">Events<span></span></a>
 					</li>
 
-					<!-- Our Artist tab dropdown-->
-					<li class="dropdown">
-						<a routerLink="/venue" class="waves-effect" data-toggle="dropdown">Venues<span></span></a>
+<!--					<!-- Our Artist tab dropdown-->-->
+<!--					<li class="dropdown">-->
+<!--						<a routerLink="/venue" class="waves-effect" data-toggle="dropdown">Venues<span></span></a>-->
 
 						<!-- About Us tab dropdown-->
 					<li class="dropdown">

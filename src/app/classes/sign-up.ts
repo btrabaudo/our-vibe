@@ -12,6 +12,8 @@ export class SignUp {
         public venueState: string,
         public venueZip: string,
         public profilePassword: string,
-        public profilePasswordConfirmed: string
+        public profilePasswordConfirmed: string,
+        public imageCloudinaryId: string
+
     ) {}
 }

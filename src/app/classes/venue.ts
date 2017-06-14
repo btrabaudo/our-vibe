@@ -12,6 +12,7 @@ export class Venue {
         public venueState: string,
         public venueZip: string,
         public profilePassword: string,
-        public pprofilePasswordConfirmed: string
+        public profilePasswordConfirmed: string,
+        public imageCloudinaryId: string
     ) {}
 }

@@ -14,7 +14,7 @@ import "rxjs/add/operator/switchMap";
 
 export class SignUpComponent implements OnInit {
 
-    venue: Venue = new Venue(null, null, null, null, null, null, null, null, null, null, null, null, null);
+    venue: Venue = new Venue(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     status : Status = null;
 
     constructor(private signUpService: SignUpService) {}

@@ -7,7 +7,8 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\OurVibe\ {
 
-    Venue
+    Venue,
+    Image
 
 };
 
@@ -48,6 +49,8 @@ try {
 
         if(empty($id) === false) {
             $venue = Venue::getVenueByVenueId($pdo, $id);
+            $image = Image::getImageByImageId($pdo, $venue->getVenueImageId());
+            $venue->imageCloudinaryId = $image->getImageCloudinaryId();
             if($venue !== null) {
                 $reply->data = $venue;
             }

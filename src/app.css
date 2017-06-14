@@ -6,13 +6,15 @@
 
 body {
     padding-bottom: 3cm;
-    background-color: #1a1a1a;
+background-color: #1a1a1a;
+
 }
+
 
 h1 {
     color: steelblue;
     top: 1000%;
-    font-size: 100px;
+    font-size: 8rem;
     padding-top: 3rem;
    text-align: center;
 }
@@ -41,7 +43,8 @@ p {
 }
 
 .navbar-brand {
-
+    font-size: 3rem;
+    color: steelblue;
     height: 50px;
 }
 
@@ -68,8 +71,21 @@ img {
     padding-right: 3rem;
 }
 
-li, a{
-    font-size: 2rem;
+li>a{
+    font-size: 2.5rem;
+    color: steelblue;
+}
+
+.aboutP {
+    color: whitesmoke;
+    font-size: 4rem;
+    text-align: center;
+}
+
+.aboutH {
+    color: whitesmoke;
+    font-size: 2.5rem;
+    text-align: center;
 }
 
 
