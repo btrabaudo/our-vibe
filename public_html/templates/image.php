@@ -1,4 +1,4 @@
-<h1>Image Component</h1>
+<h1>Image Upload</h1>
 <form class="form-horizontal" name="imageUpload" (submit)="uploadImage();">
 	<div class="form-group">
 		<label for="postImage" class="modal-labels">Upload an Image</label>

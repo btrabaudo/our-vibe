@@ -16,7 +16,6 @@
 			<div class="collapse navbar-collapse" id="mainNavBar">
 				<ul class="nav navbar-nav">
 
-
 					<!-- Services tab dropdown -->
 					<li class="dropdown">
 						<a routerLink="/events" class="waves-effect" data-toggle="dropdown">Events<span></span></a>
