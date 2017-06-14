@@ -35,7 +35,9 @@ h2, h3 {
 }
 
 p {
-    color: black;
+    color: whitesmoke;
+    font-size: 2rem;
+    padding: 2rem;
 }
 
 .navbar-brand {
