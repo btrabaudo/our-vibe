@@ -43,6 +43,7 @@ export class EventService extends BaseService {
 			.catch(this.handleError));
 	}
 
+
 	// call to the API and get an array of events based off the venueId
 	getEventByVenueId(eventVenueId : number) : Observable<Event[]> {
 		return(this.http.get(this.eventUrl + eventVenueId)

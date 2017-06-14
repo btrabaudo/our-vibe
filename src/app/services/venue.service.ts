@@ -30,7 +30,8 @@ export class VenueService extends BaseService {
     }
 
     // Call to the Profile API, and get a venue object by its id.
-    getVenue(id: number) : Observable<Venue> {
+    getVenueByVenueId(id: number) : Observable<Venue> {
+        console.log("Venue 5");
         return(this.http.get(this.venueUrl + id)
             .map(this.extractData)
             .catch(this.handleError));

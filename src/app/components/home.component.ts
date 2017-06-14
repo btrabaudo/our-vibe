@@ -2,7 +2,6 @@ import {Component,OnInit} from "@angular/core";
 import {ActivatedRoute,Params,Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {Event} from  "../classes/event";
-import {Venue} from "../classes/venue";
 import {EventService} from "../services/event.service";
 import "rxjs/add/operator/switchMap";
 
@@ -18,10 +17,9 @@ export class HomeComponent  implements  OnInit{
 
 	}
 	ngOnInit(): void{
-		console.log("Something else has fired");
-		// this.getEventsByEventId();
 		this.getAllEvents();
 	}
+
 	getEventByEventId() :void {
 		this.route.params
 			.switchMap((params : Params)=>this.eventService.getEventByEventId(+params["eventId"]))
