@@ -20,4 +20,3 @@ setXsrfCookie();
 		<our-vibe></our-vibe>
 	</body>
 </html>
-f

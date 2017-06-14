@@ -18,6 +18,7 @@ class Event implements \JsonSerializable {
 	private $eventContent;
 	private $eventDate;
 	private $eventName;
+	public $imageCloudinaryId;
 
 	/**
 	 * constructor for this event
@@ -411,6 +412,11 @@ class Event implements \JsonSerializable {
 		}
 		//create query template
 		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName from event WHERE eventDate >= :sunriseEventDate AND eventDate <= :sunsetEventDate";
+
+
+		//Previous query
+		/**/
+
 		$statement = $pdo->prepare($query);
 		//format the dates so that mySQL can use them
 		$formattedSunriseDate = $sunriseEventDate->format("Y-m-d H:i:s");
@@ -423,6 +429,7 @@ class Event implements \JsonSerializable {
 		while(($row = $statement->fetch())  !== false) {
 			try {
 				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
+
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {
@@ -477,7 +484,12 @@ class Event implements \JsonSerializable {
 	 **/
 	public static function getAllEvents(\PDO $pdo) : \SplFixedArray {
 		// create query template
-		$query = "SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName FROM event";
+		$query = "SELECT image.imageId, image.imageCloudinaryId, event.*
+FROM image
+INNER JOIN eventImage ON eventImageImageId = image.imageId
+INNER JOIN event ON eventImage.eventImageEventId = event.eventId";
+
+			/*"SELECT eventId, eventVenueId, eventContact, eventContent, eventDate, eventName FROM event";*/
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		// build an array of events
@@ -486,6 +498,7 @@ class Event implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$event = new Event($row["eventId"], $row["eventVenueId"], $row ["eventContact"], $row["eventContent"], $row["eventDate"], $row["eventName"]);
+				$event->imageCloudinaryId = $row["imageCloudinaryId"];
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {

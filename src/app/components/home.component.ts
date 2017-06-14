@@ -10,7 +10,7 @@ import "rxjs/add/operator/switchMap";
 	templateUrl: "./templates/home.php"
 })
 export class HomeComponent  implements  OnInit{
-	event:Event = new Event(null,null,null,null,null,null);
+	event:Event = new Event(null,null,null,null,null,null, null);
 	status: Status = null;
 	events : Event[] = [];
 	//

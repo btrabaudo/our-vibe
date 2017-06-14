@@ -14,7 +14,7 @@ import "rxjs/add/operator/switchMap";
 
 export class EventComponent implements OnInit {
 
-	event: Event = new Event(null, null, null, null, null, null);
+	event: Event = new Event(null, null, null, null, null, null, null);
 	status : Status = null;
 
 	constructor(private eventService: EventService) {}

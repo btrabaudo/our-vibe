@@ -13,7 +13,7 @@
 			<div class="row" *ngFor="let event of events" >
 				<div class="col-md-7">
 					<a href="#">
-						<img class="img-responsive" src="https://placehold.it/700x300" alt="">
+						<img class="img-responsive" src="http://res.cloudinary.com/our-vibe/image/upload/v1497306690/{{event.imageCloudinaryId}}.jpg" alt="">
 					</a>
 				</div>
 				<div class="col-md-5">

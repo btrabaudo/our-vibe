@@ -8,7 +8,8 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\OurVibe\{
 	Event,
 	// we only use the event tag class for testing purposes
-	EventTag, Tag
+	EventTag,
+	Image
 };
 
 /**
@@ -110,7 +111,7 @@ try {
 		// retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
-        var_dump($_SESSION['venue']->getVenueid());
+       // var_dump($_SESSION['venue']->getVenueId());
 
             //make sure event venue id is available (required field)
             if (empty($_SESSION['venue']->getVenueId()) === true) {
@@ -184,6 +185,18 @@ try {
 			}
 			//Datetime
 			$formattedEventDate = \DateTime::createFromFormat("U.u", sprintf("%.6f", $requestObject->eventDateTime / 1000));
+
+/*
+			$tempUserFileName = $_FILES["image"]["tmp_name"];
+
+
+			// upload image to cloudinary and get public id
+			$cloudinaryResult = \Cloudinary\Uploader::upload($tempUserFileName, array("width" => 500, "crop" => "scale"));
+
+			// after sending the image to Cloudinary, grab the public id and create a new image
+			$image = new Image(null, $cloudinaryResult["public_id"]);
+			$image->insert($pdo);*/
+
 
 
 			// create new Event and insert into the database

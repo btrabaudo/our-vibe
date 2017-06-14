@@ -5,6 +5,7 @@ export class Event {
 		public eventContact: string,
 		public eventContent: string,
 		public eventDateTime: string,
-		public eventName: string
+		public eventName: string,
+		public imageCloudinaryId: number
 ) {}
 }
