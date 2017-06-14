@@ -57,7 +57,7 @@
 
 						<!-- Services tab dropdown -->
 						<li class="dropdown">
-							<a routerLink="/events" class="waves-effect" data-toggle="dropdown">Events<span></span></a>
+							<a routerLink="" class="waves-effect" data-toggle="dropdown">Events<span></span></a>
 						</li>
 
 						<!-- Our Artist tab dropdown-->
@@ -74,6 +74,12 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a routerLink="/sign">Sign Up/Sign In</a></li>
 					</ul>
+
+					<!-- right align Create Event tab -->
+					<ul class="nav navbar-nav navbar-right">
+						<li><a routerLink="/create-event">Create Event</a></li>
+					</ul>
+
 				</div>
 		</nav>
 	</body>

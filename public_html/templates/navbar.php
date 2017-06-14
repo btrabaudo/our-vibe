@@ -36,5 +36,10 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a routerLink="/log-in">Sign Up/Sign In</a></li>
 				</ul>
+
+				<!-- right align Create Event tab -->
+				<ul class="nav navbar-nav navbar-right">
+					<li><a routerLink="/create-event">Create Event</a></li>
+				</ul>
 			</div>
 	</nav>
