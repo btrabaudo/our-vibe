@@ -30,7 +30,7 @@
 
 
 
-		<a class="btn Venue" routerLink="/sign-up"> Register Venue</a>
+		<button class="btn Venue" routerLink="/sign-up" type="submit"> Register Venue</button>
 		<div id="output-area"></div>
 
 
