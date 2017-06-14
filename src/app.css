@@ -82,12 +82,16 @@ li>a{
     text-align: center;
 }
 
-.aboutH {
+div>h3 {
     color: whitesmoke;
-    font-size: 2.5rem;
+    font-size: 5rem;
     text-align: center;
 }
-
+div>p {
+    color: steelblue;
+    font-size: 5rem;
+    text-align: center;
+}
 
 
 /****************************************
